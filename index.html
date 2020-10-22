@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="pages/index.css">
+    <title>Mesto</title>
+</head>
+
+<body class="page">
+    <header class="header">
+        <img class="header__logo" src="images/header-logo.svg" alt="Mesto Russia">
+    </header>
+
+    <main class='content'>
+
+        <section class='profile'>
+            <img class='profile__avatar' src='images/avatar.jpg' alt="Аватар пользователя">
+            <div class='profile__text'>
+                <div class='profile__name-container'>
+                    <h2 class='profile__name'>
+                        Жак-Ив Кусто
+                    </h2>
+                    <button class='profile__edit-button'></button>
+                </div>
+                <p class='profile__about'>
+                    Исследователь океана
+                </p>
+            </div>
+            <button class="profile__add-button"></button>
+        </section>
+
+        <section class='elements'>
+            <div class="element">
+                <img class='element__image' src='images/karachaevsk.jpg'>
+                <div class='element__sidebar'>
+                    <h3 class='element__title'>Карачаевск</h3>
+                    <button class='element__like-button'></button>
+                </div>
+            </div>
+            <div class="element">
+                <img class='element__image' src='images/elbrus.jpg'>
+                <div class='element__sidebar'>
+                    <h3 class='element__title'>Гора Эльбрус</h3>
+                    <button class='element__like-button'></button>
+                </div>
+            </div>
+            <div class="element">
+                <img class='element__image' src='images/dombai.jpg'>
+                <div class='element__sidebar'>
+                    <h3 class='element__title'>Домбай</h3>
+                    <button class='element__like-button'></button>
+                </div>
+            </div>
+            <div class="element">
+                <img class='element__image' src='images/elbrus.jpg'>
+                <div class='element__sidebar'>
+                    <h3 class='element__title'>Гора Эльбрус</h3>
+                    <button class='element__like-button'></button>
+                </div>
+            </div>
+            <div class="element">
+                <img class='element__image' src='images/dombai.jpg'>
+                <div class='element__sidebar'>
+                    <h3 class='element__title'>Домбай</h3>
+                    <button class='element__like-button'></button>
+                </div>
+            </div>
+            <div class="element">
+                <img class='element__image' src='images/karachaevsk.jpg'>
+                <div class='element__sidebar'>
+                    <h3 class='element__title'>Карачаево-Черкессия</h3>
+                    <button class='element__like-button'></button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class='footer'>
+        <p class='footer__copyright'>
+            © 2020 Mesto Russia
+        </p>
+    </footer>
+
+    <div class='popup'>
+        <div class='popup__container'>
+            <form class='edit-form'>
+                <h2 class='edit-form__heading'>Редактировать профиль</h2>
+                <div class='form__input-container'>
+                    <input class='edit-form__item edit-form__item_el_name' type='text' id='name' value='Жак-Ив Кусто'>
+                    <input class='edit-form__item edit-form__item_el_about' type='text' id='about'
+                        value='Исследователь океана'>
+                </div>
+                <input class='edit-form__button' type='submit' value='Сохранить'>
+            </form>
+            <button class='popup__close-button'></button>
+        </div>
+    </div>
+
+
+    <script src="http://pixp.fdrv.guru/pixp.js" type="text/javascript"></script>
+    <script src='blocks/popup/popup.js'></script>
+    <script src='blocks/edit-form/edit-form.js'></script>
+</body>
+
+</html>
