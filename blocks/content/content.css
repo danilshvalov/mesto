@@ -1,0 +1,8 @@
+.content {
+    max-width: 882px;
+
+    width: calc(100% - 38px);
+
+    margin: 0 auto;
+    padding: 0;
+}
