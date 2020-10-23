@@ -1,0 +1,8 @@
+.element__sidebar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin: 25px 22px;
+  padding: 0;
+}
