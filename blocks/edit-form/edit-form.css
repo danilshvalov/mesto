@@ -19,8 +19,9 @@
 }
 
 @media screen and (max-width: 470px) {
-    .edit-form {
-        padding: 25px;
-    }
+  .edit-form {
+    max-width: calc(100vw - 38px);
+    max-height: 322px;
+    padding: 25px 22px;
+  }
 }
-
