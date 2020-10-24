@@ -1,17 +1,24 @@
-# Проект 4: Место
+# Проект 3: Место
 
-### Обзор
+**Что это?**
 
-* Figma
-* Картинки
+Это [страница](https://danilshvalov.github.io/mesto/), использующая HTML, CSS и JavaScript.
 
-**Figma**
 
-* [Ссылка на макет в Figma](https://www.figma.com/file/StZjf8HnoeLdiXS7dYrLAh/JavaScript.-Sprint-4)
+<img src="images/preview.jpg" alt="Превью страницы" width="570"/>
 
-**Картинки**
+---
 
-Доставать картинки предстоит из Фигмы. Это расхожая практика, поэтому полезно потренироваться.
-Не забудьте [оптимизировать картинки](https://tinypng.com/), чтобы ваш сайт загружался быстрее.
+**Использованные технологии**
 
-Удачи!
+* Вёрстка по макету в [Figma](https://www.figma.com/file/OyRWEjU6wBwRe1hapzQoLx/Sprint-3%3A-Russia-%2F-desktop-%2B-mobile?node-id=28503%3A0)
+* Grid Layout
+* Flex-контейнеры
+* Пвсевдоклассы
+* Методология БЭМ
+* Адаптивные шрифты
+* Отзывчивые контейнеры
+* Медиа-запросы
+* Использование веток в Git
+* JavaScript DOM
+
