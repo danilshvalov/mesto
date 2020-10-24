@@ -10,8 +10,8 @@
   transform: rotate(45deg);
 
   position: absolute;
-  right: -40px;
-  top: -40px;
+  right: -36px;
+  top: -36px;
 
   cursor: pointer;
   outline: none;
@@ -36,3 +36,12 @@
     min-height: 26px;
   }
 }
+
+@media screen and (max-height: 420px) {
+  .popup__close-button {
+    top: 10px;
+    right: 5px;
+    filter: invert(1);
+  }
+}
+

@@ -14,3 +14,8 @@
   }
 }
 
+@media screen and (max-width: 720px) {
+  .profile__about {
+    margin-top: 0;
+  }
+}
