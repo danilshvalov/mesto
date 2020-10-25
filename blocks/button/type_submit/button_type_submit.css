@@ -1,9 +1,8 @@
-.edit-form__button {
+.button_type_submit {
   background-color: #000;
   color: #fff;
 
   border: 0;
-
   border-radius: 2px;
 
   min-height: 50px;
@@ -12,21 +11,11 @@
   font-size: 18px;
   line-height: 22px;
   text-align: center;
-
-  cursor: pointer;
-
-  transition: background 0.2s linear;
-
-  margin: 0;
-  padding: 0;
 }
 
-.edit-form__button:hover {
-  background: rgba(0, 0, 0, 0.8);
-}
 
 @media screen and (max-width: 470px) {
-  .edit-form__button {
+  .button_type_submit {
     min-height: 46px;
     font-size: 14px;
     line-height: 17px;

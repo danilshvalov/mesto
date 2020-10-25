@@ -3,7 +3,7 @@ function togglePopupState() {
 }
 
 function loadFormInfo() {
-    let submitButton = document.querySelector('.edit-form__button');
+    let submitButton = document.querySelector('.button_type_submit');
     submitButton.focus();
 
     let profileName = document.querySelector('.profile__name');
@@ -34,8 +34,8 @@ function formSubmitHandler(evt) {
     popup.classList.remove('popup_opened');
 }
 
-let editButton = document.querySelector('.profile__edit-button');
-let closeButton = document.querySelector('.popup__close-button');
+let editButton = document.querySelector('.button_type_edit');
+let closeButton = document.querySelector('.button_type_close');
 let editForm = document.querySelector('.edit-form');
 let popup = document.querySelector('.popup');
 
