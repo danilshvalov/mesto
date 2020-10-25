@@ -1,48 +1,37 @@
-function togglePopupState() {
+let profileName = document.querySelector('.profile__name');
+let profileJob = document.querySelector('.profile__about');
+
+let nameInput = document.querySelector('.popup__field_type_name');
+let jobInput = document.querySelector('.popup__field_type_job');
+
+let editButton = document.querySelector('.profile__button_type_edit');
+let closeButton = document.querySelector('.popup__button_type_close');
+
+let editForm = document.querySelector('.popup__container_edit-profile');
+
+let popup = document.querySelector('.popup');
+
+function toggleEditProfilePopup() {
+    if (!popup.classList.contains('popup_opened')) {
+        nameInput.value = profileName.textContent.trim();
+        jobInput.value = profileJob.textContent.trim();
+    }
+
     popup.classList.toggle('popup_opened');
-}
-
-function loadFormInfo() {
-    let submitButton = document.querySelector('.button_type_submit');
-    submitButton.focus();
-
-    let profileName = document.querySelector('.profile__name');
-    let profileAbout = document.querySelector('.profile__about');
-    
-    let nameInput = document.querySelector('.edit-form__item_el_name');
-    let jobInput = document.querySelector('.edit-form__item_el_about');
-    
-    nameInput.value = profileName.textContent.trim();
-    jobInput.value = profileAbout.textContent.trim();
 }
 
 function formSubmitHandler(evt) {
     evt.preventDefault();
-    let nameInput = document.querySelector('.edit-form__item_el_name');
-    let jobInput = document.querySelector('.edit-form__item_el_about');
 
     let name = nameInput.value;
     let job = jobInput.value;
 
-    let profileName = document.querySelector('.profile__name');
-    let profileAbout = document.querySelector('.profile__about');
-
     profileName.textContent = name;
-    profileAbout.textContent = job;
+    profileJob.textContent = job;
 
-    let popup = document.querySelector('.popup');
     popup.classList.remove('popup_opened');
 }
 
-let editButton = document.querySelector('.button_type_edit');
-let closeButton = document.querySelector('.button_type_close');
-let editForm = document.querySelector('.edit-form');
-let popup = document.querySelector('.popup');
-
-
-editButton.addEventListener('click', togglePopupState);
-editButton.addEventListener('click', loadFormInfo);
-
-closeButton.addEventListener('click', togglePopupState);
-
-editForm.addEventListener('submit', formSubmitHandler);
+editButton.addEventListener('click', toggleEditProfilePopup);
+closeButton.addEventListener('click', toggleEditProfilePopup);
+editForm.addEventListener('submit', formSubmitHandler); 

@@ -1,105 +1,101 @@
 <!DOCTYPE html>
-<html lang='ru'>
+<html lang="ru">
 
 <head>
-    <meta charset='UTF-8'>
-    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-    <link rel='stylesheet' href='pages/index.css'>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="pages/index.css">
     <title>Mesto</title>
 </head>
 
-<body class='page'>
-    <header class='header'>
-        <img class='header__logo' src='images/header-logo.svg' alt='Mesto Russia'>
+<body class="page">
+    <header class="header">
+        <img class="header__logo" src="images/header-logo.svg" alt="Места России">
     </header>
 
-    <main class='content'>
+    <main class="content">
 
-        <section class='profile'>
-            <img class='profile__avatar' src='images/avatar.jpg' alt='Аватар пользователя'>
-            <div class='profile__text'>
-                <div class='profile__name-container'>
-                    <h2 class='profile__name'>
+        <section class="profile">
+            <img class="profile__avatar" src="images/avatar.jpg" alt="Аватар пользователя">
+            <div class="profile__text">
+                <div class="profile__name-container">
+                    <h1 class="profile__name">
                         Жак-Ив Кусто
-                    </h2>
-                    <button class='button button_type_edit'></button>
+                    </h1>
+                    <button class="profile__button profile__button_type_edit" type="button"></button>
                 </div>
-                <p class='profile__about'>
+                <p class="profile__about">
                     Исследователь океана
                 </p>
             </div>
-            <button class='button button_type_add'></button>
+            <button class="profile__button profile__button_type_add" type="button"></button>
         </section>
 
-        <section class='elements'>
-            <div class='element'>
-                <img class='element__image' src='images/karachaevsk.jpg' alt='Карачаевск'>
-                <div class='element__sidebar'>
-                    <h3 class='element__title'>Карачаевск</h3>
-                    <button class='button button_type_like'></button>
+        <section class="elements">
+            <article class="element">
+                <img class="element__image" src="images/karachaevsk.jpg" alt="Карачаевск">
+                <div class="element__sidebar">
+                    <h3 class="element__title">Карачаевск</h3>
+                    <button class="element__button element__button_type_like" type="button"></button>
                 </div>
-            </div>
-            <div class='element'>
-                <img class='element__image' src='images/olkhon-island.jpg' alt='Остров Ольхон'>
-                <div class='element__sidebar'>
-                    <h3 class='element__title'>Остров Ольхон</h3>
-                    <button class='button button_type_like'></button>
+            </article>
+            <article class="element">
+                <img class="element__image" src="images/olkhon-island.jpg" alt="Остров Ольхон">
+                <div class="element__sidebar">
+                    <h3 class="element__title">Остров Ольхон</h3>
+                    <button class="element__button element__button_type_like" type="button"></button>
                 </div>
-            </div>
-            <div class='element'>
-                <img class='element__image' src='images/rosa-hutor.jpg' alt='Роза Хутор, Сочи'>
-                <div class='element__sidebar'>
-                    <h3 class='element__title'>Роза Хутор</h3>
-                    <button class='button button_type_like'></button>
+            </article>
+            <article class="element">
+                <img class="element__image" src="images/rosa-hutor.jpg" alt="Роза Хутор, Сочи">
+                <div class="element__sidebar">
+                    <h3 class="element__title">Роза Хутор</h3>
+                    <button class="element__button element__button_type_like" type="button"></button>
                 </div>
-            </div>
-            <div class='element'>
-                <img class='element__image' src='images/sudak.jpg' alt='Фотография видов с города Судак'>
-                <div class='element__sidebar'>
-                    <h3 class='element__title'>Судак</h3>
-                    <button class='button button_type_like'></button>
+            </article>
+            <article class="element">
+                <img class="element__image" src="images/sudak.jpg" alt="Фотография видов с города Судак">
+                <div class="element__sidebar">
+                    <h3 class="element__title">Судак</h3>
+                    <button class="element__button element__button_type_like" type="button"></button>
                 </div>
-            </div>
-            <div class='element'>
-                <img class='element__image' src='images/kamchatcka.jpg' alt='Фотография горы с п-ова Камчатка'>
-                <div class='element__sidebar'>
-                    <h3 class='element__title'>Камчатка</h3>
-                    <button class='button button_type_like'></button>
+            </article>
+            <article class="element">
+                <img class="element__image" src="images/kamchatcka.jpg" alt="Фотография горы с п-ова Камчатка">
+                <div class="element__sidebar">
+                    <h3 class="element__title">Камчатка</h3>
+                    <button class="element__button element__button_type_like" type="button"></button>
                 </div>
-            </div>
-            <div class='element'>
-                <img class='element__image' src='images/karelia.jpg' alt='Фотография советских автомобилей'>
-                <div class='element__sidebar'>
-                    <h3 class='element__title'>Карелия</h3>
-                    <button class='button button_type_like'></button>
+            </article>
+            <article class="element">
+                <img class="element__image" src="images/karelia.jpg" alt="Фотография советских автомобилей">
+                <div class="element__sidebar">
+                    <h3 class="element__title">Карелия</h3>
+                    <button class="element__button element__button_type_like" type="button"></button>
                 </div>
-            </div>
+            </article>
         </section>
-
     </main>
 
-    <footer class='footer'>
-        <p class='footer__copyright'>
+    <footer class="footer">
+        <p class="footer__copyright">
             © 2020 Mesto Russia
         </p>
     </footer>
 
-    <div class='popup'>
-        <div class='popup__container'>
-            <form class='edit-form'>
-                <h2 class='edit-form__heading'>Редактировать профиль</h2>
-                <div class='edit-form__input-container'>
-                    <input class='edit-form__item edit-form__item_el_name' type='text' id='name' value='Жак-Ив Кусто'>
-                    <input class='edit-form__item edit-form__item_el_about' type='text' id='about'
-                        value='Исследователь океана'>
-                </div>
-                <input class='button button_type_submit' type='submit' value='Сохранить'>
-            </form>
-            <button class='button button_type_close'></button>
-        </div>
+    <div class="popup">
+        <form class="popup__container popup__container_edit-profile" method="POST" action="/" name="edit-profile-form">
+            <button class="popup__button popup__button_type_close" type="button"></button>
+            <h2 class="popup__title">Редактировать профиль</h2>
+            <input class="popup__field popup__field_type_name" name="name-input" type="text" id="name" value=""
+                placeholder="Имя">
+            <input class="popup__field popup__field_type_job" name="job-input" type="text" id="about" value=""
+                placeholder="Деятельность">
+            <button class="popup__button popup__button_type_submit" type="submit" autofocus>Сохранить</button>
+        </form>
     </div>
 
-    <script src='scripts/script.js'></script>
+    <script src="scripts/script.js"></script>
 </body>
 
 </html>
