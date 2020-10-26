@@ -29,7 +29,7 @@ function formSubmitHandler(evt) {
     profileName.textContent = name;
     profileJob.textContent = job;
 
-    popup.classList.remove('popup_opened');
+    toggleEditProfilePopup();
 }
 
 editButton.addEventListener('click', toggleEditProfilePopup);
