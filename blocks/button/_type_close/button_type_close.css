@@ -1,5 +1,5 @@
-.button_type_close {
-  background-image: url(../../../images/add-button.svg);
+.popup__button_type_close {
+  background-image: url(../../../../images/add-button.svg);
   background-color: transparent;
   background-repeat: no-repeat;
   background-size: 40px 40px;
@@ -10,15 +10,15 @@
   transform: rotate(45deg);
 
   position: absolute;
-  right: -36px;
-  top: -36px;
+  right: -40px;
+  top: -40px;
 
   min-width: 40px;
   min-height: 40px;
 }
 
 @media screen and (max-width: 570px) {
-  .button_type_close {
+  .popup__button_type_close {
     right: 5px;
     top: -45px;
     min-width: 26px;
@@ -27,7 +27,7 @@
 }
 
 @media screen and (max-height: 420px) {
-  .button_type_close {
+  .popup__button_type_close {
     top: 10px;
     right: 5px;
     filter: invert(1);

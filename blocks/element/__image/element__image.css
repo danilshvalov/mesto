@@ -1,8 +1,11 @@
 .element__image {
-    max-height: 282px;
+  max-height: 282px;
 
-    object-fit: cover;
+  object-fit: cover;
 
-    margin: 0;
-    padding: 0;
+  cursor: pointer;
+
+
+  margin: 0;
+  padding: 0;
 }

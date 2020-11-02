@@ -1,4 +1,4 @@
-.edit-form__item {
+.popup__field {
   box-sizing: border-box;
   width: 100%;
 
@@ -13,10 +13,10 @@
   padding: 0 0 12px;
 }
 
-.edit-form__item:focus {
+.popup__field:focus {
   outline: none;
 }
 
-.edit-form__item:last-of-type {
-  margin-bottom: 0;
+.popup__field:last-of-type {
+  margin-bottom: 48px;
 }
