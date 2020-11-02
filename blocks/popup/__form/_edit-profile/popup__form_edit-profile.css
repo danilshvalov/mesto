@@ -1,5 +1,0 @@
-@media screen and (max-width: 470px) {
-  .popup__form_edit-profile {
-    grid-template-rows: [title] auto 75px [fields] auto 45px [button] auto;
-  }
-}

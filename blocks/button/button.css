@@ -1,13 +1,15 @@
-.popup__button {
+.button {
   cursor: pointer;
   outline: none;
   transition: opacity 0.2s ease-in;
+
+  border: 0;
 
   margin: 0;
   padding: 0;
 }
 
-.popup__button:hover {
+.button:hover {
   opacity: 0.6;
 }
 

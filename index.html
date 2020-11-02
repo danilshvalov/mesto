@@ -23,13 +23,13 @@
                     <h1 class="profile__name">
                         Жак-Ив Кусто
                     </h1>
-                    <button class="profile__button profile__button_type_edit" type="button"></button>
+                    <button class="button button_type_edit button_bordered profile__edit-button" type="button"></button>
                 </div>
                 <p class="profile__about">
                     Исследователь океана
                 </p>
             </div>
-            <button class="profile__button profile__button_type_add" type="button"></button>
+            <button class="button button_type_add button_bordered profile__add-button" type="button"></button>
         </section>
 
         <section class="elements">
@@ -44,52 +44,54 @@
 
     <template class="template-element">
         <article class="element">
-            <img class="element__image" src="images/sudak.jpg" alt="Фотография видов с города Судак">
+            <img class="element__image">
             <div class="element__sidebar">
-                <h3 class="element__title">Судак</h3>
-                <button class="element__like-button" type="button"></button>
-                <button class="element__delete-button" type="button"></button>
+                <h3 class="element__title"></h3>
+                <button class="button button_type_like element__like-button" type="button"></button>
+                <button class="button button_type_delete element__delete-button" type="button"></button>
             </div>
         </article>
     </template>
 
     <div class="popup popup_edit-profile">
-        <div class="popup__container popup__container_edit-profile">
-            <form class="popup__form popup__form_edit-profile" method="POST" action="/" name="edit-profile-form">
-                <button class="popup__button popup__button_type_close" type="button"></button>
+        <div class="popup__container">
+            <form class="form popup__edit-profile-form" method="POST" action="/" name="edit-profile-form">
                 <h2 class="popup__title">Редактировать профиль</h2>
-                <div class="popup__fields popup__fields_edit-profile">
-                    <input class="popup__field popup__field_type_name" name="name-input" type="text" id="name-input"
-                        value="" placeholder="Имя">
-                    <input class="popup__field popup__field_type_job" name="job-input" type="text" id="about-input"
-                        value="" placeholder="Деятельность">
+                <div class="fields popup__edit-profile-fields">
+                    <input class="field popup__name-field" name="name-input" type="text" id="name-input" value=""
+                        placeholder="Имя">
+                    <input class="field popup__job-field" name="job-input" type="text" id="about-input" value=""
+                        placeholder="Деятельность">
                 </div>
-                <button class="popup__button popup__button_type_submit" type="submit" autofocus>Сохранить</button>
+                <button class="button button_type_submit popup__submit-button" type="submit">Сохранить</button>
             </form>
+            <button class="button button_type_close popup__close-button" type="button"></button>
         </div>
     </div>
 
     <div class="popup popup_add-element">
-        <div class="popup__container popup__container_add-element">
-            <form class="popup__form popup__form_add-element" method="POST" action="/" name="add-element-form">
-                <button class="popup__button popup__button_type_close" type="button"></button>
+        <div class="popup__container">
+            <form class="form popup__add-element-form" method="POST" action="/" name="add-element-form">
                 <h2 class="popup__title">Новое место</h2>
-                <div class="popup__fields popup__fields_add-element">
-                    <input class="popup__field popup__field_type_title" name="title-input" type="text" id="title-input"
-                        value="" placeholder="Название">
-                    <input class="popup__field popup__field_type_image-link" name="image-link-input" type="text"
+                <div class="fields popup__add-element-fields">
+                    <input class="field popup__title-field" name="title-input" type="text" id="title-input" value=""
+                        placeholder="Название">
+                    <input class="field popup__image-link-field" name="image-link-input" type="text"
                         id="image-link-input" value="" placeholder="Ссылка на картинку">
                 </div>
-                <button class="popup__button popup__button_type_submit" type="submit" autofocus>Создать</button>
+                <button class="button button_type_submit popup__submit-button" type="submit">Создать</button>
             </form>
+            <button class="button button_type_close popup__close-button" type="button"></button>
         </div>
     </div>
 
     <div class="popup popup_image-block">
-        <div class="popup__container popup__container_image">
-            <button class="popup__button popup__button_type_close" type="button"></button>
-            <img class="popup__image" src="images/loading.svg" alt="Загрузка">
-            <p class="popup__image-description">Загрузка</p>
+        <div class="popup__container">
+            <button class="button button_type_close popup__close-button" type="button"></button>
+            <div class="popup__image-container">
+                <img class="popup__image" src="images/loading.svg" alt="Загрузка">
+                <p class="popup__image-description">Загрузка</p>
+            </div>
         </div>
     </div>
 
