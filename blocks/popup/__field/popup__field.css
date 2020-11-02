@@ -6,17 +6,16 @@
   border-bottom: 1px solid #000;
 
   font-weight: normal;
-  font-size: 14px;
-  line-height: 17px;
 
-  margin: 0 0 26px;
-  padding: 0 0 12px;
+  margin: 0;
+  padding: 0 0 10px;
 }
 
 .popup__field:focus {
   outline: none;
 }
 
-.popup__field:last-of-type {
-  margin-bottom: 48px;
+.popup__field::placeholder {
+  color: #C4C4C4;
 }
+

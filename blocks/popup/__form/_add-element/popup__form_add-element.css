@@ -1,0 +1,6 @@
+@media screen and (max-width: 470px) {
+  .popup__form_add-element {
+    grid-template-rows: [title] auto 36px [fields] auto 36px [button] auto;
+    padding: 30px 20px;
+  }
+}

@@ -1,0 +1,14 @@
+.popup__fields {
+    display: grid;
+    grid-row: fields;
+
+    gap: 30px;
+
+    font-size: 14px;
+    line-height: 17px;
+
+    
+
+    margin: 0;
+    padding: 0;
+}

@@ -59,7 +59,7 @@ const imagePopupInfo = {
 };
 
 
-// Popup logic
+// Popup-логика
 function closePopup(popup) {
     popup.classList.remove("popup_opened");
 }
@@ -69,7 +69,7 @@ function openPopup(popup) {
 }
 
 
-// Form logic
+// Form-логика
 function fillEditForm() {
     editPopupInfo.nameInput.value = profile.name.textContent.trim();
     editPopupInfo.jobInput.value = profile.job.textContent.trim();
@@ -78,8 +78,6 @@ function fillEditForm() {
 
 function editFormSubmitHandler(evt) {
     evt.preventDefault();
-    let nameInput = document.querySelector('.edit-form__item_el_name');
-    let jobInput = document.querySelector('.edit-form__item_el_about');
 
     profile.name.textContent = editPopupInfo.nameInput.value;
     profile.job.textContent = editPopupInfo.jobInput.value;
@@ -122,14 +120,14 @@ document.addEventListener("keydown", (evt) => {
     if (evt.code === "Escape" && imagePopupInfo.popup.classList.contains("popup_opened")) {
         closePopup(imagePopupInfo.popup);
     }
-})
+});
 
 
 // Add new element
 const templateElement = document.querySelector(".template-element").content.querySelector(".element");
 const elementsSection = document.querySelector(".elements");
 
-function createNewElement({name, link}) {
+function createNewElement({ name, link }) {
     const newElement = templateElement.cloneNode(true);
 
     const title = newElement.querySelector(".element__title");
@@ -150,8 +148,8 @@ function createNewElement({name, link}) {
     });
 
     image.addEventListener("click", (event) => {
-        const {image, description} = imagePopupInfo;
-        const {src, alt} = event.target;
+        const { image, description } = imagePopupInfo;
+        const { src, alt } = event.target;
 
         image.src = src;
         image.alt = alt;

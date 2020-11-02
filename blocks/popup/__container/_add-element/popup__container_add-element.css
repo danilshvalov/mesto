@@ -1,0 +1,5 @@
+.popup__container_add-element {
+  max-width: 430px;
+  width: calc(100% - 80px);
+}
+

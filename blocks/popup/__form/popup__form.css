@@ -1,8 +1,7 @@
 .popup__form {
-  display: flex;
-  flex-direction: column;
+  display: grid;
 
-  max-width: 430px;
+  grid-template-rows: [title] auto 48px [fields] auto 48px [button] auto;
 
   width: 100%;
 
@@ -20,6 +19,5 @@
 @media screen and (max-width: 470px) {
   .popup__form {
     padding: 25px 22px;
-    width: calc(100% - 40px);
   }
 }

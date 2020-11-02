@@ -1,0 +1,4 @@
+.popup__container_edit-profile {
+    max-width: 430px;
+    width: calc(100% - 40px);
+}
