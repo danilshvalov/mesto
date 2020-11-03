@@ -5,13 +5,15 @@
   background-position: center;
   background-color: transparent;
 
-  width: 24px;
-  height: 24px;
+  border: 1px solid #fff;
+
+  min-width: 24px;
+  min-height: 24px;
 }
 
 @media screen and (max-width: 720px) {
     .button_type_edit {
-        width: 18px;
-        height: 18px;
+        min-width: 18px;
+        min-height: 18px;
     }
 }

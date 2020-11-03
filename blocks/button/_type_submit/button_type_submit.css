@@ -9,14 +9,14 @@
   line-height: 22px;
   text-align: center;
 
-  padding: 12px 0;
+  padding: 14px 0;
 }
 
 .popup__submit-button:hover {
   opacity: 0.8;
 }
 
-@media screen and (max-width: 470px) {
+@media screen and (max-width: 500px) {
   .button_type_submit {
     font-size: 14px;
     line-height: 17px;

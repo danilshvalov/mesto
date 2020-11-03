@@ -1,6 +1,10 @@
 .fields {
     display: grid;
 
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 17px;
+
     gap: 30px;
 
     margin: 0;

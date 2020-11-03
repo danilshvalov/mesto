@@ -58,3 +58,5 @@
 @import url(../blocks/popup/_image-block/popup_image-block.css);
 @import url(../blocks/popup/__image-description/popup__image-description.css);
 @import url(../blocks/popup/__image-container/popup__image-container.css);
+@import url(../blocks/popup/__edit-profile-fields/popup__edit-profile-fields.css);
+@import url(../blocks/popup/__add-element-fields/popup__add-element-fields.css);

@@ -1,26 +1,26 @@
 const initialCards = [
     {
-        name: "Карелия",
+        title: "Карелия",
         link: "https://source.unsplash.com/pf07Opq5Zx4"
     },
     {
-        name: "Камчатка",
+        title: "Камчатка",
         link: "https://source.unsplash.com/Jjs9INF8U8M"
     },
     {
-        name: "Судак",
+        title: "Судак",
         link: "https://source.unsplash.com/xwL6wxkzBvk"
     },
     {
-        name: "Роза Хутор",
+        title: "Роза Хутор",
         link: "https://source.unsplash.com/P7Ij0GY36sA"
     },
     {
-        name: "Остров Ольхон",
+        title: "Остров Ольхон",
         link: "https://source.unsplash.com/y-b_FOmJXdg"
     },
     {
-        name: "Карачаевск",
+        title: "Карачаевск",
         link: "https://source.unsplash.com/vrPqM2OB9nA"
     }
 ];
@@ -29,7 +29,14 @@ const profile = {
     name: document.querySelector(".profile__name"),
     job: document.querySelector(".profile__about"),
     addButton: document.querySelector(".profile__add-button"),
-    editButton: document.querySelector(".profile__edit-button")
+    editButton: document.querySelector(".profile__edit-button"),
+    update({ name, job }) {
+        profile.name.textContent = name;
+        profile.job.textContent = job;
+    },
+    getFieldsValues() {
+        return { name: this.name.textContent.trim(), job: this.job.textContent.trim() };
+    }
 };
 
 const addElement = {
@@ -37,7 +44,17 @@ const addElement = {
     form: document.querySelector(".popup__add-element-form"),
     closeButton: document.querySelector(".popup_add-element .popup__close-button"),
     titleInput: document.querySelector(".popup__title-field"),
-    imageLinkInput: document.querySelector(".popup__image-link-field")
+    imageLinkInput: document.querySelector(".popup__image-link-field"),
+    open() {
+        openPopup(this.popup);
+    },
+    close() {
+        closePopup(this.popup);
+        this.form.reset();
+    },
+    getFieldsValues() {
+        return { title: this.titleInput.value, link: this.imageLinkInput.value };
+    }
 };
 
 const editProfile = {
@@ -45,14 +62,33 @@ const editProfile = {
     form: document.querySelector(".popup__edit-profile-form"),
     closeButton: document.querySelector(".popup_edit-profile .popup__close-button"),
     nameInput: document.querySelector(".popup__name-field"),
-    jobInput: document.querySelector(".popup__job-field")
+    jobInput: document.querySelector(".popup__job-field"),
+    open() {
+        openPopup(this.popup);
+    },
+    close() {
+        closePopup(this.popup);
+    },
+    fill({ name, job }) {
+        this.nameInput.value = name;
+        this.jobInput.value = job;
+    },
+    getFieldsValues() {
+        return {name: this.nameInput.value, job: this.jobInput.value};
+    }
 };
 
 const imagePopup = {
     popup: document.querySelector(".popup_image-block"),
     image: document.querySelector(".popup__image"),
     description: document.querySelector(".popup__image-description"),
-    closeButton: document.querySelector(".popup_image-block .popup__close-button")
+    closeButton: document.querySelector(".popup_image-block .popup__close-button"),
+    open() {
+        openPopup(this.popup);
+    },
+    close() {
+        closePopup(this.popup);
+    }
 };
 
 
@@ -66,54 +102,48 @@ function openPopup(popup) {
 }
 
 // Form-логика
-function fillEditForm() {
-    editProfile.nameInput.value = profile.name.textContent.trim();
-    editProfile.jobInput.value = profile.job.textContent.trim();
-}
 
 function editFormSubmitHandler(evt) {
     evt.preventDefault();
 
-    profile.name.textContent = editProfile.nameInput.value;
-    profile.job.textContent = editProfile.jobInput.value;
-
-    closePopup(editProfile.popup);
+    profile.update(editProfile.getFieldsValues());
+    editProfile.close();
 }
 
 function addFormSubmitHandler(evt) {
     evt.preventDefault();
 
-    renderNewElement({
-        name: addElement.titleInput.value,
-        link: addElement.imageLinkInput.value
-    });
+    const { title, link } = addElement.getFieldsValues();
+    if (title && link) {
+        renderNewElement({ title, link });
+    }
 
-    closePopup(addElement.popup);
-    addElement.form.reset();
+    addElement.close();
 }
 
 // Listeners
 profile.editButton.addEventListener("click", () => {
-    fillEditForm();
-    openPopup(editProfile.popup);
+    editProfile.fill(profile.getFieldsValues());
+    editProfile.open();
 });
-profile.addButton.addEventListener("click", () => openPopup(addElement.popup));
+profile.addButton.addEventListener("click", () => addElement.open());
 
 editProfile.form.addEventListener("submit", editFormSubmitHandler);
-editProfile.closeButton.addEventListener("click", () => closePopup(editProfile.popup));
+editProfile.closeButton.addEventListener("click", () => editProfile.close());
 
 addElement.form.addEventListener("submit", addFormSubmitHandler);
-addElement.closeButton.addEventListener("click", () => closePopup(addElement.popup));
+addElement.closeButton.addEventListener("click", () => addElement.close());
 
-imagePopup.closeButton.addEventListener("click", () => closePopup(imagePopup.popup));
+imagePopup.closeButton.addEventListener("click", () => imagePopup.close());
 imagePopup.popup.addEventListener("click", (evt) => {
     if (evt.target == imagePopup.popup) {
-        closePopup(imagePopup.popup);
+        imagePopup.close();
     }
 });
 document.addEventListener("keydown", (evt) => {
-    if (evt.code === "Escape" && imagePopup.popup.classList.contains("popup_opened")) {
-        closePopup(imagePopup.popup);
+    const popup = document.querySelector(".popup_opened");
+    if (evt.code === "Escape" && popup) {
+        closePopup(popup);
     }
 });
 
@@ -121,7 +151,7 @@ document.addEventListener("keydown", (evt) => {
 const templateElement = document.querySelector(".template-element").content.querySelector(".element");
 const elementsSection = document.querySelector(".elements");
 
-function createNewElement({ name, link }) {
+function createNewElement({ title: text, link }) {
     const newElement = templateElement.cloneNode(true);
 
     const title = newElement.querySelector(".element__title");
@@ -129,9 +159,9 @@ function createNewElement({ name, link }) {
     const likeButton = newElement.querySelector(".element__like-button");
     const deleteButton = newElement.querySelector(".element__delete-button");
 
-    title.textContent = name;
+    title.textContent = text;
     image.src = link;
-    image.alt = name;
+    image.alt = text;
 
     likeButton.addEventListener("click", (event) => {
         event.target.classList.toggle("button_like-active");
@@ -149,7 +179,7 @@ function createNewElement({ name, link }) {
         image.alt = alt;
         description.textContent = alt;
 
-        openPopup(imagePopup.popup);
+        imagePopup.open();
     });
 
     return newElement;
