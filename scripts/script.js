@@ -109,7 +109,7 @@ const addElement = {
 
         const { title, link } = this.getFieldsValues();
         if (title && link) {
-            new Element(this.template).configure({title, link}, imagePopup).render(parent);
+            new Element(this.template).configure({title, link}, imagePopup).render(this.parent);
         }
 
         this.close();
@@ -168,7 +168,7 @@ profile.addButton.addEventListener("click", () => addElement.open());
 editProfile.form.addEventListener("submit", (evt) => editProfile.formSubmitHandler(evt, profile));
 editProfile.closeButton.addEventListener("click", () => editProfile.close());
 
-addElement.form.addEventListener("submit", (evt) => addElement.formSubmitHandler(evt, template, elementsSection, imagePopup));
+addElement.form.addEventListener("submit", (evt) => addElement.formSubmitHandler(evt, imagePopup));
 addElement.closeButton.addEventListener("click", () => addElement.close());
 
 imagePopup.closeButton.addEventListener("click", () => imagePopup.close());
@@ -187,5 +187,5 @@ document.addEventListener("keydown", (evt) => {
 
 // Инициализация карточек
 initialCards.forEach((data) => {
-    new Element(template).configure(data, imagePopup).render(elementsSection);
+    new Element(addElement.template).configure(data, imagePopup).render(addElement.parent);
 });
