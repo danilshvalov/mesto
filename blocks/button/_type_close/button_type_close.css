@@ -1,0 +1,19 @@
+.button_type_close {
+  background-image: url(../../../images/add-button.svg);
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-size: 40px 40px;
+  background-position: center;
+
+  transform: rotate(45deg);
+
+  min-width: 40px;
+  min-height: 40px;
+}
+
+@media screen and (max-width: 500px) {
+  .button_type_close {
+    min-width: 30px;
+    min-height: 30px;
+  }
+}

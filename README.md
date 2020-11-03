@@ -1,4 +1,4 @@
-# Проект 4: Место
+# Проект 5: Место
 
 **Что это?**
 
@@ -14,7 +14,7 @@
 * Вёрстка по макету в [Figma](https://www.figma.com/file/OyRWEjU6wBwRe1hapzQoLx/Sprint-3%3A-Russia-%2F-desktop-%2B-mobile?node-id=28503%3A0)
 * Grid Layout
 * Flex-контейнеры
-* Пвсевдоклассы
+* Псевдоклассы
 * Методология БЭМ
 * Адаптивные шрифты
 * Отзывчивые контейнеры
