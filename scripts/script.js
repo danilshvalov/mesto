@@ -1,10 +1,13 @@
+const notFound = "images/not-found.svg";
+
+// Конструкторы
 function Form(selector) {
     this.body = document.querySelector(selector);
     this.setSubmitHandler = function (handler) {
         this.body.addEventListener("submit", handler);
     };
-    this.setProperties = function({name, job}) {
-        const {nameInput, jobInput} = this.body;
+    this.setProperties = function ({ name, job }) {
+        const { nameInput, jobInput } = this.body;
         nameInput.value = name;
         jobInput.value = job;
     };
@@ -33,7 +36,7 @@ function Element(template) {
         return this;
     };
 
-    this.setProperties = function ({ title, link }) {
+    this.setProperties = function ({ title = "Not found", link = notFound }) {
         this.image.src = link;
         this.image.alt = title;
         this.title.textContent = title;
@@ -46,20 +49,23 @@ function Element(template) {
     };
 }
 
-function createElement(data, template, parent) {
+function createElement(data, template, parent, imagePopup) {
     const element = new Element(template);
     element.setProperties(data)
-        .setListener("likeButton", "click", (event) => {
-            event.target.classList.toggle("button_like-active");
-        }).setListener("deleteButton", "click", (event) => {
-            event.target.closest(".element").remove();
+        .setListener("likeButton", "click", (evt) => {
+            evt.target.classList.toggle("button_like-active");
+        }).setListener("deleteButton", "click", (evt) => {
+            evt.target.closest(".element").remove();
         }).setListener("image", "click", () => {
-            image.open({ title: element.title.textContent, link: element.image.src });
-        }).setListener("image", "error", function() {
-            this.src = "images/not-found.svg";
+            imagePopup.open({ title: element.title.textContent, link: element.image.src });
+        }).setListener("image", "error", function () {
+            this.src = notFound;
         }).render(parent);
+    return element;
 }
 
+
+// Переменные
 const initialCards = [
     {
         title: "Карелия",
@@ -105,7 +111,7 @@ const userInfo = {
     }
 };
 
-const edit = {
+const editPopup = {
     popup: new Popup(".popup_edit-profile"),
     form: new Form(".popup__edit-profile-form"),
     user: userInfo,
@@ -118,7 +124,7 @@ const edit = {
     }
 };
 
-const add = {
+const addPopup = {
     popup: new Popup(".popup_add-element"),
     form: new Form(".popup__add-element-form"),
     open() {
@@ -130,7 +136,7 @@ const add = {
     }
 };
 
-const image = {
+const imagePopup = {
     popup: new Popup(".popup_image-block"),
     image: document.querySelector(".popup__image"),
     description: document.querySelector(".popup__image-description"),
@@ -142,25 +148,25 @@ const image = {
     }
 };
 
-edit.form.setSubmitHandler(function (evt) {
+// Listeners
+editPopup.form.setSubmitHandler(function (evt) {
     evt.preventDefault();
 
-    const { nameInput, jobInput } = edit.form.body;
-    edit.user.setUserInfo({ name: nameInput.value, job: jobInput.value });
-    edit.close();
+    const { nameInput, jobInput } = editPopup.form.body;
+    editPopup.user.setUserInfo({ name: nameInput.value, job: jobInput.value });
+    editPopup.close();
 });
 
-add.form.setSubmitHandler(function (evt) {
+addPopup.form.setSubmitHandler(function (evt) {
     evt.preventDefault();
 
-    const {titleInput, linkInput} = add.form.body;
-    createElement({title: titleInput.value, link: linkInput.value}, templateElement, elements);
-    add.close();
+    const { titleInput, linkInput } = addPopup.form.body;
+    createElement({ title: titleInput.value, link: linkInput.value }, templateElement, elements, imagePopup);
+    addPopup.close();
 });
 
-
-editButton.addEventListener("click", () => edit.open());
-addButton.addEventListener("click", () => add.open());
+editButton.addEventListener("click", () => editPopup.open());
+addButton.addEventListener("click", () => addPopup.open());
 
 document.addEventListener("keydown", (evt) => {
     const openedPopup = document.querySelector(".popup_opened");
@@ -170,8 +176,9 @@ document.addEventListener("keydown", (evt) => {
 });
 
 
+// Инициализация карточке
 initialCards.forEach((data) => {
-    createElement(data, templateElement, elements);
+    createElement(data, templateElement, elements, imagePopup);
 });
 
 
