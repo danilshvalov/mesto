@@ -53,8 +53,10 @@ function createElement(data, template, parent) {
             event.target.classList.toggle("button_like-active");
         }).setListener("deleteButton", "click", (event) => {
             event.target.closest(".element").remove();
-        }).setListener("image", "click", (event) => {
+        }).setListener("image", "click", () => {
             image.open({ title: element.title.textContent, link: element.image.src });
+        }).setListener("image", "error", function() {
+            this.src = "images/not-found.svg";
         }).render(parent);
 }
 
@@ -160,10 +162,16 @@ add.form.setSubmitHandler(function (evt) {
 editButton.addEventListener("click", () => edit.open());
 addButton.addEventListener("click", () => add.open());
 
+document.addEventListener("keydown", (evt) => {
+    const openedPopup = document.querySelector(".popup_opened");
+    if (evt.code == "Escape" && openedPopup) {
+        openedPopup.classList.remove("popup_opened");
+    }
+});
+
 
 initialCards.forEach((data) => {
     createElement(data, templateElement, elements);
 });
-
 
 
