@@ -16,10 +16,17 @@ function Form(selector) {
 function Popup(selector) {
     this.popup = document.querySelector(selector);
     this.popup.querySelector(".popup__close-button").addEventListener("click", () => this.close());
+    this.escape = (evt) => {
+        if (evt.code == "Escape") {
+            this.close();
+        }
+    };
     this.open = function () {
+        document.addEventListener("keydown", this.escape);
         this.popup.classList.add("popup_opened");
     };
     this.close = function () {
+        document.removeEventListener("keydown" , this.escape);
         this.popup.classList.remove("popup_opened");
     };
 }
@@ -167,14 +174,6 @@ addPopup.form.setSubmitHandler(function (evt) {
 
 editButton.addEventListener("click", () => editPopup.open());
 addButton.addEventListener("click", () => addPopup.open());
-
-document.addEventListener("keydown", (evt) => {
-    const openedPopup = document.querySelector(".popup_opened");
-    if (evt.code == "Escape" && openedPopup) {
-        openedPopup.classList.remove("popup_opened");
-    }
-});
-
 
 // Инициализация карточке
 initialCards.forEach((data) => {
