@@ -8,18 +8,22 @@ function openPopup(popup) {
 }
 
 // Добавление нового элемента
-function createNewElement({ title: text, link }, imagePopup) {
-    const newElement = templateElement.cloneNode(true);
+function createNewElement(template) {
+    const element = template.cloneNode(true);
+    const title = element.querySelector(".element__title");
+    const image = element.querySelector(".element__image");
+    const likeButton = element.querySelector(".element__like-button");
+    const deleteButton = element.querySelector(".element__delete-button");
 
-    const title = newElement.querySelector(".element__title");
-    const image = newElement.querySelector(".element__image");
-    const likeButton = newElement.querySelector(".element__like-button");
-    const deleteButton = newElement.querySelector(".element__delete-button");
+    return {element, title, image, likeButton, deleteButton};
+}
+
+function configureElement(element, { title: text, link }, imagePopup) {
+    const {title, image, likeButton, deleteButton} = element;
 
     title.textContent = text;
     image.src = link;
     image.alt = text;
-
     likeButton.addEventListener("click", (event) => {
         event.target.classList.toggle("button_like-active");
     });
@@ -30,16 +34,15 @@ function createNewElement({ title: text, link }, imagePopup) {
 
     image.addEventListener("click", (event) => {
         const { src: link, alt: title } = event.target;
-
-        imagePopup.fill({title, link});
+        imagePopup.fill({ title, link });
         imagePopup.open();
     });
 
-    return newElement;
+    return element;
 }
 
-function renderNewElement(data, parent) {
-    parent.prepend(createNewElement(data, imagePopup));
+function renderElement({element}, parent) {
+    parent.prepend(element);
 }
 
 
@@ -71,7 +74,7 @@ const initialCards = [
     }
 ];
 
-const templateElement = document.querySelector(".template-element").content.querySelector(".element");
+const template = document.querySelector(".template-element").content.querySelector(".element");
 const elementsSection = document.querySelector(".elements");
 
 const profile = {
@@ -104,12 +107,12 @@ const addElement = {
     getFieldsValues() {
         return { title: this.titleInput.value, link: this.imageLinkInput.value };
     },
-    formSubmitHandler(evt) {
+    formSubmitHandler(evt, template, parent, imagePopup) {
         evt.preventDefault();
 
         const { title, link } = this.getFieldsValues();
         if (title && link) {
-            renderNewElement({ title, link }, elementsSection);
+            renderElement(configureElement(createNewElement(template), {title, link}, imagePopup), parent);
         }
 
         this.close();
@@ -168,7 +171,7 @@ profile.addButton.addEventListener("click", () => addElement.open());
 editProfile.form.addEventListener("submit", (evt) => editProfile.formSubmitHandler(evt, profile));
 editProfile.closeButton.addEventListener("click", () => editProfile.close());
 
-addElement.form.addEventListener("submit", (evt) => addElement.formSubmitHandler(evt));
+addElement.form.addEventListener("submit", (evt) => addElement.formSubmitHandler(evt, template, elementsSection, imagePopup));
 addElement.closeButton.addEventListener("click", () => addElement.close());
 
 imagePopup.closeButton.addEventListener("click", () => imagePopup.close());
@@ -187,5 +190,5 @@ document.addEventListener("keydown", (evt) => {
 
 // Инициализация карточек
 initialCards.forEach((data) => {
-    renderNewElement(data, elementsSection);
+    renderElement(configureElement(createNewElement(template), data, imagePopup), elementsSection);
 });
