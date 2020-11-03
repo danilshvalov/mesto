@@ -8,43 +8,40 @@ function openPopup(popup) {
 }
 
 // Добавление нового элемента
-function createNewElement(template) {
-    const element = template.cloneNode(true);
-    const title = element.querySelector(".element__title");
-    const image = element.querySelector(".element__image");
-    const likeButton = element.querySelector(".element__like-button");
-    const deleteButton = element.querySelector(".element__delete-button");
 
-    return {element, title, image, likeButton, deleteButton};
+function Element(template) {
+    this.element = template.cloneNode(true);
+    this.title = this.element.querySelector(".element__title");
+    this.image = this.element.querySelector(".element__image");
+    this.likeButton = this.element.querySelector(".element__like-button");
+    this.deleteButton = this.element.querySelector(".element__delete-button");
+
+    this.configure = function ({ title: text, link }, imagePopup) {
+        this.title.textContent = text;
+        this.image.src = link;
+        this.image.alt = text;
+        this.likeButton.addEventListener("click", (event) => {
+            event.target.classList.toggle("button_like-active");
+        });
+
+        this.deleteButton.addEventListener("click", (event) => {
+            event.target.closest(".element").remove();
+        });
+
+        this.image.addEventListener("click", (event) => {
+            const { src: link, alt: title } = event.target;
+            imagePopup.fill({ title, link });
+            imagePopup.open();
+        });
+
+        return this;
+    };
+
+    this.render = function(parent) {
+        parent.prepend(this.element);
+        return this;
+    };
 }
-
-function configureElement(element, { title: text, link }, imagePopup) {
-    const {title, image, likeButton, deleteButton} = element;
-
-    title.textContent = text;
-    image.src = link;
-    image.alt = text;
-    likeButton.addEventListener("click", (event) => {
-        event.target.classList.toggle("button_like-active");
-    });
-
-    deleteButton.addEventListener("click", (event) => {
-        event.target.closest(".element").remove();
-    });
-
-    image.addEventListener("click", (event) => {
-        const { src: link, alt: title } = event.target;
-        imagePopup.fill({ title, link });
-        imagePopup.open();
-    });
-
-    return element;
-}
-
-function renderElement({element}, parent) {
-    parent.prepend(element);
-}
-
 
 // Перемененные
 const initialCards = [
@@ -74,8 +71,6 @@ const initialCards = [
     }
 ];
 
-const template = document.querySelector(".template-element").content.querySelector(".element");
-const elementsSection = document.querySelector(".elements");
 
 const profile = {
     name: document.querySelector(".profile__name"),
@@ -97,6 +92,8 @@ const addElement = {
     closeButton: document.querySelector(".popup_add-element .popup__close-button"),
     titleInput: document.querySelector(".popup__title-field"),
     imageLinkInput: document.querySelector(".popup__image-link-field"),
+    template: document.querySelector(".template-element").content.querySelector(".element"),
+    parent: document.querySelector(".elements"),
     open() {
         openPopup(this.popup);
     },
@@ -107,12 +104,12 @@ const addElement = {
     getFieldsValues() {
         return { title: this.titleInput.value, link: this.imageLinkInput.value };
     },
-    formSubmitHandler(evt, template, parent, imagePopup) {
+    formSubmitHandler(evt, imagePopup) {
         evt.preventDefault();
 
         const { title, link } = this.getFieldsValues();
         if (title && link) {
-            renderElement(configureElement(createNewElement(template), {title, link}, imagePopup), parent);
+            new Element(this.template).configure({title, link}, imagePopup).render(parent);
         }
 
         this.close();
@@ -190,5 +187,5 @@ document.addEventListener("keydown", (evt) => {
 
 // Инициализация карточек
 initialCards.forEach((data) => {
-    renderElement(configureElement(createNewElement(template), data, imagePopup), elementsSection);
+    new Element(template).configure(data, imagePopup).render(elementsSection);
 });
