@@ -1,3 +1,49 @@
+// Popup-логика
+function closePopup(popup) {
+    popup.classList.remove("popup_opened");
+}
+
+function openPopup(popup) {
+    popup.classList.add("popup_opened");
+}
+
+// Добавление нового элемента
+function createNewElement({ title: text, link }, imagePopup) {
+    const newElement = templateElement.cloneNode(true);
+
+    const title = newElement.querySelector(".element__title");
+    const image = newElement.querySelector(".element__image");
+    const likeButton = newElement.querySelector(".element__like-button");
+    const deleteButton = newElement.querySelector(".element__delete-button");
+
+    title.textContent = text;
+    image.src = link;
+    image.alt = text;
+
+    likeButton.addEventListener("click", (event) => {
+        event.target.classList.toggle("button_like-active");
+    });
+
+    deleteButton.addEventListener("click", (event) => {
+        event.target.closest(".element").remove();
+    });
+
+    image.addEventListener("click", (event) => {
+        const { src: link, alt: title } = event.target;
+
+        imagePopup.fill({title, link});
+        imagePopup.open();
+    });
+
+    return newElement;
+}
+
+function renderNewElement(data, parent) {
+    parent.prepend(createNewElement(data, imagePopup));
+}
+
+
+// Перемененные
 const initialCards = [
     {
         title: "Карелия",
@@ -24,6 +70,9 @@ const initialCards = [
         link: "https://source.unsplash.com/vrPqM2OB9nA"
     }
 ];
+
+const templateElement = document.querySelector(".template-element").content.querySelector(".element");
+const elementsSection = document.querySelector(".elements");
 
 const profile = {
     name: document.querySelector(".profile__name"),
@@ -54,6 +103,16 @@ const addElement = {
     },
     getFieldsValues() {
         return { title: this.titleInput.value, link: this.imageLinkInput.value };
+    },
+    formSubmitHandler(evt) {
+        evt.preventDefault();
+
+        const { title, link } = this.getFieldsValues();
+        if (title && link) {
+            renderNewElement({ title, link }, elementsSection);
+        }
+
+        this.close();
     }
 };
 
@@ -64,6 +123,7 @@ const editProfile = {
     nameInput: document.querySelector(".popup__name-field"),
     jobInput: document.querySelector(".popup__job-field"),
     open() {
+        this.fill(profile.getFieldsValues());
         openPopup(this.popup);
     },
     close() {
@@ -74,7 +134,12 @@ const editProfile = {
         this.jobInput.value = job;
     },
     getFieldsValues() {
-        return {name: this.nameInput.value, job: this.jobInput.value};
+        return { name: this.nameInput.value, job: this.jobInput.value };
+    },
+    formSubmitHandler(evt, profile) {
+        evt.preventDefault();
+        profile.update(editProfile.getFieldsValues());
+        this.close();
     }
 };
 
@@ -88,50 +153,22 @@ const imagePopup = {
     },
     close() {
         closePopup(this.popup);
+    },
+    fill({ title, link }) {
+        this.image.src = link;
+        this.image.alt = title;
+        this.description.textContent = title;
     }
 };
 
-
-// Popup-логика
-function closePopup(popup) {
-    popup.classList.remove("popup_opened");
-}
-
-function openPopup(popup) {
-    popup.classList.add("popup_opened");
-}
-
-// Form-логика
-
-function editFormSubmitHandler(evt) {
-    evt.preventDefault();
-
-    profile.update(editProfile.getFieldsValues());
-    editProfile.close();
-}
-
-function addFormSubmitHandler(evt) {
-    evt.preventDefault();
-
-    const { title, link } = addElement.getFieldsValues();
-    if (title && link) {
-        renderNewElement({ title, link });
-    }
-
-    addElement.close();
-}
-
 // Listeners
-profile.editButton.addEventListener("click", () => {
-    editProfile.fill(profile.getFieldsValues());
-    editProfile.open();
-});
+profile.editButton.addEventListener("click", () => editProfile.open());
 profile.addButton.addEventListener("click", () => addElement.open());
 
-editProfile.form.addEventListener("submit", editFormSubmitHandler);
+editProfile.form.addEventListener("submit", (evt) => editProfile.formSubmitHandler(evt, profile));
 editProfile.closeButton.addEventListener("click", () => editProfile.close());
 
-addElement.form.addEventListener("submit", addFormSubmitHandler);
+addElement.form.addEventListener("submit", (evt) => addElement.formSubmitHandler(evt));
 addElement.closeButton.addEventListener("click", () => addElement.close());
 
 imagePopup.closeButton.addEventListener("click", () => imagePopup.close());
@@ -140,6 +177,7 @@ imagePopup.popup.addEventListener("click", (evt) => {
         imagePopup.close();
     }
 });
+
 document.addEventListener("keydown", (evt) => {
     const popup = document.querySelector(".popup_opened");
     if (evt.code === "Escape" && popup) {
@@ -147,51 +185,7 @@ document.addEventListener("keydown", (evt) => {
     }
 });
 
-// Добавление нового элемента
-const templateElement = document.querySelector(".template-element").content.querySelector(".element");
-const elementsSection = document.querySelector(".elements");
-
-function createNewElement({ title: text, link }) {
-    const newElement = templateElement.cloneNode(true);
-
-    const title = newElement.querySelector(".element__title");
-    const image = newElement.querySelector(".element__image");
-    const likeButton = newElement.querySelector(".element__like-button");
-    const deleteButton = newElement.querySelector(".element__delete-button");
-
-    title.textContent = text;
-    image.src = link;
-    image.alt = text;
-
-    likeButton.addEventListener("click", (event) => {
-        event.target.classList.toggle("button_like-active");
-    });
-
-    deleteButton.addEventListener("click", (event) => {
-        event.target.closest(".element").remove();
-    });
-
-    image.addEventListener("click", (event) => {
-        const { image, description } = imagePopup;
-        const { src, alt } = event.target;
-
-        image.src = src;
-        image.alt = alt;
-        description.textContent = alt;
-
-        imagePopup.open();
-    });
-
-    return newElement;
-}
-
-function renderNewElement(data) {
-    elementsSection.prepend(createNewElement(data));
-}
-
 // Инициализация карточек
-
-initialCards.forEach((cardData) => {
-    renderNewElement(cardData);
+initialCards.forEach((data) => {
+    renderNewElement(data, elementsSection);
 });
-
