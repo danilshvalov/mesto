@@ -1,7 +1,11 @@
+.popup__add-element-fields {
+  margin-top: 20px;
+}
+
 @media screen and (max-width: 500px) {
   .popup__add-element-fields {
-    gap: 20px;
     font-size: 12px;
     line-height: 15px;
+    gap: 0px;
   }
 }

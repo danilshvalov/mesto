@@ -3,6 +3,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    cursor: default;
     margin: 40px;
     padding: 0;
 }

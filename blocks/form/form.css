@@ -1,13 +1,15 @@
 .form {
   display: grid;
 
-  gap: 48px;
+  gap: 30px;
   max-width: 430px;
 
   background-color: #fff;
 
   box-sizing: border-box;
   border-radius: 10px;
+
+  cursor: default;
 
   margin: 0;
   padding: 0;

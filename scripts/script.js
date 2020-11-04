@@ -16,6 +16,11 @@ function Form(selector) {
 function Popup(selector) {
     this.popup = document.querySelector(selector);
     this.popup.querySelector(".popup__close-button").addEventListener("click", () => this.close());
+    this.popup.addEventListener("click", (evt) => {
+        if (evt.target == this.popup) {
+            this.close();
+        }
+    });
     this.escape = (evt) => {
         if (evt.code == "Escape") {
             this.close();
