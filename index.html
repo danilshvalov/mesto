@@ -2,113 +2,109 @@
 <html lang="ru">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="pages/index.css">
-    <link rel="icon" href="/favicon.ico">
-    <title>Mesto</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="pages/index.css" />
+  <link rel="icon" href="/favicon.ico" />
+  <title>Mesto</title>
 </head>
 
 <body class="page">
-    <header class="header">
-        <img class="header__logo" src="images/header-logo.svg" alt="Места России">
-    </header>
+  <header class="header">
+    <img class="header__logo" src="images/header-logo.svg" alt="Места России" />
+  </header>
 
-    <main class="content">
-
-        <section class="profile">
-            <img class="profile__avatar" src="images/avatar.jpg" alt="Аватар пользователя">
-            <div class="profile__text">
-                <div class="profile__name-container">
-                    <h1 class="profile__name">
-                        Жак-Ив Кусто
-                    </h1>
-                    <button class="button button_type_edit profile__edit-button" type="button"></button>
-                </div>
-                <p class="profile__about">
-                    Исследователь океана
-                </p>
-            </div>
-            <button class="button button_type_add profile__add-button" type="button"></button>
-        </section>
-
-        <section class="elements">
-        </section>
-    </main>
-
-    <footer class="footer">
-        <p class="footer__copyright">
-            © 2020 Mesto Russia
-        </p>
-    </footer>
-
-    <template class="template-element">
-        <article class="element">
-            <img class="element__image">
-            <div class="element__sidebar">
-                <h3 class="element__title"></h3>
-                <button class="button button_type_like element__like-button" type="button"></button>
-                <button class="button button_type_delete element__delete-button" type="button"></button>
-            </div>
-        </article>
-    </template>
-
-    <div class="popup popup_edit-profile">
-        <div class="popup__container">
-            <form class="form popup__edit-profile-form" method="POST" action="/" name="edit-profile-form">
-                <h2 class="popup__title">Редактировать профиль</h2>
-                <div class="fields popup__edit-profile-fields">
-                    <div class="field popup__field">
-                        <input class="input popup__input" name="nameInput" type="text" value="" placeholder="Имя"
-                            required minlength="2" maxlength="40">
-                        <span class="field-error popup__field-error"></span>
-                    </div>
-                    <div class="field popup__field">
-                        <input class="input popup__input" name="jobInput" type="text" value=""
-                            placeholder="Деятельность" required minlength="2" maxlength="200">
-                        <span class="field-error popup__field-error"></span>
-                    </div>
-                </div>
-                <button class="button button_type_submit popup__submit-button" type="submit">Сохранить</button>
-            </form>
-            <button class="button button_type_close popup__close-button" type="button"></button>
+  <main class="content">
+    <section class="profile">
+      <img class="profile__avatar" src="images/avatar.jpg" alt="Аватар пользователя" />
+      <div class="profile__text">
+        <div class="profile__name-container">
+          <h1 class="profile__name">Жак-Ив Кусто</h1>
+          <button class="button button_type_edit profile__edit-button" type="button"></button>
         </div>
-    </div>
+        <p class="profile__about">Исследователь океана</p>
+      </div>
+      <button class="button button_type_add profile__add-button" type="button"></button>
+    </section>
 
-    <div class="popup popup_add-element">
-        <div class="popup__container">
-            <form class="form popup__add-element-form" method="POST" action="/" name="add-element-form">
-                <h2 class="popup__title">Новое место</h2>
-                <div class="fields popup__add-element-fields">
-                    <div class="field popup__field">
-                        <input class="input popup__input"  name="titleInput" type="text" value=""
-                            placeholder="Название" required minlength="1" maxlength="30">
-                        <span class="field-error popup__field-error">Вы пропустили это поле.</span>
-                    </div>
-                    <div class="field popup__field">
-                        <input class="input popup__input" name="linkInput" type="url" value=""
-                            placeholder="Ссылка на картинку" required>
-                        <span class="field-error popup__field-error">Вы пропустили это поле.</span>
-                    </div>
-                </div>
-                <button class="button button_type_submit-disabled popup__submit-button" type="submit">Создать</button>
-            </form>
-            <button class="button button_type_close popup__close-button" type="button"></button>
+    <section class="elements"></section>
+  </main>
+
+  <footer class="footer">
+    <p class="footer__copyright">© 2020 Mesto Russia</p>
+  </footer>
+
+  <template class="template-element">
+    <article class="element">
+      <img class="element__image" />
+      <div class="element__sidebar">
+        <h3 class="element__title"></h3>
+        <button class="button button_type_like element__like-button" type="button"></button>
+        <button class="button button_type_delete element__delete-button" type="button"></button>
+      </div>
+    </article>
+  </template>
+
+  <div class="popup popup_edit-profile">
+    <div class="popup__container">
+      <form class="form popup__edit-profile-form" method="POST" action="/" name="edit-profile-form">
+        <h2 class="popup__title">Редактировать профиль</h2>
+        <div class="fields popup__edit-profile-fields">
+          <div class="field popup__field">
+            <input class="input popup__input" name="nameInput" type="text" value="" placeholder="Имя" required
+              minlength="2" maxlength="40" />
+            <span class="field-error popup__field-error"></span>
+          </div>
+          <div class="field popup__field">
+            <input class="input popup__input" name="jobInput" type="text" value="" placeholder="Деятельность" required
+              minlength="2" maxlength="200" />
+            <span class="field-error popup__field-error"></span>
+          </div>
         </div>
+        <button class="button button_type_submit popup__submit-button" type="submit">
+          Сохранить
+        </button>
+      </form>
+      <button class="button button_type_close popup__close-button" type="button"></button>
     </div>
+  </div>
 
-    <div class="popup popup_image-block">
-        <div class="popup__container">
-            <button class="button button_type_close popup__close-button" type="button"></button>
-            <div class="popup__image-container">
-                <img class="popup__image" src="images/loading.svg" alt="Загрузка">
-                <p class="popup__image-description">Загрузка</p>
-            </div>
+  <div class="popup popup_add-element">
+    <div class="popup__container">
+      <form class="form popup__add-element-form" method="POST" action="/" name="add-element-form">
+        <h2 class="popup__title">Новое место</h2>
+        <div class="fields popup__add-element-fields">
+          <div class="field popup__field">
+            <input class="input popup__input" name="titleInput" type="text" value="" placeholder="Название" required
+              minlength="1" maxlength="30" />
+            <span class="field-error popup__field-error"></span>
+          </div>
+          <div class="field popup__field">
+            <input class="input popup__input" name="linkInput" type="url" value="" placeholder="Ссылка на картинку"
+              required />
+            <span class="field-error popup__field-error"></span>
+          </div>
         </div>
+        <button class="button button_type_submit popup__submit-button" type="submit">
+          Создать
+        </button>
+      </form>
+      <button class="button button_type_close popup__close-button" type="button"></button>
     </div>
+  </div>
 
-    <script src="scripts/validate.js"></script>
-    <script src="scripts/script.js"></script>
+  <div class="popup popup_image-block">
+    <div class="popup__container">
+      <button class="button button_type_close popup__close-button" type="button"></button>
+      <div class="popup__image-container">
+        <img class="popup__image" src="images/loading.svg" alt="Загрузка" />
+        <p class="popup__image-description">Загрузка</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="scripts/script.js"></script>
+  <script src="scripts/validate.js"></script>
 </body>
 
 </html>

@@ -10,3 +10,9 @@
     padding: 25px 22px;
   }
 }
+
+@media screen and (max-height: 400px) {
+  .popup__edit-profile-form {
+    margin: 0;
+  }
+}
