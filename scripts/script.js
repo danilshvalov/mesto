@@ -72,9 +72,6 @@ function createElement(data, template, parent, imagePopup) {
   const element = new Element(template);
   element
     .setProperties(data)
-    .setListener("likeButton", "click", (evt) => {
-      evt.target.classList.toggle("button_like-active");
-    })
     .setListener("deleteButton", "click", (evt) => {
       evt.target.closest(".element").remove();
     })
@@ -208,4 +205,10 @@ addButton.addEventListener("click", () => addPopup.open());
 // Инициализация карточке
 initialCards.forEach((data) => {
   createElement(data, templateElement, elements, imagePopup);
+});
+
+elements.addEventListener("click", (evt) => {
+  if (evt.target.classList.contains("button_type_like")) {
+    evt.target.classList.toggle("button_like-active");
+  }
 });
