@@ -4,58 +4,130 @@ const selectorsData = {
   submitButtonSelector: ".button_type_submit",
   inactiveButtonClass: "button_type_submit-disabled",
   inputErrorClass: "input_error",
-  errorClass: "field-error_visible",
+  messageErrorClass: "field-error_visible"
 };
 
-function validate() {
-  if (this.validity.valid) {
-    this.classList.remove(this.inputErrorClass);
-    this.errorSpan.classList.remove(this.errorClass);
-    this.errorSpan.textContent = "";
-    if (this.parent.every((input) => input.validity.valid)) {
-      this.submitButton.classList.remove(this.inactiveButtonClass);
-    }
-  } else {
-    this.classList.add(this.inputErrorClass);
-    this.errorSpan.classList.add(this.errorClass);
-    this.errorSpan.textContent = this.validationMessage;
-    this.submitButton.classList.add(this.inactiveButtonClass);
-  }
+function Input({ input, inputErrorClass, message, messageErrorClass }) {
+  this.input = input;
+  this.inputErrorClass = inputErrorClass;
+  this.message = message;
+  this.messageErrorClass = messageErrorClass;
+
+  this.showMessage = function () {
+    this.input.classList.add(this.inputErrorClass);
+    this.message.classList.add(this.messageErrorClass);
+    this.message.textContent = this.input.validationMessage;
+  };
+  this.hideMessage = function () {
+    this.input.classList.remove(this.inputErrorClass);
+    this.message.classList.remove(this.messageErrorClass);
+    this.message.textContent = "";
+  };
+  this.setListener = function (type, listener) {
+    this.input.addEventListener(type, listener);
+  };
+  this.isValid = function () {
+    return this.input.validity.valid;
+  };
+  this.hasErrorClass = function () {
+    return this.input.classList.contains(this.inputErrorClass);
+  };
 }
 
+function SubmitButton({ submitButton, errorClass }) {
+  this.submitButton = submitButton;
+  this.errorClass = errorClass;
+
+  this.disable = function () {
+    this.submitButton.classList.add(this.errorClass);
+  };
+  this.enable = function () {
+    this.submitButton.classList.remove(this.errorClass);
+  };
+  this.hasErrorClass = function () {
+    return this.submitButton.classList.contains(this.errorClass);
+  };
+  this.setListener = function (type, listener) {
+    this.submitButton.addEventListener(type, listener);
+  };
+}
+
+function Form(form, { inputSelector, submitButtonSelector, inactiveButtonClass, inputErrorClass, messageErrorClass }) {
+  this.form = form;
+  this.inputs = Array.from(this.form.querySelectorAll(inputSelector)).map((input) => {
+    const message = input.nextElementSibling;
+    return new Input({ input, inputErrorClass, message, messageErrorClass });
+  });
+  this.submitButton = new SubmitButton({ submitButton: this.form.querySelector(submitButtonSelector), errorClass: inactiveButtonClass });
+
+  this.setListener = function (type, listener) {
+    this.form.addEventListener(type, listener);
+  };
+  this.isValid = function () {
+    return !this.inputs.some((input) => !input.isValid());
+  };
+}
 
 function enableValidation(data) {
-  const forms = getElements(data);
 
-  forms.forEach((form) => {
-    const inputs = modifyInputs(form, data);
-    inputs.forEach((input) => {
-      if (!input.validity.valid) {
-        input.submitButton.classList.add(input.inactiveButtonClass);
+  const { formSelector } = data;
+  const forms = document.querySelectorAll(formSelector);
+  forms.forEach((info) => {
+    const form = new Form(info, data);
+
+    const inputListener = (input) => {
+      if (!input.isValid()) {
+        input.showMessage();
+      } else if (input.isValid() && input.hasErrorClass()) {
+        input.hideMessage();
       }
-      input.addEventListener("input", validate);
+    };
+
+    const formListener = (form) => {
+      if (!form.isValid() && !form.submitButton.hasErrorClass()) {
+        form.submitButton.disable();
+      } else if (form.isValid() && form.submitButton.hasErrorClass()) {
+        form.submitButton.enable();
+      }
+    };
+
+    /* 
+
+    mutationObserver используется корректной работы ошибок полей: Если поля формы изменения профиля сделать
+    невалидными, а затем закрыть и снова открыть форму изменения профиля, то, не смотря на валидность полей,
+    так как не будет произведен ввод, поля будут подсвечены как некорректные.
+
+    Долго ломал голову, что с этим делать. Хотелось сохранить независимость функции, поэтому выбрал
+    этот вариант. Отслеживание кнопки не вариант, т.к. Popup можно закрыть с помощью ESC и нажатия
+    вне области формы
+       
+    Демонстрация проблемы: https://yadi.sk/i/bO0d35rVdg56MQ    
+
+    */
+
+    const mutationObserver = new MutationObserver(function (mutations) {
+      mutations.forEach(function (mutation) {
+        if (getComputedStyle(mutation.target, null).visibility == "visible") {
+          form.inputs.forEach((input) => input.hideMessage());
+          form.submitButton.enable();
+        }
+      });
     });
-  });
-}
 
-function getElements({ formSelector, inputSelector, submitButtonSelector }) {
-  const forms = Array.from(document.querySelectorAll(formSelector));
-  return forms.map((form) => {
-    const submitButton = form.querySelector(submitButtonSelector);
-    const inputs = Array.from(form.querySelectorAll(inputSelector));
-    return { form, inputs, submitButton };
-  });
-}
+    const popup = form.form.parentElement.parentElement;
 
-function modifyInputs({ inputs, submitButton }, { inactiveButtonClass, inputErrorClass, errorClass }) {
-  return inputs.map((input) => {
-    input.submitButton = submitButton;
-    input.inactiveButtonClass = inactiveButtonClass;
-    input.inputErrorClass = inputErrorClass;
-    input.errorSpan = input.nextElementSibling;
-    input.errorClass = errorClass;
-    input.parent = inputs;
-    return input;
+    mutationObserver.observe(popup, {
+      attributes: true,
+    });
+
+    // Установка listeners
+
+    form.submitButton.setListener("click", () => formListener(form));
+    form.setListener("input", () => formListener(form));
+    form.inputs.forEach((input) => {
+      form.submitButton.setListener("click", () => inputListener(input));
+      input.setListener("input", () => inputListener(input));
+    });
   });
 }
 

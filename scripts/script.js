@@ -152,6 +152,7 @@ const editPopup = {
   },
   close() {
     this.popup.close();
+    this.form.setProperties(this.user.getUserInfo());
   },
 };
 
