@@ -10,7 +10,7 @@
   line-height: 22px;
   text-align: center;
 
-  cursor: not-allowed;
+  pointer-events: none;
 
   padding: 13px;
 }

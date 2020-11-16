@@ -1,0 +1,18 @@
+.field__input-error {
+  visibility: hidden;
+
+  width: 100%;
+
+  display: block;
+  min-height: 25px;
+
+  font-size: 12px;
+  line-height: 15px;
+
+  color: #FF0000;
+
+  margin: 5px 0 0;
+  padding: 0;
+}
+
+/* TODO сделать разбитие слова при нехватке места */

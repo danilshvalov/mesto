@@ -1,19 +1,21 @@
 const notFound = "images/not-found.svg";
 
+import Form from "./Form.js";
+
 // Конструкторы
-function Form(selector) {
-  this.body = document.querySelector(selector);
-  this.setSubmitHandler = function (handler) {
-    this.body.addEventListener("submit", handler);
-    return this;
-  };
-  this.setProperties = function ({ name, job }) {
-    const { nameInput, jobInput } = this.body;
-    nameInput.value = name;
-    jobInput.value = job;
-    return this;
-  };
-}
+// function Form(selector) {
+//   this.body = document.querySelector(selector);
+//   this.setSubmitHandler = function (handler) {
+//     this.body.addEventListener("submit", handler);
+//     return this;
+//   };
+//   this.setProperties = function ({ name, job }) {
+//     const { nameInput, jobInput } = this.body;
+//     nameInput.value = name;
+//     jobInput.value = job;
+//     return this;
+//   };
+// }
 
 function Popup(selector) {
   this.popup = document.querySelector(selector);
@@ -141,7 +143,7 @@ const userInfo = {
 
 const editPopup = {
   popup: new Popup(".popup_edit-profile"),
-  form: new Form(".popup__edit-profile-form").setProperties(userInfo),
+  form: new Form(".popup__edit-profile-form").setProperties({nameInput: userInfo.name.textContent, jobInput: userInfo.job.textContent}),
   user: userInfo,
   open() {
     this.form.setProperties(this.user.getUserInfo());
@@ -167,8 +169,8 @@ const addPopup = {
 
 const imagePopup = {
   popup: new Popup(".popup_image-block"),
-  image: document.querySelector(".popup__image"),
-  description: document.querySelector(".popup__image-description"),
+  image: document.querySelector(".picture"),
+  description: document.querySelector(".picture__description"),
   open({ title, link }) {
     this.image.src = link;
     this.image.alt = title;
@@ -212,3 +214,5 @@ elements.addEventListener("click", (evt) => {
     evt.target.classList.toggle("button_like-active");
   }
 });
+
+

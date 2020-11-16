@@ -47,21 +47,23 @@
 
   <div class="popup popup_edit-profile">
     <div class="popup__container">
-      <form class="form popup__edit-profile-form" method="POST" action="/" name="edit-profile-form">
-        <h2 class="popup__title">Редактировать профиль</h2>
-        <fieldset class="fields popup__edit-profile-fields">
-          <div class="field popup__field">
-            <input class="input popup__input" name="nameInput" type="text" value="" placeholder="Имя" required
-              minlength="2" maxlength="40" />
-            <span class="field-error popup__field-error"></span>
+      <form class="form popup__edit-profile-form" method="POST" action="/" name="edit-profile" novalidate>
+        <h2 class="form__title">Редактировать профиль</h2>
+        <fieldset class="fieldset form__edit-profile-fieldset">
+          <div class="field">
+            <input class="field__input" id="name-input" name="nameInput" type="text" value="" placeholder="Имя"
+              required minlength="2" maxlength="40" />
+            <span class="field__input-error" id="name-input-error"></span>
           </div>
-          <div class="field popup__field">
-            <input class="input popup__input" name="jobInput" type="text" value="" placeholder="Деятельность" required
-              minlength="2" maxlength="200" />
-            <span class="field-error popup__field-error"></span>
+          <div class="field">
+            <input class="field__input" id='job-input' name="jobInput" type="text" value="" placeholder="Деятельность"
+              required minlength="2" maxlength="200" />
+            <span class="field__input-error field__input-error_active" id='job-input-error'>dsfdfsdfasdddddddddddddd
+              dddddddddddddddddddddddd
+              dddddddddddddddddddddddd</span>
           </div>
         </fieldset>
-        <button class="button button_type_submit popup__submit-button" type="submit">
+        <button class="button button_type_submit form__submit-button" type="submit">
           Сохранить
         </button>
       </form>
@@ -71,40 +73,43 @@
 
   <div class="popup popup_add-element">
     <div class="popup__container">
-      <form class="form popup__add-element-form" method="POST" action="/" name="add-element-form">
-        <h2 class="popup__title">Новое место</h2>
-        <fieldset class="fields popup__add-element-fields">
-          <div class="field popup__field">
-            <input class="input popup__input" name="titleInput" type="text" value="" placeholder="Название" required
-              minlength="1" maxlength="30" />
-            <span class="field-error popup__field-error"></span>
+      <form class="form popup__add-element-form" method="POST" action="/" name="add-element" novalidate>
+        <h2 class="form__title">Новое место</h2>
+        <fieldset class="fieldset form__add-element-fieldset">
+          <div class="field">
+            <input class="field__input" id="title-input" name="titleInput" type="text" value="" placeholder="Название"
+              required minlength="1" maxlength="30" />
+            <span class="field__input-error"  id="title-input-error"></span>
           </div>
           <div class="field popup__field">
-            <input class="input popup__input" name="linkInput" type="url" value="" placeholder="Ссылка на картинку"
-              required />
-            <span class="field-error popup__field-error"></span>
+            <input class="field__input" id="link-input" name="linkInput" type="url" value=""
+              placeholder="Ссылка на картинку" required />
+            <span class="field__input-error" id="link-input-error"></span>
           </div>
-        </а>
-        <button class="button button_type_submit popup__submit-button" type="submit">
-          Создать
-        </button>
+          </а>
+          <button class="form__submit-button button button_type_submit" type="submit">
+            Создать
+          </button>
       </form>
-      <button class="button button_type_close popup__close-button" type="button"></button>
+      <button class="popup__close-button button button_type_close" type="button"></button>
     </div>
   </div>
 
   <div class="popup popup_image-block">
     <div class="popup__container">
       <button class="button button_type_close popup__close-button" type="button"></button>
-      <div class="popup__image-container">
-        <img class="popup__image" src="images/loading.svg" alt="Загрузка" />
-        <p class="popup__image-description">Загрузка</p>
+      <div class="popup__picture picture">
+        <img class="picture__image" src="images/loading.svg" alt="Загрузка" />
+        <p class="picture__description">Загрузка</p>
       </div>
     </div>
   </div>
 
-  <script src="scripts/script.js"></script>
-  <script src="scripts/validate.js"></script>
+  <script src="scripts/SubmitButton.js" type="module"></script>
+  <script src="scripts/script.js" type="module"></script>
+  <!-- <script src="scripts/validate.js"></script> -->
+  <script src="scripts/Form.js" type="module"></script>
+
 </body>
 
 </html>
