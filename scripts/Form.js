@@ -32,4 +32,7 @@ export default class Form {
   querySelectorAll(selector) {
     return this.form.querySelectorAll(selector);
   }
+  getFormElement() {
+    return this.form;
+  }
 }

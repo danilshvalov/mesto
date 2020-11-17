@@ -1,6 +1,6 @@
 export default class Element {
-  constructor(data, templateSelector) {
-    this.body = document.querySelector(templateSelector).content.querySelector(".element").cloneNode(true);
+  constructor(data, templateElement) {
+    this.body = templateElement.cloneNode(true);
     this.title = this.body.querySelector(".element__title");
     this.image = this.body.querySelector(".element__image");
     this.likeButton = this.body.querySelector(".element__like-button");

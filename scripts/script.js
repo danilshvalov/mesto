@@ -1,8 +1,7 @@
 const notFound = "images/not-found.svg";
 
-import Form from "./Form.js";
-import Popup from "./Popup.js";
 import PopupWithForm from "./PopupWithForm.js";
+import PopupWithImage from "./PopupWithImage.js";
 import Element from "./Element.js";
 import UserInfo from "./UserInfo.js";
 
@@ -41,50 +40,49 @@ const addButton = document.querySelector(".profile__add-button");
 const templateElement = document
   .querySelector(".template-element")
   .content.querySelector(".element");
+
 const elements = document.querySelector(".elements");
-
-
 const userInfo = new UserInfo(".profile__name", ".profile__about");
 
-function editFormHandler(evt) {
+const editFormHandler = (evt) => {
   evt.preventDefault();
-  const info = editPopup.form.getProperties();
-  userInfo.setUserInfo(info.nameInput, info.jobInput);
+  const {nameInput, jobInput} = editPopup.form.getProperties();
+  userInfo.setUserInfo(nameInput, jobInput);
   editPopup.close();
-}
-function addElementHandler(evt) {
+};
+const addElementHandler = (evt) => {
   evt.preventDefault();
-  const {titleInput: title, linkInput: link} = addPopup.form.getProperties();
-  elements.prepend(new Element({title, link}, ".template-element").getElement());
+  const { titleInput: title, linkInput: link } = addPopup.form.getProperties();
+  elements.prepend(new Element({ title, link }, templateElement).getElement());
   addPopup.close();
-}
+};
 const editPopup = new PopupWithForm(".popup_edit-profile", editFormHandler);
 const addPopup = new PopupWithForm(".popup_add-element", addElementHandler);
+const imagePopup = new PopupWithImage(".popup_image-block");
 
-
-
-
-editButton.addEventListener("click", () => {
-  const {name: nameInput, job: jobInput} = userInfo.getUserInfo();
-  editPopup.form.setProperties({nameInput, jobInput});
-  editPopup.open();
+editPopup.form.setListener("open", () => {
+  const { name: nameInput, job: jobInput } = userInfo.getUserInfo();
+  editPopup.form.setProperties({ nameInput, jobInput });
 });
+
+
+editButton.addEventListener("click", () => editPopup.open());
 addButton.addEventListener("click", () => addPopup.open());
 
 // Инициализация карточке
 initialCards.forEach((data) => {
-  elements.prepend(new Element(data, ".template-element").getElement());
+  elements.prepend(new Element(data, templateElement).getElement());
 });
 
 elements.addEventListener("click", (evt) => {
-  if (evt.target.classList.contains("button_type_like")) {
-    evt.target.classList.toggle("button_like-active");
+  const target = evt.target;
+  if (target.classList.contains("button_type_like")) {
+    target.classList.toggle("button_like-active");
+  } 
+  if (target.classList.contains("button_type_delete")) {
+    target.closest(".element").remove();
+  }
+  if (target.classList.contains("element__image")) {
+    imagePopup.open({title: target.alt, link: target.src});
   }
 });
-elements.addEventListener("click", (evt) => {
-  if (evt.target.classList.contains("button_type_delete")) {
-    evt.target.closest(".element").remove();
-  }
-});
-
-

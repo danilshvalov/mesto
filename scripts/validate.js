@@ -1,10 +1,10 @@
 const selectorsData = {
   formSelector: ".form",
-  inputSelector: ".input",
+  inputSelector: ".field__input",
   submitButtonSelector: ".button_type_submit",
   inactiveButtonClass: "button_type_submit-disabled",
-  inputErrorClass: "input_error",
-  messageErrorClass: "field-error_visible"
+  inputErrorClass: "field__input-error",
+  messageErrorClass: "field__input-error_active"
 };
 
 import Form from "./Form.js";
@@ -32,16 +32,11 @@ class Validator {
   _toggleButtonState(buttonElement, isValid) {
     if (isValid) {
       buttonElement.classList.remove("button_type_submit-disabled");
+      buttonElement.removeAttribute("disabled");
     } else {
       buttonElement.classList.add("button_type_submit-disabled");
+      buttonElement.setAttribute("disabled", true);
     }
-  }
-  _inputValidator(input) {
-    input.addEventListener("input", () => {
-      this._checkInputValidity(input);
-
-      this._toggleButtonState(this.form.submitButton, this._checkValidation(this.form));
-    });
   }
   _checkInputValidity(inputElement) {
     if (inputElement.validity.valid) {
@@ -50,28 +45,23 @@ class Validator {
       this._showInputError(this.form, inputElement);
     }
   }
-  _onOpenValidator() {
-    this.openButton.addEventListener("click", () => {
-      this._toggleButtonState(this.form.submitButton, this._checkValidation(this.form));
-
-      this.form.inputs.forEach((input) => {
-        this._checkInputValidity(input);
-      });
-    });
-  }
   enableValidation() {
-    this.form.inputs.forEach((input) => {
-      this._inputValidator(input);
+    this.form.setListener("input", (evt) => {
+      if (evt.target.classList.contains("field__input")) {
+        this._checkInputValidity(evt.target);
+      }
+      this._toggleButtonState(this.form.submitButton, this._checkValidation(this.form));
     });
-    this._onOpenValidator();
-    this.form.setListener("input", () => console.log("hi"));
+    this.form.setListener("open", () => this._toggleButtonState(this.form.submitButton, this._checkValidation(this.form)));
+    this.form.setListener("close", () => this.form.inputs.forEach((input) => {
+      this._hideInputError(this.form, input);
+    })
+    );
   }
 }
 
-const editForm = new Form(document.querySelector(".popup__edit-profile-form"));
+const editFormValidator = new Validator(new Form(document.querySelector(".popup__edit-profile-form")));
+const addElementValidator = new Validator(new Form(document.querySelector(".popup__add-element-form")));
 
-const editValid = new Validator(editForm);
-editValid.enableValidation();
-
-const add = new Validator(new Form(document.querySelector(".popup__add-element-form")));
-add.enableValidation();
+editFormValidator.enableValidation();
+addElementValidator.enableValidation();
