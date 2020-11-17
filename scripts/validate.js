@@ -7,128 +7,71 @@ const selectorsData = {
   messageErrorClass: "field-error_visible"
 };
 
-function Input({ input, inputErrorClass, message, messageErrorClass }) {
-  this.input = input;
-  this.inputErrorClass = inputErrorClass;
-  this.message = message;
-  this.messageErrorClass = messageErrorClass;
+import Form from "./Form.js";
 
-  this.showMessage = function () {
-    this.input.classList.add(this.inputErrorClass);
-    this.message.classList.add(this.messageErrorClass);
-    this.message.textContent = this.input.validationMessage;
-  };
-  this.hideMessage = function () {
-    this.input.classList.remove(this.inputErrorClass);
-    this.message.classList.remove(this.messageErrorClass);
-    this.message.textContent = "";
-  };
-  this.setListener = function (type, listener) {
-    this.input.addEventListener(type, listener);
-  };
-  this.isValid = function () {
-    return this.input.validity.valid;
-  };
-  this.hasErrorClass = function () {
-    return this.input.classList.contains(this.inputErrorClass);
-  };
-}
+class Validator {
+  constructor(form, selectors) {
+    this.form = form;
+    this.openButton = document.querySelector(".profile__edit-button");
+  }
+  _checkValidation(formElement) {
+    return !formElement.inputs.some((input) => !input.validity.valid);
+  }
+  _showInputError(formElement, inputElement) {
+    const errorElement = formElement.querySelector(`#${inputElement.id}-error`);
+    inputElement.classList.add("field__input_error");
+    errorElement.classList.add("field__input-error_active");
+    errorElement.textContent = inputElement.validationMessage;
+  }
+  _hideInputError(formElement, inputElement) {
+    const errorElement = formElement.querySelector(`#${inputElement.id}-error`);
+    inputElement.classList.remove("field__input_error");
+    errorElement.classList.remove("field__input-error_active");
+    errorElement.textContent = "";
+  }
+  _toggleButtonState(buttonElement, isValid) {
+    if (isValid) {
+      buttonElement.classList.remove("button_type_submit-disabled");
+    } else {
+      buttonElement.classList.add("button_type_submit-disabled");
+    }
+  }
+  _inputValidator(input) {
+    input.addEventListener("input", () => {
+      this._checkInputValidity(input);
 
-function SubmitButton({ submitButton, errorClass }) {
-  this.submitButton = submitButton;
-  this.errorClass = errorClass;
+      this._toggleButtonState(this.form.submitButton, this._checkValidation(this.form));
+    });
+  }
+  _checkInputValidity(inputElement) {
+    if (inputElement.validity.valid) {
+      this._hideInputError(this.form, inputElement);
+    } else {
+      this._showInputError(this.form, inputElement);
+    }
+  }
+  _onOpenValidator() {
+    this.openButton.addEventListener("click", () => {
+      this._toggleButtonState(this.form.submitButton, this._checkValidation(this.form));
 
-  this.disable = function () {
-    this.submitButton.classList.add(this.errorClass);
-  };
-  this.enable = function () {
-    this.submitButton.classList.remove(this.errorClass);
-  };
-  this.hasErrorClass = function () {
-    return this.submitButton.classList.contains(this.errorClass);
-  };
-  this.setListener = function (type, listener) {
-    this.submitButton.addEventListener(type, listener);
-  };
-}
-
-function Form(form, { inputSelector, submitButtonSelector, inactiveButtonClass, inputErrorClass, messageErrorClass }) {
-  this.form = form;
-  this.inputs = Array.from(this.form.querySelectorAll(inputSelector)).map((input) => {
-    const message = input.nextElementSibling;
-    return new Input({ input, inputErrorClass, message, messageErrorClass });
-  });
-  this.submitButton = new SubmitButton({ submitButton: this.form.querySelector(submitButtonSelector), errorClass: inactiveButtonClass });
-
-  this.setListener = function (type, listener) {
-    this.form.addEventListener(type, listener);
-  };
-  this.isValid = function () {
-    return !this.inputs.some((input) => !input.isValid());
-  };
-}
-
-function enableValidation(data) {
-
-  const { formSelector } = data;
-  const forms = document.querySelectorAll(formSelector);
-  forms.forEach((info) => {
-    const form = new Form(info, data);
-
-    const inputListener = (input) => {
-      if (!input.isValid()) {
-        input.showMessage();
-      } else if (input.isValid() && input.hasErrorClass()) {
-        input.hideMessage();
-      }
-    };
-
-    const formListener = (form) => {
-      if (!form.isValid() && !form.submitButton.hasErrorClass()) {
-        form.submitButton.disable();
-      } else if (form.isValid() && form.submitButton.hasErrorClass()) {
-        form.submitButton.enable();
-      }
-    };
-
-    /* 
-
-    mutationObserver используется корректной работы ошибок полей: Если поля формы изменения профиля сделать
-    невалидными, а затем закрыть и снова открыть форму изменения профиля, то, не смотря на валидность полей,
-    так как не будет произведен ввод, поля будут подсвечены как некорректные.
-
-    Долго ломал голову, что с этим делать. Хотелось сохранить независимость функции, поэтому выбрал
-    этот вариант. Отслеживание кнопки не вариант, т.к. Popup можно закрыть с помощью ESC и нажатия
-    вне области формы
-       
-    Демонстрация проблемы: https://yadi.sk/i/bO0d35rVdg56MQ    
-
-    */
-
-    const mutationObserver = new MutationObserver(function (mutations) {
-      mutations.forEach(function (mutation) {
-        if (getComputedStyle(mutation.target, null).visibility == "visible") {
-          form.inputs.forEach((input) => input.hideMessage());
-          form.submitButton.enable();
-        }
+      this.form.inputs.forEach((input) => {
+        this._checkInputValidity(input);
       });
     });
-
-    const popup = form.form.parentElement.parentElement;
-
-    mutationObserver.observe(popup, {
-      attributes: true,
+  }
+  enableValidation() {
+    this.form.inputs.forEach((input) => {
+      this._inputValidator(input);
     });
-
-    // Установка listeners
-
-    form.submitButton.setListener("click", () => formListener(form));
-    form.setListener("input", () => formListener(form));
-    form.inputs.forEach((input) => {
-      form.submitButton.setListener("click", () => inputListener(input));
-      input.setListener("input", () => inputListener(input));
-    });
-  });
+    this._onOpenValidator();
+    this.form.setListener("input", () => console.log("hi"));
+  }
 }
 
-enableValidation(selectorsData);
+const editForm = new Form(document.querySelector(".popup__edit-profile-form"));
+
+const editValid = new Validator(editForm);
+editValid.enableValidation();
+
+const add = new Validator(new Form(document.querySelector(".popup__add-element-form")));
+add.enableValidation();

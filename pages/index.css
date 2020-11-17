@@ -53,15 +53,10 @@
 
 @import url(../blocks/popup/popup.css);
 @import url(../blocks/popup/_opened/popup_opened.css);
-@import url(../blocks/popup/__title/popup__title.css);
 @import url(../blocks/popup/__container/popup__container.css);
 @import url(../blocks/popup/__close-button/popup__close-button.css);
 @import url(../blocks/popup/__edit-profile-form/popup__edit-profile-form.css);
 @import url(../blocks/popup/__add-element-form/popup__add-element-form.css);
-@import url(../blocks/popup/__image/popup__image.css);
 @import url(../blocks/popup/_image-block/popup_image-block.css);
-@import url(../blocks/popup/__image-description/popup__image-description.css);
-@import url(../blocks/popup/__image-container/popup__image-container.css);
 @import url(../blocks/popup/__edit-profile-fields/popup__edit-profile-fields.css);
 @import url(../blocks/popup/__add-element-fields/popup__add-element-fields.css);
-@import url(../blocks/popup/__field-error/popup__field-error.css);

@@ -1,94 +1,11 @@
 const notFound = "images/not-found.svg";
 
 import Form from "./Form.js";
+import Popup from "./Popup.js";
+import PopupWithForm from "./PopupWithForm.js";
+import Element from "./Element.js";
+import UserInfo from "./UserInfo.js";
 
-// Конструкторы
-// function Form(selector) {
-//   this.body = document.querySelector(selector);
-//   this.setSubmitHandler = function (handler) {
-//     this.body.addEventListener("submit", handler);
-//     return this;
-//   };
-//   this.setProperties = function ({ name, job }) {
-//     const { nameInput, jobInput } = this.body;
-//     nameInput.value = name;
-//     jobInput.value = job;
-//     return this;
-//   };
-// }
-
-function Popup(selector) {
-  this.popup = document.querySelector(selector);
-  this.popup
-    .querySelector(".popup__close-button")
-    .addEventListener("click", () => this.close());
-  this.popup.addEventListener("click", (evt) => {
-    if (evt.target == this.popup) {
-      this.close();
-      return this;
-    }
-  });
-  this.escape = (evt) => {
-    if (evt.code == "Escape") {
-      this.close();
-    }
-  };
-  this.open = function () {
-    document.addEventListener("keydown", this.escape);
-    this.popup.classList.add("popup_opened");
-    return this;
-  };
-  this.close = function () {
-    document.removeEventListener("keydown", this.escape);
-    this.popup.classList.remove("popup_opened");
-    return this;
-  };
-}
-
-function Element(template) {
-  this.body = template.cloneNode(true);
-  this.title = this.body.querySelector(".element__title");
-  this.image = this.body.querySelector(".element__image");
-  this.likeButton = this.body.querySelector(".element__like-button");
-  this.deleteButton = this.body.querySelector(".element__delete-button");
-
-  this.setListener = function (property, type, callback) {
-    this[property].addEventListener(type, callback);
-    return this;
-  };
-
-  this.setProperties = function ({ title = "Not found", link = notFound }) {
-    this.image.src = link;
-    this.image.alt = title;
-    this.title.textContent = title;
-    return this;
-  };
-
-  this.render = function (parent) {
-    parent.prepend(this.body);
-    return this;
-  };
-}
-
-function createElement(data, template, parent, imagePopup) {
-  const element = new Element(template);
-  element
-    .setProperties(data)
-    .setListener("deleteButton", "click", (evt) => {
-      evt.target.closest(".element").remove();
-    })
-    .setListener("image", "click", () => {
-      imagePopup.open({
-        title: element.title.textContent,
-        link: element.image.src,
-      });
-    })
-    .setListener("image", "error", function () {
-      this.src = notFound;
-    })
-    .render(parent);
-  return element;
-}
 
 // Переменные
 const initialCards = [
@@ -126,92 +43,47 @@ const templateElement = document
   .content.querySelector(".element");
 const elements = document.querySelector(".elements");
 
-const userInfo = {
-  name: document.querySelector(".profile__name"),
-  job: document.querySelector(".profile__about"),
-  setUserInfo({ name, job }) {
-    this.name.textContent = name;
-    this.job.textContent = job;
-  },
-  getUserInfo() {
-    return {
-      name: this.name.textContent.trim(),
-      job: this.job.textContent.trim(),
-    };
-  },
-};
 
-const editPopup = {
-  popup: new Popup(".popup_edit-profile"),
-  form: new Form(".popup__edit-profile-form").setProperties({nameInput: userInfo.name.textContent, jobInput: userInfo.job.textContent}),
-  user: userInfo,
-  open() {
-    this.form.setProperties(this.user.getUserInfo());
-    this.popup.open();
-  },
-  close() {
-    this.popup.close();
-    this.form.setProperties(this.user.getUserInfo());
-  },
-};
+const userInfo = new UserInfo(".profile__name", ".profile__about");
 
-const addPopup = {
-  popup: new Popup(".popup_add-element"),
-  form: new Form(".popup__add-element-form"),
-  open() {
-    this.popup.open();
-  },
-  close() {
-    this.form.body.reset();
-    this.popup.close();
-  },
-};
-
-const imagePopup = {
-  popup: new Popup(".popup_image-block"),
-  image: document.querySelector(".picture"),
-  description: document.querySelector(".picture__description"),
-  open({ title, link }) {
-    this.image.src = link;
-    this.image.alt = title;
-    this.description.textContent = title;
-    this.popup.open();
-  },
-};
-
-// Listeners
-editPopup.form.setSubmitHandler(function (evt) {
+function editFormHandler(evt) {
   evt.preventDefault();
-
-  const { nameInput, jobInput } = editPopup.form.body;
-  editPopup.user.setUserInfo({ name: nameInput.value, job: jobInput.value });
+  const info = editPopup.form.getProperties();
+  userInfo.setUserInfo(info.nameInput, info.jobInput);
   editPopup.close();
-});
-
-addPopup.form.setSubmitHandler(function (evt) {
+}
+function addElementHandler(evt) {
   evt.preventDefault();
-
-  const { titleInput, linkInput } = addPopup.form.body;
-  createElement(
-    { title: titleInput.value, link: linkInput.value },
-    templateElement,
-    elements,
-    imagePopup
-  );
+  const {titleInput: title, linkInput: link} = addPopup.form.getProperties();
+  elements.prepend(new Element({title, link}, ".template-element").getElement());
   addPopup.close();
-});
+}
+const editPopup = new PopupWithForm(".popup_edit-profile", editFormHandler);
+const addPopup = new PopupWithForm(".popup_add-element", addElementHandler);
 
-editButton.addEventListener("click", () => editPopup.open());
+
+
+
+editButton.addEventListener("click", () => {
+  const {name: nameInput, job: jobInput} = userInfo.getUserInfo();
+  editPopup.form.setProperties({nameInput, jobInput});
+  editPopup.open();
+});
 addButton.addEventListener("click", () => addPopup.open());
 
 // Инициализация карточке
 initialCards.forEach((data) => {
-  createElement(data, templateElement, elements, imagePopup);
+  elements.prepend(new Element(data, ".template-element").getElement());
 });
 
 elements.addEventListener("click", (evt) => {
   if (evt.target.classList.contains("button_type_like")) {
     evt.target.classList.toggle("button_like-active");
+  }
+});
+elements.addEventListener("click", (evt) => {
+  if (evt.target.classList.contains("button_type_delete")) {
+    evt.target.closest(".element").remove();
   }
 });
 
