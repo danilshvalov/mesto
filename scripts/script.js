@@ -1,10 +1,7 @@
-const notFound = "images/not-found.svg";
-
 import PopupWithForm from "./PopupWithForm.js";
 import PopupWithImage from "./PopupWithImage.js";
 import Element from "./Element.js";
 import UserInfo from "./UserInfo.js";
-
 
 // Переменные
 const initialCards = [
@@ -36,17 +33,15 @@ const initialCards = [
 
 const editButton = document.querySelector(".profile__edit-button");
 const addButton = document.querySelector(".profile__add-button");
-
 const templateElement = document
   .querySelector(".template-element")
   .content.querySelector(".element");
-
 const elements = document.querySelector(".elements");
 const userInfo = new UserInfo(".profile__name", ".profile__about");
 
 const editFormHandler = (evt) => {
   evt.preventDefault();
-  const {nameInput, jobInput} = editPopup.form.getProperties();
+  const { nameInput, jobInput } = editPopup.form.getProperties();
   userInfo.setUserInfo(nameInput, jobInput);
   editPopup.close();
 };
@@ -60,29 +55,30 @@ const editPopup = new PopupWithForm(".popup_edit-profile", editFormHandler);
 const addPopup = new PopupWithForm(".popup_add-element", addElementHandler);
 const imagePopup = new PopupWithImage(".popup_image-block");
 
+// Listeners
+
 editPopup.form.setListener("open", () => {
   const { name: nameInput, job: jobInput } = userInfo.getUserInfo();
   editPopup.form.setProperties({ nameInput, jobInput });
 });
 
-
 editButton.addEventListener("click", () => editPopup.open());
 addButton.addEventListener("click", () => addPopup.open());
-
-// Инициализация карточке
-initialCards.forEach((data) => {
-  elements.prepend(new Element(data, templateElement).getElement());
-});
 
 elements.addEventListener("click", (evt) => {
   const target = evt.target;
   if (target.classList.contains("button_type_like")) {
     target.classList.toggle("button_like-active");
-  } 
+  }
   if (target.classList.contains("button_type_delete")) {
     target.closest(".element").remove();
   }
   if (target.classList.contains("element__image")) {
-    imagePopup.open({title: target.alt, link: target.src});
+    imagePopup.open({ title: target.alt, link: target.src });
   }
+});
+
+// Инициализация карточке
+initialCards.forEach((data) => {
+  elements.prepend(new Element(data, templateElement).getElement());
 });

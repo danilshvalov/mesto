@@ -1,9 +1,8 @@
 export default class Form {
-  constructor(form) {
+  constructor(form, inputSelector, submitButtonSelector) {
     this.form = form;
-    this.inputs = Array.from(this.form.querySelectorAll(".field__input"));
-    this.submitButton = this.form.querySelector(".button_type_submit");
-    this.proxy = new Proxy(this.form, () => console.log("hi"));
+    this.inputs = Array.from(this.form.querySelectorAll(inputSelector));
+    this.submitButton = this.form.querySelector(submitButtonSelector);
   }
   setListener(type, listener) {
     this.form.addEventListener(type, listener);

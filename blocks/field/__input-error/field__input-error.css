@@ -4,7 +4,7 @@
   width: 100%;
 
   display: block;
-  min-height: 25px;
+  height: 24px;
 
   font-size: 12px;
   line-height: 15px;
@@ -15,4 +15,9 @@
   padding: 0;
 }
 
-/* TODO сделать разбитие слова при нехватке места */
+@media screen and (max-width: 500px) {
+  .field__input-error {
+    font-size: 11px;
+    height: 14px;
+  }
+}

@@ -16,7 +16,7 @@ export default class PopupWithForm extends Popup {
   close() {
     super.close();
     this.form.getFormElement().dispatchEvent(this.closeEvent);
-    setTimeout(() => this.form.reset(), 200); // скрываем от пользователя очищение формы до конца анимации
+    setTimeout(() => this.form.reset(), 200); // скрываем от пользователя сброс формы, очищением только после анимации
   }
   _setFormListeners(handler) {
     this.form.setListener("submit", handler);
