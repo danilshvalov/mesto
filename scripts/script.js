@@ -64,7 +64,7 @@ const addElementHandler = (evt) => {
 
 const editPopup = new PopupWithForm(".popup_edit-profile", selectorsData, editFormHandler);
 const addPopup = new PopupWithForm(".popup_add-element", selectorsData, addElementHandler);
-const imagePopup = new PopupWithImage(".popup_image-block");
+const imagePopup = new PopupWithImage(".popup_full-size-image");
 const forms = [editPopup.form, addPopup.form];
 
 // Listeners

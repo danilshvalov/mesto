@@ -61,4 +61,4 @@
 @import url(../blocks/popup/__close-button/popup__close-button.css);
 @import url(../blocks/popup/__edit-profile-form/popup__edit-profile-form.css);
 @import url(../blocks/popup/__add-element-form/popup__add-element-form.css);
-@import url(../blocks/popup/_image-block/popup_image-block.css);
+@import url(../blocks/popup/_full-size-image/popup_full-size-image.css);
