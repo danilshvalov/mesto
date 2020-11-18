@@ -1,10 +1,10 @@
 .form__edit-profile-fieldset {
-  margin: 46px 0 20px;
+  margin: 46px 0 14px;
 }
 
 @media screen and (max-width: 500px) {
   .form__edit-profile-fieldset {
     gap: 10px;
-    margin: 75px 0 25px;
+    margin: 75px 0 20px;
   }
 }

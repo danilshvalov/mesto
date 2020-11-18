@@ -2,6 +2,7 @@ import PopupWithForm from "./PopupWithForm.js";
 import PopupWithImage from "./PopupWithImage.js";
 import Element from "./Element.js";
 import UserInfo from "./UserInfo.js";
+import enableValidation from "./validate.js";
 
 // Переменные
 const initialCards = [
@@ -31,6 +32,15 @@ const initialCards = [
   },
 ];
 
+const selectorsData = {
+  formSelector: ".form",
+  inputSelector: ".field__input",
+  submitButtonSelector: ".button_type_submit",
+  inactiveButtonClass: "button_type_submit-disabled",
+  inputErrorClass: "field__input_error",
+  errorClass: "field__error-message_visible"
+};
+
 const editButton = document.querySelector(".profile__edit-button");
 const addButton = document.querySelector(".profile__add-button");
 const templateElement = document
@@ -51,12 +61,13 @@ const addElementHandler = (evt) => {
   elements.prepend(new Element({ title, link }, templateElement).getElement());
   addPopup.close();
 };
-const editPopup = new PopupWithForm(".popup_edit-profile", editFormHandler);
-const addPopup = new PopupWithForm(".popup_add-element", addElementHandler);
+
+const editPopup = new PopupWithForm(".popup_edit-profile", selectorsData, editFormHandler);
+const addPopup = new PopupWithForm(".popup_add-element", selectorsData, addElementHandler);
 const imagePopup = new PopupWithImage(".popup_image-block");
+const forms = [editPopup.form, addPopup.form];
 
 // Listeners
-
 editPopup.form.setListener("open", () => {
   const { name: nameInput, job: jobInput } = userInfo.getUserInfo();
   editPopup.form.setProperties({ nameInput, jobInput });
@@ -78,7 +89,10 @@ elements.addEventListener("click", (evt) => {
   }
 });
 
-// Инициализация карточке
+// Инициализация карточек
 initialCards.forEach((data) => {
   elements.prepend(new Element(data, templateElement).getElement());
 });
+
+// Включение валидации
+enableValidation(forms, selectorsData);

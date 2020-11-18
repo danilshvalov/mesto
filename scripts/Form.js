@@ -1,12 +1,11 @@
 export default class Form {
-  constructor(form, inputSelector, submitButtonSelector) {
+  constructor(form, {inputSelector, submitButtonSelector}) {
     this.form = form;
     this.inputs = Array.from(this.form.querySelectorAll(inputSelector));
     this.submitButton = this.form.querySelector(submitButtonSelector);
   }
   setListener(type, listener) {
     this.form.addEventListener(type, listener);
-    return this;
   }
   setProperties(data) {
     this.inputs.forEach((input) => {
@@ -14,7 +13,6 @@ export default class Form {
         input.value = data[input.name];
       }
     });
-    return this;
   }
   getProperties() {
     const result = {};
@@ -23,7 +21,6 @@ export default class Form {
   }
   reset() {
     this.form.reset();
-    return this;
   }
   querySelector(selector) {
     return this.form.querySelector(selector);

@@ -1,14 +1,3 @@
-const selectorsData = {
-  formSelector: ".form",
-  inputSelector: ".field__input",
-  submitButtonSelector: ".button_type_submit",
-  inactiveButtonClass: "button_type_submit-disabled",
-  inputErrorClass: "field__input_error",
-  errorClass: "field__input-error_active"
-};
-
-import Form from "./Form.js";
-
 class Validator {
   constructor(form, {inactiveButtonClass, inputErrorClass, errorClass}) {
     this.form = form;
@@ -49,7 +38,7 @@ class Validator {
   }
   enableValidation() {
     this.form.setListener("input", (evt) => {
-      if (evt.target.classList.contains("field__input")) {
+      if (this.form.inputs.includes(evt.target)) {
         this._checkInputValidity(evt.target);
       }
       this._toggleButtonState();
@@ -65,12 +54,8 @@ class Validator {
   }
 }
 
-function enableValidation({formSelector, inputSelector, submitButtonSelector, inactiveButtonClass, inputErrorClass, errorClass}) {
-  document.querySelectorAll(formSelector).forEach((form) => {
-    const validator = new Validator(new Form(form, inputSelector, submitButtonSelector), {inactiveButtonClass, inputErrorClass, errorClass});
-    validator.enableValidation();
-  });
+export default function enableValidation(forms, {inactiveButtonClass, inputErrorClass, errorClass}) {
+  forms.forEach((form) => new Validator(form, {inactiveButtonClass, inputErrorClass, errorClass}).enableValidation());
 }
 
-enableValidation(selectorsData);
 
