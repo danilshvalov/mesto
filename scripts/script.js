@@ -32,10 +32,14 @@ const editFormValidator = enableValidation(editPopup.form, selectorsData);
 
 
 // AddElementPopup
+const openCardCallback = (title, link) => {
+  imagePopup.open({ title, link });
+};
+
 const addElementHandler = (evt) => {
   evt.preventDefault();
   const { titleInput: title, linkInput: link } = addPopup.getInputValues();
-  elements.prepend(new Card({ title, link }, templateElement).getElement());
+  elements.prepend(new Card({ title, link }, templateElement, openCardCallback).getElement());
   addPopup.close();
 };
 
@@ -49,10 +53,6 @@ const addFormValidator = enableValidation(addPopup.form, selectorsData);
 
 
 // ImagePopup
-const openCardCallback = (title, link) => {
-  imagePopup.open({ title, link });
-};
-
 const imagePopup = new PopupWithImage(".popup_full-size-image");
 imagePopup._setEventListeners();
 
