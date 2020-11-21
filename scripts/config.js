@@ -33,3 +33,5 @@ export const selectorsData = {
   inputErrorClass: "field__input_error",
   errorClass: "field__error-message_visible"
 };
+
+export const notFoundImage = "images/not-found.svg";

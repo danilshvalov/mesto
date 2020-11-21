@@ -1,14 +1,10 @@
-const notFoundImage = "images/not-found.svg";
+import {notFoundImage} from "./config.js";
 
 export default class Card {
   constructor(data, templateElement, openCardCallback) {
     this.body = templateElement.cloneNode(true);
     this.title = this.body.querySelector(".element__title");
     this.image = this.body.querySelector(".element__image");
-    this.image.addEventListener("error", () => {
-      this.image.src = notFoundImage;
-      this.image.alt = "Not Found";
-    });
     this.likeButton = this.body.querySelector(".element__like-button");
     this.deleteButton = this.body.querySelector(".element__delete-button");
     this.openCardCallback = openCardCallback;
@@ -32,6 +28,10 @@ export default class Card {
   _setListeners() {
     this.deleteButton.addEventListener("click", () => this.deleteCard());
     this.image.addEventListener("click", () => this.openCardCallback(this.title.textContent, this.image.src));
+    this.image.addEventListener("error", () => {
+      this.image.src = notFoundImage;
+      this.image.alt = "Not Found";
+    });
     this.likeButton.addEventListener("click", () => this.toggleLike());
   }
 }
