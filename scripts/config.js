@@ -25,13 +25,46 @@ export const initialCards = [
   },
 ];
 
-export const selectorsData = {
-  formSelector: ".form",
-  inputSelector: ".field__input",
-  submitButtonSelector: ".button_type_submit",
-  inactiveButtonClass: "button_type_submit-disabled",
-  inputErrorClass: "field__input_error",
-  errorClass: "field__error-message_visible"
+export const selectors = {
+  userInfoSelectors: {
+    nameSelector: ".profile__name",
+    aboutSelector: ".profile__about",
+  },
+  formSelectors: {
+    formSelector: ".form",
+    inputSelector: ".field__input",
+    submitButtonSelector: ".button_type_submit",
+    inactiveButtonClass: "button_type_submit-disabled",
+    inputErrorClass: "field__input_error",
+    errorClass: "field__error-message_visible",
+  },
+  popupSelectors: {
+    editPopupSelector: ".popup_edit-profile",
+    addPopupSelector: ".popup_add-element",
+    imagePopupSelector: ".popup_full-size-image",
+    closeButtonSelector: ".popup__close-button",
+    openClass: "popup_opened",
+    containerClass: "popup__container"
+  },
+  imagePopupSelectors: {
+    imageSelector: ".picture__image",
+    descriptionSelector: ".picture__description",
+  },
+  pageButtons: {
+    editProfileButtonSelector: ".profile__edit-button",
+    addElementButtonSelector: ".profile__add-button",
+  },
+  elements: {
+    elementsSelector: ".elements",
+  },
+  element: {
+    templateSelector: ".template-element",
+    elementSelector: ".element",
+    titleSelector: ".element__title",
+    imageSelector: ".element__image",
+    likeButtonSelector: ".element__like-button",
+    deleteButtonSelector: ".element__delete-button"
+  },
 };
 
 export const notFoundImage = "images/not-found.svg";

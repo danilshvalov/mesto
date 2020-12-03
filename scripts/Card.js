@@ -1,37 +1,56 @@
-import {notFoundImage} from "./config.js";
+import { notFoundImage } from "./config.js";
 
 export default class Card {
-  constructor(data, templateElement, openCardCallback) {
-    this.body = templateElement.cloneNode(true);
-    this.title = this.body.querySelector(".element__title");
-    this.image = this.body.querySelector(".element__image");
-    this.likeButton = this.body.querySelector(".element__like-button");
-    this.deleteButton = this.body.querySelector(".element__delete-button");
-    this.openCardCallback = openCardCallback;
-    this.setProperties(data);
+  constructor(selectors, data, templateSelector, openCardCallback) {
+    this._templateSelector = templateSelector;
+    this._openCardCallback = openCardCallback;
+    this._data = data;
+    this._selectors = selectors;
+  }
+  _getTemplate() {
+    return document
+      .querySelector(this._templateSelector)
+      .content.querySelector(this._selectors.elementSelector)
+      .cloneNode(true);
+  }
+  generateCard() {
+    this._element = this._getTemplate();
+    this._title = this._element.querySelector(this._selectors.titleSelector);
+    this._image = this._element.querySelector(this._selectors.imageSelector);
+    this._likeButton = this._element.querySelector(this._selectors.likeButtonSelector);
+    this._deleteButton = this._element.querySelector(this._selectors.deleteButtonSelector);
+
+    this.setProperties(this._data);
+
+    this._setListeners();
+
+    return this._element;
   }
   setProperties({ title, link }) {
-    this.image.src = link;
-    this.image.alt = title;
-    this.title.textContent = title;
+    this._image.src = link;
+    this._image.alt = title;
+    this._title.textContent = title;
   }
   toggleLike() {
-    this.likeButton.classList.toggle("button_like-active");
+    this._likeButton.classList.toggle("button_like-active");
   }
   deleteCard() {
-    this.body.remove();
+    this._element.remove();
   }
   getElement() {
     this._setListeners();
     return this.body;
   }
   _setListeners() {
-    this.deleteButton.addEventListener("click", () => this.deleteCard());
-    this.image.addEventListener("click", () => this.openCardCallback(this.title.textContent, this.image.src));
-    this.image.addEventListener("error", () => {
-      this.image.src = notFoundImage;
-      this.image.alt = "Not Found";
-    });
-    this.likeButton.addEventListener("click", () => this.toggleLike());
+    this._deleteButton.addEventListener("click", () => this.deleteCard());
+    this._image.addEventListener("click", () =>
+      this._openCardCallback(this._title.textContent, this._image.src)
+    );
+    this._image.addEventListener("error", () => this._errorLoadHandler());
+    this._likeButton.addEventListener("click", () => this.toggleLike());
+  }
+  _errorLoadHandler() {
+    this._image.src = notFoundImage;
+    this._image.alt = "Not Found";
   }
 }
