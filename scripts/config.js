@@ -44,7 +44,7 @@ export const selectors = {
     imagePopupSelector: ".popup_full-size-image",
     closeButtonSelector: ".popup__close-button",
     openClass: "popup_opened",
-    containerClass: "popup__container"
+    containerClass: "popup__container",
   },
   imagePopupSelectors: {
     imageSelector: ".picture__image",
@@ -63,7 +63,8 @@ export const selectors = {
     titleSelector: ".element__title",
     imageSelector: ".element__image",
     likeButtonSelector: ".element__like-button",
-    deleteButtonSelector: ".element__delete-button"
+    deleteButtonSelector: ".element__delete-button",
+    likeActiveClass: "button_like-active",
   },
 };
 

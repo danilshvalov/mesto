@@ -2,7 +2,7 @@ import PopupWithForm from "./PopupWithForm.js";
 import PopupWithImage from "./PopupWithImage.js";
 import Card from "./Card.js";
 import UserInfo from "./UserInfo.js";
-import enableValidation from "./validate.js";
+import { enableValidation } from "./FormValidator.js";
 import { initialCards, selectors } from "./config.js";
 
 const {
@@ -17,7 +17,6 @@ const {
   userInfoSelectors: { nameSelector, aboutSelector },
 } = selectors;
 
-console.log();
 // UserInfo
 const userInfo = new UserInfo(nameSelector, aboutSelector);
 
@@ -92,8 +91,8 @@ function renderCard(data) {
   elements.prepend(
     new Card(
       elementSelectors,
-      data,
       templateSelector,
+      data,
       openCardCallback
     ).generateCard()
   );

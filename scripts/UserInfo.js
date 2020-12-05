@@ -5,8 +5,8 @@ export default class UserInfo {
   }
   getUserInfo() {
     return {
-      name : this.name.textContent.trim(),
-      job: this.job.textContent.trim()
+      name: this.name.textContent.trim(),
+      job: this.job.textContent.trim(),
     };
   }
   setUserInfo(name, job) {

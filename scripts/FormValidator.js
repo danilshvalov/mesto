@@ -1,5 +1,14 @@
-export default class FormValidator {
-  constructor({inputSelector, submitButtonSelector, inactiveButtonClass, inputErrorClass, errorClass}, formElement) {
+export class FormValidator {
+  constructor(
+    {
+      inputSelector,
+      submitButtonSelector,
+      inactiveButtonClass,
+      inputErrorClass,
+      errorClass,
+    },
+    formElement
+  ) {
     this._form = formElement;
     this._inputs = Array.from(this._form.querySelectorAll(inputSelector));
     this._submitButton = this._form.querySelector(submitButtonSelector);
@@ -48,11 +57,22 @@ export default class FormValidator {
     // при попытке отправить форму с неправильными данными тоже показывается предупреждение
     this._form.addEventListener("keydown", (evt) => {
       if (evt.key == "Enter") {
-        this._inputs.forEach((input) => this._checkInputValidity(input)); 
+        this._inputs.forEach((input) => this._checkInputValidity(input));
       }
     });
     this._form.addEventListener("open", () => this._toggleButtonState());
     // ожидаем окончание анимации закрытия формы, затем сбрасываем ошибки
-    this._form.addEventListener("close", () => setTimeout(() => this._inputs.forEach((input) => this._hideInputError(input)), 100));
+    this._form.addEventListener("close", () =>
+      setTimeout(
+        () => this._inputs.forEach((input) => this._hideInputError(input)),
+        100
+      )
+    );
   }
+}
+
+export function enableValidation(selectorsData, formElement) {
+  const result = new FormValidator(selectorsData, formElement);
+  result.enableValidation();
+  return result;
 }

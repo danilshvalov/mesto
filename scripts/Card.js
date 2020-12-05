@@ -1,7 +1,7 @@
 import { notFoundImage } from "./config.js";
 
 export default class Card {
-  constructor(selectors, data, templateSelector, openCardCallback) {
+  constructor(selectors, templateSelector, data, openCardCallback) {
     this._templateSelector = templateSelector;
     this._openCardCallback = openCardCallback;
     this._data = data;
@@ -17,8 +17,12 @@ export default class Card {
     this._element = this._getTemplate();
     this._title = this._element.querySelector(this._selectors.titleSelector);
     this._image = this._element.querySelector(this._selectors.imageSelector);
-    this._likeButton = this._element.querySelector(this._selectors.likeButtonSelector);
-    this._deleteButton = this._element.querySelector(this._selectors.deleteButtonSelector);
+    this._likeButton = this._element.querySelector(
+      this._selectors.likeButtonSelector
+    );
+    this._deleteButton = this._element.querySelector(
+      this._selectors.deleteButtonSelector
+    );
 
     this.setProperties(this._data);
 
@@ -32,7 +36,7 @@ export default class Card {
     this._title.textContent = title;
   }
   toggleLike() {
-    this._likeButton.classList.toggle("button_like-active");
+    this._likeButton.classList.toggle(this._selectors.likeActiveClass);
   }
   deleteCard() {
     this._element.remove();
