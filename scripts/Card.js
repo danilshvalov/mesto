@@ -2,16 +2,15 @@ import { notFoundImage } from "./config.js";
 
 export default class Card {
   constructor(selectors, templateSelector, data, openCardCallback) {
-    this._templateSelector = templateSelector;
     this._openCardCallback = openCardCallback;
     this._data = data;
     this._selectors = selectors;
+    this._template = document
+      .querySelector(templateSelector)
+      .content.querySelector(this._selectors.elementSelector);
   }
   _getTemplate() {
-    return document
-      .querySelector(this._templateSelector)
-      .content.querySelector(this._selectors.elementSelector)
-      .cloneNode(true);
+    return this._template.cloneNode(true);
   }
   generateCard() {
     this._element = this._getTemplate();
@@ -40,10 +39,6 @@ export default class Card {
   }
   deleteCard() {
     this._element.remove();
-  }
-  getElement() {
-    this._setListeners();
-    return this.body;
   }
   _setListeners() {
     this._deleteButton.addEventListener("click", () => this.deleteCard());

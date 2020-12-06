@@ -6,6 +6,7 @@ export class FormValidator {
       inactiveButtonClass,
       inputErrorClass,
       errorClass,
+      enterKeyCode
     },
     formElement
   ) {
@@ -15,6 +16,7 @@ export class FormValidator {
     this._inactiveButtonClass = inactiveButtonClass;
     this._inputErrorClass = inputErrorClass;
     this._errorClass = errorClass;
+    this._enterKeyCode = enterKeyCode;
   }
   _checkValidation() {
     return !this._inputs.some((input) => !input.validity.valid);
@@ -47,6 +49,10 @@ export class FormValidator {
       this._showInputError(inputElement);
     }
   }
+  clearErrors() {
+    this._inputs.forEach((input) => this._hideInputError(input));
+    this._toggleButtonState();
+  }
   enableValidation() {
     this._form.addEventListener("input", (evt) => {
       if (this._inputs.includes(evt.target)) {
@@ -56,18 +62,10 @@ export class FormValidator {
     });
     // при попытке отправить форму с неправильными данными тоже показывается предупреждение
     this._form.addEventListener("keydown", (evt) => {
-      if (evt.key == "Enter") {
+      if (evt.key === this._enterKeyCode) {
         this._inputs.forEach((input) => this._checkInputValidity(input));
       }
     });
-    this._form.addEventListener("open", () => this._toggleButtonState());
-    // ожидаем окончание анимации закрытия формы, затем сбрасываем ошибки
-    this._form.addEventListener("close", () =>
-      setTimeout(
-        () => this._inputs.forEach((input) => this._hideInputError(input)),
-        100
-      )
-    );
   }
 }
 

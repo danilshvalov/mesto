@@ -25,6 +25,11 @@ export const initialCards = [
   },
 ];
 
+export const keyCodes = {
+  enterKeyCode: "Enter",
+  escapeKeyCode: "Escape",
+};
+
 export const selectors = {
   userInfoSelectors: {
     nameSelector: ".profile__name",

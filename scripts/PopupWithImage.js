@@ -15,10 +15,8 @@ export default class PopupWithImage extends Popup {
   }
   close() {
     super.close();
-    setTimeout(() => {
-      this.image.src = "";
-      this.image.alt = "";
-      this.description.textContent = "";
-    }, 400); // ожидаем окончание анимации, потом чистим Popup
+    this.image.src = "";
+    this.image.alt = "";
+    this.description.textContent = "";
   }
 }

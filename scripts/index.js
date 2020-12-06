@@ -3,7 +3,7 @@ import PopupWithImage from "./PopupWithImage.js";
 import Card from "./Card.js";
 import UserInfo from "./UserInfo.js";
 import { enableValidation } from "./FormValidator.js";
-import { initialCards, selectors } from "./config.js";
+import { initialCards, keyCodes, selectors } from "./config.js";
 
 const {
   formSelectors,
@@ -31,23 +31,25 @@ const editFormHandler = (evt) => {
 const editPopup = new PopupWithForm(
   {
     ...popupSelectors,
+    ...keyCodes,
     popupSelector: editPopupSelector,
   },
   formSelectors,
   editFormHandler
 );
 
+const editFormValidator = enableValidation(
+  { ...formSelectors, ...keyCodes },
+  editPopup.formElement
+);
+
 const editButton = document.querySelector(editProfileButtonSelector);
 editButton.addEventListener("click", () => {
   const { name: nameInput, job: jobInput } = userInfo.getUserInfo();
   editPopup.setInputValues({ nameInput, jobInput });
+  editFormValidator.clearErrors();
   editPopup.open();
 });
-
-const editFormValidator = enableValidation(
-  formSelectors,
-  editPopup.formElement
-);
 
 // AddElementPopup
 const openCardCallback = (title, link) => {
@@ -64,21 +66,29 @@ const addElementHandler = (evt) => {
 const addPopup = new PopupWithForm(
   {
     ...popupSelectors,
+    ...keyCodes,
     popupSelector: addPopupSelector,
   },
   formSelectors,
   addElementHandler
 );
 
-const addButton = document.querySelector(addElementButtonSelector);
-addButton.addEventListener("click", () => addPopup.open());
+const addFormValidator = enableValidation(
+  { ...formSelectors, ...keyCodes },
+  addPopup.formElement
+);
 
-const addFormValidator = enableValidation(formSelectors, addPopup.formElement);
+const addButton = document.querySelector(addElementButtonSelector);
+addButton.addEventListener("click", () => {
+  addFormValidator.clearErrors();
+  addPopup.open();
+});
 
 // ImagePopup
 const imagePopup = new PopupWithImage(
   {
     ...popupSelectors,
+    ...keyCodes,
     popupSelector: imagePopupSelector,
   },
   imagePopupSelectors
