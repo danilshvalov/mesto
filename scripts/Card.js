@@ -1,10 +1,17 @@
 import { notFoundImage } from "./config.js";
 
 export default class Card {
-  constructor(selectors, templateSelector, data, openCardCallback) {
+  constructor(templateSelector, data, openCardCallback) {
     this._openCardCallback = openCardCallback;
     this._data = data;
-    this._selectors = selectors;
+    this._selectors = {
+      elementSelector: ".element",
+      titleSelector: ".element__title",
+      imageSelector: ".element__image",
+      likeButtonSelector: ".element__like-button",
+      deleteButtonSelector: ".element__delete-button",
+      likeActiveClass: "button_like-active",
+    };
     this._template = document
       .querySelector(templateSelector)
       .content.querySelector(this._selectors.elementSelector);

@@ -11,7 +11,6 @@ const {
   popupSelectors: { editPopupSelector, addPopupSelector, imagePopupSelector },
   pageButtons: { editProfileButtonSelector, addElementButtonSelector },
   imagePopupSelectors,
-  element: elementSelectors,
   element: { templateSelector },
   elements: { elementsSelector },
   userInfoSelectors: { nameSelector, aboutSelector },
@@ -100,7 +99,6 @@ const elements = document.querySelector(elementsSelector);
 function renderCard(data) {
   elements.prepend(
     new Card(
-      elementSelectors,
       templateSelector,
       data,
       openCardCallback
