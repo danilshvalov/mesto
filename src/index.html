@@ -4,19 +4,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="pages/index.css" />
   <link rel="icon" href="favicon.ico" />
   <title>Mesto</title>
 </head>
 
 <body class="page">
   <header class="header">
-    <img class="header__logo" src="images/header-logo.svg" alt="Места России" />
+    <img class="header__logo" src="<%=require('./images/header-logo.svg')%>" alt="Места России" />
   </header>
 
   <main class="content">
     <section class="profile">
-      <img class="profile__avatar" src="images/avatar.jpg" alt="Аватар пользователя" />
+      <img class="profile__avatar" src="<%=require('./images/avatar.jpg')%>" alt="Аватар пользователя" />
       <div class="profile__text">
         <div class="profile__name-container">
           <h1 class="profile__name">Жак-Ив Кусто</h1>
@@ -97,13 +96,12 @@
     <div class="popup__container">
       <button class="button button_type_close popup__close-button" type="button"></button>
       <div class="popup__picture picture">
-        <img class="picture__image" src="images/loading.svg" alt="Загрузка" />
+        <img class="picture__image" src="<%=require('./images/loading.svg')%>" alt="Загрузка" />
         <p class="picture__description">Загрузка</p>
       </div>
     </div>
   </div>
 
-  <script src="scripts/index.js" type="module"></script>
 </body>
 
 </html>

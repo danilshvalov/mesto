@@ -25,6 +25,11 @@ export const initialCards = [
   },
 ];
 
+export const keyCodes = {
+  enterKeyCode: "Enter",
+  escapeKeyCode: "Escape",
+};
+
 export const selectors = {
   userInfoSelectors: {
     nameSelector: ".profile__name",
@@ -59,12 +64,6 @@ export const selectors = {
   },
   element: {
     templateSelector: ".template-element",
-    elementSelector: ".element",
-    titleSelector: ".element__title",
-    imageSelector: ".element__image",
-    likeButtonSelector: ".element__like-button",
-    deleteButtonSelector: ".element__delete-button",
-    likeActiveClass: "button_like-active",
   },
 };
 

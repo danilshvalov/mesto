@@ -4,23 +4,27 @@ export default class Popup {
     closeButtonSelector,
     openClass,
     containerClass,
+    escapeKeyCode,
   }) {
     this._popup = document.querySelector(popupSelector);
     this._closeButton = this._popup.querySelector(closeButtonSelector);
     this._escapeKeyHandler = this._escapeKeyHandler.bind(this);
     this._openClass = openClass;
     this._containerClass = containerClass;
+    this._escapeKeyCode = escapeKeyCode;
+    this._animationDuration = parseFloat(getComputedStyle(this._popup).transitionDuration) * 1000;
   }
   open() {
     document.addEventListener("keydown", this._escapeKeyHandler);
     this._popup.classList.add(this._openClass);
+
   }
   close() {
     this._popup.classList.remove(this._openClass);
     document.removeEventListener("keydown", this._escapeKeyHandler);
   }
   _escapeKeyHandler(evt) {
-    if (evt.key == "Escape") {
+    if (evt.key === this._escapeKeyCode) {
       this.close();
     }
   }
