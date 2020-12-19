@@ -5,7 +5,7 @@
 Это [страница](https://danilshvalov.github.io/mesto/), использующая HTML, CSS и JavaScript.
 
 
-<img src="images/preview.jpg" alt="Превью страницы" width="570"/>
+<img src="/src/images/preview.jpg" alt="Превью страницы" width="570"/>
 
 ---
 
