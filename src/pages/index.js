@@ -22,10 +22,10 @@ const {
 const userInfo = new UserInfo(nameSelector, aboutSelector);
 
 const editPopup = new PopupWithForm(
+  editPopupSelector,
   {
     ...popupSelectors,
     ...keyCodes,
-    popupSelector: editPopupSelector,
   },
   formSelectors,
   (evt) => {
@@ -63,10 +63,10 @@ const addElementHandler = (evt) => {
 };
 
 const addPopup = new PopupWithForm(
+  addPopupSelector,
   {
     ...popupSelectors,
     ...keyCodes,
-    popupSelector: addPopupSelector,
   },
   formSelectors,
   addElementHandler
@@ -85,10 +85,10 @@ const addFormValidator = enableValidation(
 
 // ImagePopup
 const imagePopup = new PopupWithImage(
+  imagePopupSelector,
   {
     ...popupSelectors,
     ...keyCodes,
-    popupSelector: imagePopupSelector,
   },
   imagePopupSelectors
 );

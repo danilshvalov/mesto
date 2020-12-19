@@ -1,11 +1,8 @@
 export class Popup {
-  constructor({
+  constructor(
     popupSelector,
-    closeButtonSelector,
-    openClass,
-    containerClass,
-    escapeKeyCode,
-  }) {
+    { closeButtonSelector, openClass, containerClass, escapeKeyCode }
+  ) {
     this._popup = document.querySelector(popupSelector);
     this._closeButton = this._popup.querySelector(closeButtonSelector);
     this._escapeKeyHandler = this._handleEscClose.bind(this);
