@@ -1,7 +1,7 @@
-import { PopupWithForm } from "../components/PopupWithForm.js";
-import { PopupWithImage } from "../components/PopupWithImage.js";
+import { PopupWithForm } from "../components/popup-with-form.js";
+import { PopupWithImage } from "../components/popup-with-image.js";
 import { Card } from "../components/Card.js";
-import { UserInfo } from "../components/UserInfo.js";
+import { UserInfo } from "../components/user-info.js";
 import { Section } from "../components/Section.js";
 import { enableValidation } from "../components/FormValidator.js";
 import { initialCards, keyCodes, selectors } from "../utils/constants.js";
