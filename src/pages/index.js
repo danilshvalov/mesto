@@ -4,16 +4,14 @@ import { Card } from "../components/Card.js";
 import { UserInfo } from "../components/user-info.js";
 import { Section } from "../components/Section.js";
 import { enableValidation } from "../components/FormValidator.js";
-import { initialCards, keyCodes, selectors } from "../utils/constants.js";
+import { initialCards, selectors } from "../utils/constants.js";
 
 import "./index.css";
 
 const {
   formSelectors,
-  popupSelectors,
   popupSelectors: { editPopupSelector, addPopupSelector, imagePopupSelector },
   pageButtons: { editProfileButtonSelector, addElementButtonSelector },
-  imagePopupSelectors,
   element: { templateSelector },
   elements: { elementsSelector },
   userInfoSelectors: { nameSelector, aboutSelector },
@@ -21,23 +19,15 @@ const {
 
 const userInfo = new UserInfo(nameSelector, aboutSelector);
 
-const editPopup = new PopupWithForm(
-  editPopupSelector,
-  {
-    ...popupSelectors,
-    ...keyCodes,
-  },
-  formSelectors,
-  (evt) => {
-    evt.preventDefault();
-    const { nameInput, jobInput } = editPopup.getInputValues();
-    userInfo.setUserInfo(nameInput, jobInput);
-    editPopup.close();
-  }
-);
+const editPopup = new PopupWithForm(editPopupSelector, (evt) => {
+  evt.preventDefault();
+  const { nameInput, jobInput } = editPopup.getInputValues();
+  userInfo.setUserInfo(nameInput, jobInput);
+  editPopup.close();
+});
 
 const editFormValidator = enableValidation(
-  { ...formSelectors, ...keyCodes },
+  formSelectors,
   editPopup.formElement
 );
 
@@ -62,15 +52,7 @@ const addElementHandler = (evt) => {
   addPopup.close();
 };
 
-const addPopup = new PopupWithForm(
-  addPopupSelector,
-  {
-    ...popupSelectors,
-    ...keyCodes,
-  },
-  formSelectors,
-  addElementHandler
-);
+const addPopup = new PopupWithForm(addPopupSelector, addElementHandler);
 
 const addButton = document.querySelector(addElementButtonSelector);
 addButton.addEventListener("click", () => {
@@ -78,20 +60,10 @@ addButton.addEventListener("click", () => {
   addPopup.open();
 });
 
-const addFormValidator = enableValidation(
-  { ...formSelectors, ...keyCodes },
-  addPopup.formElement
-);
+const addFormValidator = enableValidation(formSelectors, addPopup.formElement);
 
 // ImagePopup
-const imagePopup = new PopupWithImage(
-  imagePopupSelector,
-  {
-    ...popupSelectors,
-    ...keyCodes,
-  },
-  imagePopupSelectors
-);
+const imagePopup = new PopupWithImage(imagePopupSelector);
 
 const elementsSection = new Section(
   {

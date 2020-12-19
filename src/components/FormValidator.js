@@ -6,7 +6,6 @@ export class FormValidator {
       inactiveButtonClass,
       inputErrorClass,
       errorClass,
-      enterKeyCode,
     },
     formElement
   ) {
@@ -16,7 +15,7 @@ export class FormValidator {
     this._inactiveButtonClass = inactiveButtonClass;
     this._inputErrorClass = inputErrorClass;
     this._errorClass = errorClass;
-    this._enterKeyCode = enterKeyCode;
+    this._enterKeyCode = "Enter";
   }
   _checkValidation() {
     return !this._inputs.some((input) => !input.validity.valid);

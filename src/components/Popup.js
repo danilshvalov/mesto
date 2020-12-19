@@ -1,14 +1,11 @@
 export class Popup {
-  constructor(
-    popupSelector,
-    { closeButtonSelector, openClass, containerClass, escapeKeyCode }
-  ) {
+  constructor(popupSelector) {
     this._popup = document.querySelector(popupSelector);
-    this._closeButton = this._popup.querySelector(closeButtonSelector);
+    this._closeButton = this._popup.querySelector(".popup__close-button");
     this._escapeKeyHandler = this._handleEscClose.bind(this);
-    this._openClass = openClass;
-    this._containerClass = containerClass;
-    this._escapeKeyCode = escapeKeyCode;
+    this._openClass = "popup_opened";
+    this._containerClass = "popup__container";
+    this._escapeKeyCode = "Escape";
     this._animationDuration =
       parseFloat(getComputedStyle(this._popup).transitionDuration) * 1000;
   }

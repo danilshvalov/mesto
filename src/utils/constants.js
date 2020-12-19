@@ -25,11 +25,6 @@ export const initialCards = [
   },
 ];
 
-export const keyCodes = {
-  enterKeyCode: "Enter",
-  escapeKeyCode: "Escape",
-};
-
 export const selectors = {
   userInfoSelectors: {
     nameSelector: ".profile__name",
@@ -43,18 +38,6 @@ export const selectors = {
     inputErrorClass: "field__input_error",
     errorClass: "field__error-message_visible",
   },
-  popupSelectors: {
-    editPopupSelector: ".popup_edit-profile",
-    addPopupSelector: ".popup_add-element",
-    imagePopupSelector: ".popup_full-size-image",
-    closeButtonSelector: ".popup__close-button",
-    openClass: "popup_opened",
-    containerClass: "popup__container",
-  },
-  imagePopupSelectors: {
-    imageSelector: ".picture__image",
-    descriptionSelector: ".picture__description",
-  },
   pageButtons: {
     editProfileButtonSelector: ".profile__edit-button",
     addElementButtonSelector: ".profile__add-button",
@@ -65,6 +48,13 @@ export const selectors = {
   element: {
     templateSelector: ".template-element",
   },
+  popupSelectors: {
+    editPopupSelector: ".popup_edit-profile",
+    addPopupSelector: ".popup_add-element",
+    imagePopupSelector: ".popup_full-size-image",
+  },
 };
 
-export const notFoundImage = "images/not-found.svg";
+import notFoundImage from "../images/not-found.svg";
+
+export { notFoundImage };
