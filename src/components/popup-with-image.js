@@ -1,6 +1,6 @@
 import Popup from "./Popup.js";
 
-class PopupWithImage extends Popup {
+export default class PopupWithImage extends Popup {
   constructor(popupSelectors, { imageSelector, descriptionSelector }) {
     super(popupSelectors);
     this.image = this._popup.querySelector(imageSelector);
@@ -23,5 +23,3 @@ class PopupWithImage extends Popup {
     this.description.textContent = "";
   }
 }
-
-export default PopupWithImage;
