@@ -1,9 +1,21 @@
+<<<<<<< HEAD:scripts/index.js
 import PopupWithForm from "./PopupWithForm.js";
 import PopupWithImage from "./PopupWithImage.js";
 import Card from "./Card.js";
 import UserInfo from "./UserInfo.js";
 import { enableValidation } from "./FormValidator.js";
 import { initialCards, keyCodes, selectors } from "./config.js";
+=======
+import PopupWithForm from "../components/PopupWithForm.js";
+import PopupWithImage from "../components/PopupWithImage.js";
+import Card from "../components/Card.js";
+import UserInfo from "../components/UserInfo.js";
+import Section from "../components/Section.js";
+import { enableValidation } from "../components/FormValidator.js";
+import { initialCards, keyCodes, selectors } from "../utils/constants.js";
+
+import "./index.css";
+>>>>>>> develop:src/pages/index.js
 
 const {
   formSelectors,
@@ -16,16 +28,7 @@ const {
   userInfoSelectors: { nameSelector, aboutSelector },
 } = selectors;
 
-// UserInfo
 const userInfo = new UserInfo(nameSelector, aboutSelector);
-
-// EditProfilePopup
-const editFormHandler = (evt) => {
-  evt.preventDefault();
-  const { nameInput, jobInput } = editPopup.getInputValues();
-  userInfo.setUserInfo(nameInput, jobInput);
-  editPopup.close();
-};
 
 const editPopup = new PopupWithForm(
   {
@@ -34,7 +37,12 @@ const editPopup = new PopupWithForm(
     popupSelector: editPopupSelector,
   },
   formSelectors,
-  editFormHandler
+  (evt) => {
+    evt.preventDefault();
+    const { nameInput, jobInput } = editPopup.getInputValues();
+    userInfo.setUserInfo(nameInput, jobInput);
+    editPopup.close();
+  }
 );
 
 const editFormValidator = enableValidation(
@@ -50,6 +58,14 @@ editButton.addEventListener("click", () => {
   editPopup.open();
 });
 
+<<<<<<< HEAD:scripts/index.js
+=======
+const editFormValidator = enableValidation(
+  { ...formSelectors, ...keyCodes },
+  editPopup.formElement
+);
+
+>>>>>>> develop:src/pages/index.js
 // AddElementPopup
 const openCardCallback = (title, link) => {
   imagePopup.open({ title, link });
@@ -58,7 +74,9 @@ const openCardCallback = (title, link) => {
 const addElementHandler = (evt) => {
   evt.preventDefault();
   const { titleInput: title, linkInput: link } = addPopup.getInputValues();
-  renderCard({ title, link });
+  elementsSection.addItem(
+    new Card(templateSelector, { title, link }, openCardCallback).generateCard()
+  );
   addPopup.close();
 };
 
@@ -72,6 +90,7 @@ const addPopup = new PopupWithForm(
   addElementHandler
 );
 
+<<<<<<< HEAD:scripts/index.js
 const addFormValidator = enableValidation(
   { ...formSelectors, ...keyCodes },
   addPopup.formElement
@@ -82,6 +101,18 @@ addButton.addEventListener("click", () => {
   addFormValidator.clearErrors();
   addPopup.open();
 });
+=======
+const addButton = document.querySelector(addElementButtonSelector);
+addButton.addEventListener("click", () => {
+  addFormValidator.clearErrors();
+  addPopup.open();
+});
+
+const addFormValidator = enableValidation(
+  { ...formSelectors, ...keyCodes },
+  addPopup.formElement
+);
+>>>>>>> develop:src/pages/index.js
 
 // ImagePopup
 const imagePopup = new PopupWithImage(
@@ -93,6 +124,7 @@ const imagePopup = new PopupWithImage(
   imagePopupSelectors
 );
 
+<<<<<<< HEAD:scripts/index.js
 // Инициализация карточек
 const elements = document.querySelector(elementsSelector);
 
@@ -109,3 +141,17 @@ function renderCard(data) {
 initialCards.forEach((data) => {
   renderCard(data);
 });
+=======
+const elementsSection = new Section(
+  {
+    items: initialCards,
+    renderer: (item) => {
+      elementsSection.addItem(
+        new Card(templateSelector, item, openCardCallback).generateCard()
+      );
+    },
+  },
+  elementsSelector
+);
+elementsSection.renderItems();
+>>>>>>> develop:src/pages/index.js

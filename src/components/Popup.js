@@ -4,24 +4,37 @@ export default class Popup {
     closeButtonSelector,
     openClass,
     containerClass,
+<<<<<<< HEAD:scripts/Popup.js
     escapeKeyCode
+=======
+    escapeKeyCode,
+>>>>>>> develop:src/components/Popup.js
   }) {
     this._popup = document.querySelector(popupSelector);
     this._closeButton = this._popup.querySelector(closeButtonSelector);
-    this._escapeKeyHandler = this._escapeKeyHandler.bind(this);
+    this._escapeKeyHandler = this._handleEscClose.bind(this);
     this._openClass = openClass;
     this._containerClass = containerClass;
     this._escapeKeyCode = escapeKeyCode;
+<<<<<<< HEAD:scripts/Popup.js
+=======
+    this._animationDuration =
+      parseFloat(getComputedStyle(this._popup).transitionDuration) * 1000;
+>>>>>>> develop:src/components/Popup.js
   }
   open() {
-    document.addEventListener("keydown", this._escapeKeyHandler);
+    document.addEventListener("keydown", (evt) => this._handleEscClose(evt));
     this._popup.classList.add(this._openClass);
   }
   close() {
     this._popup.classList.remove(this._openClass);
-    document.removeEventListener("keydown", this._escapeKeyHandler);
+    document.removeEventListener("keydown", this._handleEscClose);
   }
+<<<<<<< HEAD:scripts/Popup.js
   _escapeKeyHandler(evt) {
+=======
+  _handleEscClose(evt) {
+>>>>>>> develop:src/components/Popup.js
     if (evt.key === this._escapeKeyCode) {
       this.close();
     }

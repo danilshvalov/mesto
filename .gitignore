@@ -1,3 +1,4 @@
-.vscode
 .jshintrc
-scripts.zip
+.vscode
+node_modules
+dist

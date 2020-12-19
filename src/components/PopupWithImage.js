@@ -15,6 +15,12 @@ export default class PopupWithImage extends Popup {
   }
   close() {
     super.close();
+<<<<<<< HEAD:scripts/PopupWithImage.js
+=======
+    setTimeout(() => this._clear(), this._animationDuration);
+  }
+  _clear() {
+>>>>>>> develop:src/components/PopupWithImage.js
     this.image.src = "";
     this.image.alt = "";
     this.description.textContent = "";

@@ -6,7 +6,11 @@ export class FormValidator {
       inactiveButtonClass,
       inputErrorClass,
       errorClass,
+<<<<<<< HEAD:scripts/FormValidator.js
       enterKeyCode
+=======
+      enterKeyCode,
+>>>>>>> develop:src/components/FormValidator.js
     },
     formElement
   ) {

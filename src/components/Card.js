@@ -1,8 +1,13 @@
-import { notFoundImage } from "./config.js";
+import { notFoundImage } from "../utils/constants.js";
 
 export default class Card {
+<<<<<<< HEAD:scripts/Card.js
   constructor(templateSelector, data, openCardCallback) {
     this._openCardCallback = openCardCallback;
+=======
+  constructor(templateSelector, data, handleCardClick) {
+    this._handleCardClick = handleCardClick;
+>>>>>>> develop:src/components/Card.js
     this._data = data;
     this._selectors = {
       elementSelector: ".element",
@@ -29,9 +34,7 @@ export default class Card {
     this._deleteButton = this._element.querySelector(
       this._selectors.deleteButtonSelector
     );
-
     this.setProperties(this._data);
-
     this._setListeners();
 
     return this._element;
@@ -50,7 +53,7 @@ export default class Card {
   _setListeners() {
     this._deleteButton.addEventListener("click", () => this.deleteCard());
     this._image.addEventListener("click", () =>
-      this._openCardCallback(this._title.textContent, this._image.src)
+      this._handleCardClick(this._title.textContent, this._image.src)
     );
     this._image.addEventListener("error", () => this._errorLoadHandler());
     this._likeButton.addEventListener("click", () => this.toggleLike());
