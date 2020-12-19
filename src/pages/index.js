@@ -1,11 +1,3 @@
-<<<<<<< HEAD:scripts/index.js
-import PopupWithForm from "./PopupWithForm.js";
-import PopupWithImage from "./PopupWithImage.js";
-import Card from "./Card.js";
-import UserInfo from "./UserInfo.js";
-import { enableValidation } from "./FormValidator.js";
-import { initialCards, keyCodes, selectors } from "./config.js";
-=======
 import PopupWithForm from "../components/PopupWithForm.js";
 import PopupWithImage from "../components/PopupWithImage.js";
 import Card from "../components/Card.js";
@@ -15,7 +7,6 @@ import { enableValidation } from "../components/FormValidator.js";
 import { initialCards, keyCodes, selectors } from "../utils/constants.js";
 
 import "./index.css";
->>>>>>> develop:src/pages/index.js
 
 const {
   formSelectors,
@@ -58,15 +49,7 @@ editButton.addEventListener("click", () => {
   editPopup.open();
 });
 
-<<<<<<< HEAD:scripts/index.js
-=======
-const editFormValidator = enableValidation(
-  { ...formSelectors, ...keyCodes },
-  editPopup.formElement
-);
 
->>>>>>> develop:src/pages/index.js
-// AddElementPopup
 const openCardCallback = (title, link) => {
   imagePopup.open({ title, link });
 };
@@ -90,18 +73,6 @@ const addPopup = new PopupWithForm(
   addElementHandler
 );
 
-<<<<<<< HEAD:scripts/index.js
-const addFormValidator = enableValidation(
-  { ...formSelectors, ...keyCodes },
-  addPopup.formElement
-);
-
-const addButton = document.querySelector(addElementButtonSelector);
-addButton.addEventListener("click", () => {
-  addFormValidator.clearErrors();
-  addPopup.open();
-});
-=======
 const addButton = document.querySelector(addElementButtonSelector);
 addButton.addEventListener("click", () => {
   addFormValidator.clearErrors();
@@ -112,7 +83,6 @@ const addFormValidator = enableValidation(
   { ...formSelectors, ...keyCodes },
   addPopup.formElement
 );
->>>>>>> develop:src/pages/index.js
 
 // ImagePopup
 const imagePopup = new PopupWithImage(
@@ -124,24 +94,6 @@ const imagePopup = new PopupWithImage(
   imagePopupSelectors
 );
 
-<<<<<<< HEAD:scripts/index.js
-// Инициализация карточек
-const elements = document.querySelector(elementsSelector);
-
-function renderCard(data) {
-  elements.prepend(
-    new Card(
-      templateSelector,
-      data,
-      openCardCallback
-    ).generateCard()
-  );
-}
-
-initialCards.forEach((data) => {
-  renderCard(data);
-});
-=======
 const elementsSection = new Section(
   {
     items: initialCards,
@@ -154,4 +106,3 @@ const elementsSection = new Section(
   elementsSelector
 );
 elementsSection.renderItems();
->>>>>>> develop:src/pages/index.js

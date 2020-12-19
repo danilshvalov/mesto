@@ -27,11 +27,7 @@ export default class PopupWithForm extends Popup {
   }
   close() {
     super.close();
-<<<<<<< HEAD:scripts/PopupWithForm.js
-    this.formElement.reset();
-=======
     setTimeout(() => this.formElement.reset(), this._animationDuration);
->>>>>>> develop:src/components/PopupWithForm.js
   }
   _setEventListeners() {
     super._setEventListeners();

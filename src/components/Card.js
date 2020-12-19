@@ -1,13 +1,8 @@
 import { notFoundImage } from "../utils/constants.js";
 
 export default class Card {
-<<<<<<< HEAD:scripts/Card.js
-  constructor(templateSelector, data, openCardCallback) {
-    this._openCardCallback = openCardCallback;
-=======
   constructor(templateSelector, data, handleCardClick) {
     this._handleCardClick = handleCardClick;
->>>>>>> develop:src/components/Card.js
     this._data = data;
     this._selectors = {
       elementSelector: ".element",
