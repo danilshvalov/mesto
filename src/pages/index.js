@@ -46,7 +46,7 @@ editButton.addEventListener("click", () => {
 });
 
 const editFormValidator = enableValidation(
-  formSelectors,
+  { ...formSelectors, ...keyCodes },
   editPopup.formElement
 );
 
@@ -80,7 +80,10 @@ addButton.addEventListener("click", () => {
   addPopup.open();
 });
 
-const addFormValidator = enableValidation(formSelectors, addPopup.formElement);
+const addFormValidator = enableValidation(
+  { ...formSelectors, ...keyCodes },
+  addPopup.formElement
+);
 
 // ImagePopup
 const imagePopup = new PopupWithImage(

@@ -29,9 +29,7 @@ export default class Card {
     this._deleteButton = this._element.querySelector(
       this._selectors.deleteButtonSelector
     );
-
     this.setProperties(this._data);
-
     this._setListeners();
 
     return this._element;
