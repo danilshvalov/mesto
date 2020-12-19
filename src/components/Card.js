@@ -1,17 +1,10 @@
 import { notFoundImage } from "../utils/constants.js";
 
 export class Card {
-  constructor(templateSelector, data, handleCardClick) {
+  constructor(templateSelector, data, handleCardClick, selectors) {
     this._handleCardClick = handleCardClick;
     this._data = data;
-    this._selectors = {
-      elementSelector: ".element",
-      titleSelector: ".element__title",
-      imageSelector: ".element__image",
-      likeButtonSelector: ".element__like-button",
-      deleteButtonSelector: ".element__delete-button",
-      likeActiveClass: "button_like-active",
-    };
+    this._selectors = selectors;
     this._template = document
       .querySelector(templateSelector)
       .content.querySelector(this._selectors.elementSelector);

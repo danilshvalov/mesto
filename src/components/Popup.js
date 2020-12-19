@@ -1,16 +1,17 @@
 export class Popup {
-  constructor(popupSelector) {
+  constructor(popupSelector, escapeKeyCode) {
     this._popup = document.querySelector(popupSelector);
     this._closeButton = this._popup.querySelector(".popup__close-button");
     this._escapeKeyHandler = this._handleEscClose.bind(this);
     this._openClass = "popup_opened";
     this._containerClass = "popup__container";
-    this._escapeKeyCode = "Escape";
+    this._escapeKeyCode = escapeKeyCode;
     this._animationDuration =
       parseFloat(getComputedStyle(this._popup).transitionDuration) * 1000;
+    this._handleEscClose = this._handleEscClose.bind(this);
   }
   open() {
-    document.addEventListener("keydown", (evt) => this._handleEscClose(evt));
+    document.addEventListener("keydown", this._handleEscClose);
     this._popup.classList.add(this._openClass);
   }
   close() {
@@ -22,15 +23,18 @@ export class Popup {
       this.close();
     }
   }
-  _setEventListeners() {
+  _handleClickOnOverlay(evt) {
+    if (
+      evt.target == this._popup ||
+      evt.target.classList.contains(this._containerClass)
+    ) {
+      this.close();
+    }
+  }
+  setEventListeners() {
     this._closeButton.addEventListener("click", () => this.close());
-    this._popup.addEventListener("click", (evt) => {
-      if (
-        evt.target == this._popup ||
-        evt.target.classList.contains(this._containerClass)
-      ) {
-        this.close();
-      }
-    });
+    this._popup.addEventListener("click", (evt) =>
+      this._handleClickOnOverlay(evt)
+    );
   }
 }

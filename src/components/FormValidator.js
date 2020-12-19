@@ -7,7 +7,8 @@ export class FormValidator {
       inputErrorClass,
       errorClass,
     },
-    formElement
+    formElement,
+    enterKeyCode
   ) {
     this._form = formElement;
     this._inputs = Array.from(this._form.querySelectorAll(inputSelector));
@@ -15,7 +16,7 @@ export class FormValidator {
     this._inactiveButtonClass = inactiveButtonClass;
     this._inputErrorClass = inputErrorClass;
     this._errorClass = errorClass;
-    this._enterKeyCode = "Enter";
+    this._enterKeyCode = enterKeyCode;
   }
   _checkValidation() {
     return !this._inputs.some((input) => !input.validity.valid);
@@ -68,8 +69,8 @@ export class FormValidator {
   }
 }
 
-export function enableValidation(selectorsData, formElement) {
-  const result = new FormValidator(selectorsData, formElement);
+export function enableValidation(selectorsData, formElement, enterKeyCode) {
+  const result = new FormValidator(selectorsData, formElement, enterKeyCode);
   result.enableValidation();
   return result;
 }

@@ -1,15 +1,14 @@
 import { Popup } from "./Popup.js";
 
 export class PopupWithForm extends Popup {
-  constructor(popupSelector, submitHandler) {
-    super(popupSelector);
+  constructor(popupSelector, submitHandler, escapeKeyCode) {
+    super(popupSelector, escapeKeyCode);
     this._form = this._popup.querySelector(".form");
     this._inputs = Array.from(
       this.formElement.querySelectorAll(".field__input")
     );
     this._submitButton = this.formElement.querySelector(".button_type_submit");
     this._submitHandler = submitHandler;
-    this._setEventListeners();
   }
   getInputValues() {
     const result = {};
@@ -27,8 +26,8 @@ export class PopupWithForm extends Popup {
     super.close();
     setTimeout(() => this.formElement.reset(), this._animationDuration);
   }
-  _setEventListeners() {
-    super._setEventListeners();
+  setEventListeners() {
+    super.setEventListeners();
     this._form.addEventListener("submit", this._submitHandler);
   }
   // Добавляем геттер без сеттера, чтобы не было возможности изменить элемент формы

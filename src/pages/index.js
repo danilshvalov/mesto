@@ -4,7 +4,7 @@ import { Card } from "../components/Card.js";
 import { UserInfo } from "../components/user-info.js";
 import { Section } from "../components/Section.js";
 import { enableValidation } from "../components/FormValidator.js";
-import { initialCards, selectors } from "../utils/constants.js";
+import { initialCards, selectors, keyCodes } from "../utils/constants.js";
 
 import "./index.css";
 
@@ -12,23 +12,41 @@ const {
   formSelectors,
   popupSelectors: { editPopupSelector, addPopupSelector, imagePopupSelector },
   pageButtons: { editProfileButtonSelector, addElementButtonSelector },
-  element: { templateSelector },
+  elementSelectors,
+  elementSelectors: { templateSelector },
   elements: { elementsSelector },
   userInfoSelectors: { nameSelector, aboutSelector },
 } = selectors;
 
+const { enterKeyCode, escapeKeyCode } = keyCodes;
+
+const createCard = (item) => {
+  return new Card(
+    templateSelector,
+    item,
+    openCardCallback,
+    elementSelectors
+  ).generateCard();
+};
+
 const userInfo = new UserInfo(nameSelector, aboutSelector);
 
-const editPopup = new PopupWithForm(editPopupSelector, (evt) => {
-  evt.preventDefault();
-  const { nameInput, jobInput } = editPopup.getInputValues();
-  userInfo.setUserInfo(nameInput, jobInput);
-  editPopup.close();
-});
+const editPopup = new PopupWithForm(
+  editPopupSelector,
+  (evt) => {
+    evt.preventDefault();
+    const { nameInput, jobInput } = editPopup.getInputValues();
+    userInfo.setUserInfo(nameInput, jobInput);
+    editPopup.close();
+  },
+  escapeKeyCode
+);
+editPopup.setEventListeners();
 
 const editFormValidator = enableValidation(
   formSelectors,
-  editPopup.formElement
+  editPopup.formElement,
+  enterKeyCode
 );
 
 const editButton = document.querySelector(editProfileButtonSelector);
@@ -46,13 +64,16 @@ const openCardCallback = (title, link) => {
 const addElementHandler = (evt) => {
   evt.preventDefault();
   const { titleInput: title, linkInput: link } = addPopup.getInputValues();
-  elementsSection.addItem(
-    new Card(templateSelector, { title, link }, openCardCallback).generateCard()
-  );
+  elementsSection.addItem(createCard({ title, link }));
   addPopup.close();
 };
 
-const addPopup = new PopupWithForm(addPopupSelector, addElementHandler);
+const addPopup = new PopupWithForm(
+  addPopupSelector,
+  addElementHandler,
+  escapeKeyCode
+);
+addPopup.setEventListeners();
 
 const addButton = document.querySelector(addElementButtonSelector);
 addButton.addEventListener("click", () => {
@@ -60,18 +81,20 @@ addButton.addEventListener("click", () => {
   addPopup.open();
 });
 
-const addFormValidator = enableValidation(formSelectors, addPopup.formElement);
+const addFormValidator = enableValidation(
+  formSelectors,
+  addPopup.formElement,
+  enterKeyCode
+);
 
-// ImagePopup
-const imagePopup = new PopupWithImage(imagePopupSelector);
+const imagePopup = new PopupWithImage(imagePopupSelector, escapeKeyCode);
+imagePopup.setEventListeners();
 
 const elementsSection = new Section(
   {
     items: initialCards,
     renderer: (item) => {
-      elementsSection.addItem(
-        new Card(templateSelector, item, openCardCallback).generateCard()
-      );
+      elementsSection.addItem(createCard(item));
     },
   },
   elementsSelector
