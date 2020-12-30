@@ -1,11 +1,11 @@
 .profile__avatar {
-    max-width: 120px;
-    width: 100%;
-    border-radius: 50%;
+  max-width: 120px;
+  width: 100%;
+  border-radius: 50%;
 }
 
 @media screen and (max-width: 640px) {
-    .profile__avatar {
-        justify-self: center;
-    }
+  .profile__avatar {
+    justify-self: center;
+  }
 }

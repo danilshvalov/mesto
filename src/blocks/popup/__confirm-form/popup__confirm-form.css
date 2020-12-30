@@ -1,0 +1,12 @@
+.popup__confirm-form {
+  display: grid;
+  gap: 30px;
+  min-width: 430px;
+  min-height: 181px;
+
+  align-items: flex-end;
+  justify-items: center;
+
+  margin: 40px;
+  padding: 35px;
+}
