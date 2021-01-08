@@ -1,4 +1,4 @@
-.profile__edit-overlay {
+.profile__edit-avatar-button {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -10,8 +10,9 @@
   transition: opacity 0.25s ease-in-out;
   cursor: pointer;
   opacity: 0;
+  
 }
 
-.profile__edit-overlay:hover {
+.profile__edit-avatar-button:hover {
   opacity: 1;
 }

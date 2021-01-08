@@ -34,6 +34,7 @@ export const selectors = {
   userInfoSelectors: {
     nameSelector: ".profile__name",
     aboutSelector: ".profile__about",
+    avatarImageSelector: ".profile__avatar",
   },
   formSelectors: {
     formSelector: ".form",
@@ -46,6 +47,7 @@ export const selectors = {
   pageButtons: {
     editProfileButtonSelector: ".profile__edit-button",
     addElementButtonSelector: ".profile__add-button",
+    editAvatarButtonSelector: ".profile__edit-avatar-button",
   },
   elements: {
     elementsSelector: ".elements",
@@ -55,6 +57,7 @@ export const selectors = {
     elementSelector: ".element",
     titleSelector: ".element__title",
     imageSelector: ".element__image",
+    likeCountSelector: ".element__like-count",
     likeButtonSelector: ".element__like-button",
     deleteButtonSelector: ".element__delete-button",
     likeActiveClass: "button_like-active",
