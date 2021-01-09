@@ -35,10 +35,28 @@ export const selectors = {
     deleteButtonSelector: ".element__delete-button",
     likeActiveClass: "button_like-active",
   },
-  popupSelectors: {
+  popupsSelectors: {
     editPopupSelector: ".popup_edit-profile",
     addPopupSelector: ".popup_add-element",
     imagePopupSelector: ".popup_full-size-image",
+    messagePopupSelector: ".popup_message",
+  },
+  popupSelectors: {
+    closeButtonSelector: ".popup__close-button",
+    openClass: "popup_opened",
+    containerClass: "popup__container",
+  },
+  popupWithFormSelectors: {
+    formSelector: ".form",
+    inputSelector: ".field__input",
+    submitButtonSelector: ".button_type_submit",
+  },
+  PopupWithImageSelectors: {
+    imageSelector: ".picture__image",
+    descriptionSelector: ".picture__description",
+  },
+  popupWithMessageSelectors: {
+    textElementSelector: ".message-box__text",
   },
 };
 

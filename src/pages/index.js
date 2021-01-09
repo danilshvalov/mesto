@@ -1,5 +1,6 @@
 import { PopupWithFormBuilder } from "../components/popup-with-form.js";
 import { PopupWithImage } from "../components/popup-with-image.js";
+import { PopupWithMessage } from "../components/popup-with-message.js";
 import { CardBuilder } from "../components/Card.js";
 import { UserInfoBuilder } from "../components/user-info.js";
 import { Section } from "../components/Section.js";
@@ -13,7 +14,12 @@ import "./index.css";
 // ---------------------------------------------------------------
 const {
   formSelectors,
-  popupSelectors: { editPopupSelector, addPopupSelector, imagePopupSelector },
+  popupsSelectors: {
+    editPopupSelector,
+    addPopupSelector,
+    imagePopupSelector,
+    messagePopupSelector,
+  },
   pageButtons: {
     editProfileButtonSelector,
     addElementButtonSelector,
@@ -26,6 +32,21 @@ const {
 
 // ---------------------------------------------------------------
 
+// MessagePopup
+// ---------------------------------------------------------------
+const messagePopup = new PopupWithMessage(messagePopupSelector);
+
+const errorHandler = (error) => {
+  if (error instanceof TypeError) {
+    messagePopup.open(
+      "Потеряно соединение с сервером, повторите попытку позднее"
+    );
+  } else {
+    messagePopup.open(error);
+  }
+};
+// ---------------------------------------------------------------
+
 // Api
 // ---------------------------------------------------------------
 const api = new Api({
@@ -34,6 +55,7 @@ const api = new Api({
     authorization: "68d238d8-54dd-4a8c-9a47-e308386a3ea7",
     "Content-Type": "application/json",
   },
+  errorHandler: errorHandler,
 });
 // ---------------------------------------------------------------
 
@@ -68,6 +90,7 @@ const editPopup = new PopupWithFormBuilder()
     api
       .editProfile({ name, about })
       .then(({ name, about }) => userInfo.setName(name).setAbout(about))
+      .catch((error) => errorHandler(error))
       .finally(() => {
         editPopup.renderLoading(false);
         editPopup.close();
@@ -116,7 +139,7 @@ addButton.addEventListener("click", () => {
 
 // ---------------------------------------------------------------
 
-// imagePopup
+// ImagePopup
 // ---------------------------------------------------------------
 const imagePopup = new PopupWithImage(imagePopupSelector);
 imagePopup.setEventListeners();
@@ -129,20 +152,29 @@ const openCardCallback = (title, link) => {
 };
 
 function deleteCardCallback() {
-  api.deleteCard(this._id).then(() => this._element.remove());
+  api
+    .deleteCard(this._id)
+    .then(() => this._element.remove())
+    .catch((error) => errorHandler(error));
 }
 
 function toggleLikeCallback() {
   if (this._isLiked) {
-    api.removeLike(this._id).then((data) => {
-      this.removeLike();
-      this.likeCount = data.likes.length;
-    });
+    api
+      .removeLike(this._id)
+      .then((data) => {
+        this.removeLike();
+        this.likeCount = data.likes.length;
+      })
+      .catch((error) => errorHandler(error));
   } else {
-    api.setLike(this._id).then((data) => {
-      this.setLike();
-      this.likeCount = data.likes.length;
-    });
+    api
+      .setLike(this._id)
+      .then((data) => {
+        this.setLike();
+        this.likeCount = data.likes.length;
+      })
+      .catch((error) => errorHandler(error));
   }
 }
 
@@ -167,16 +199,20 @@ const elementsSection = new Section(
 );
 elementsSection.renderItems();
 
-api.getInitialCards().then((data) =>
-  data.forEach((cardData) => {
-    const card = createCard(cardData);
-
-    if (cardData.likes.some((responseUser) => userInfo.id == responseUser.id)) {
-      card.setLike();
-    }
-    elementsSection.addItem(card.getElement());
-  })
-);
+api
+  .getInitialCards()
+  .then((data) =>
+    data.forEach((cardData) => {
+      const card = createCard(cardData);
+      if (
+        cardData.likes.some((responseUser) => userInfo._id === responseUser._id)
+      ) {
+        card.setLike();
+      }
+      elementsSection.addItem(card.getElement());
+    })
+  )
+  .catch((error) => errorHandler(error));
 
 // ---------------------------------------------------------------
 

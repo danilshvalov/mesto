@@ -11,9 +11,6 @@ export class UserInfo {
       job: this._about.textContent.trim(),
     };
   }
-  get id() {
-    return this._id;
-  }
   setName(name) {
     this._name.textContent = name;
     return this;

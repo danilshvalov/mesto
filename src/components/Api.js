@@ -1,133 +1,85 @@
 export class Api {
-  constructor({ baseUrl, headers }) {
-    this.baseUrl_ = baseUrl;
-    this.headers_ = headers;
+  constructor({ baseUrl, headers, errorHandler }) {
+    this._baseUrl = baseUrl;
+    this._headers = headers;
+    this._errorHandler = errorHandler;
   }
 
-  getInitialCards() {
-    return fetch(new URL("cards", this.baseUrl_), {
-      method: "GET",
-      headers: this.headers_,
+  sendRequest({ path, method = "GET", body, errorMessage }) {
+    return fetch(new URL(path, this._baseUrl), {
+      method: method,
+      headers: this._headers,
+      body: body,
     })
       .then((res) => {
         if (res.ok) {
           return res.json();
         }
-        return Promise.reject(
-          `При запросе карточек возникла ошибка. Код ошибки: ${res.status}`
-        );
+        return Promise.reject(`${errorMessage}. Код ошибки: ${res.status}`);
       })
-      .catch((error) => alert(error));
+      // .catch((error) => this._errorHandler(error));
+  }
+
+  getInitialCards() {
+    return this.sendRequest({
+      path: "cards",
+      errorMessage: "При запросе карточек произошла ошибка",
+    });
   }
 
   addCard({ name, link }) {
-    return fetch(new URL("cards", this.baseUrl_), {
+    return this.sendRequest({
+      path: "cards",
       method: "POST",
-      headers: this.headers_,
       body: JSON.stringify({
         name,
         link,
       }),
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(
-          `При добавлении карточки возникла ошибка. Код ошибки: ${res.status}`
-        );
-      })
-      .catch((error) => alert(error));
+      errorMessage: "При добавлении карточки произошла ошибка",
+    });
   }
 
   deleteCard(id) {
-    return fetch(new URL(`cardfs/${id}`, this.baseUrl_), {
+    return this.sendRequest({
+      path: `cards/${id}`,
       method: "DELETE",
-      headers: this.headers_,
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(
-          `При удалении карточки возникла ошибка. Код ошибки: ${res.status}`
-        );
-      })
-      .catch((error) => {
-        // Если ошибка fetch = выводим сообщение о проблемах сети
-        if (error instanceof TypeError) {
-          alert("Потеряно соединение с сервером, повторите попытку позднее");
-        } else {
-          alert(error);
-        }
-      });
+      errorMessage: "При удалении карточки произошла ошибка",
+    });
   }
 
   setLike(id) {
-    return fetch(new URL(`cards/likes/${id}`, this.baseUrl_), {
+    return this.sendRequest({
+      path: `cards/likes/${id}`,
       method: "PUT",
-      headers: this.headers_,
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(
-          `При попытке поставить like возникла ошибка. Код ошибки: ${res.status}`
-        );
-      })
-      .catch((error) => alert(error));
+      errorMessage: "При попытке поставить like произошла ошибка",
+    });
   }
 
   removeLike(id) {
-    return fetch(new URL(`cards/likes/${id}`, this.baseUrl_), {
+    return this.sendRequest({
+      path: `cards/likes/${id}`,
       method: "DELETE",
-      headers: this.headers_,
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(
-          `При попытке убрать like возникла ошибка. Код ошибки: ${res.status}`
-        );
-      })
-      .catch((error) => alert(error));
+      errorMessage: "При попытке убрать like произошла ошибка",
+    });
   }
 
   getProfileData() {
-    return fetch(new URL("users/me", this.baseUrl_), {
-      headers: this.headers_,
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(
-          `При получении данных профиля возникла ошибка. Код ошибки: ${res.status}`
-        );
-      })
-      .catch((error) => alert(error));
+    return this.sendRequest({
+      path: "users/me",
+      errorMessage: "При получении данных профиля произошла ошибка",
+    });
   }
 
   editProfile({ name, about }) {
-    return fetch(new URL("users/me", this.baseUrl_), {
+    return this.sendRequest({
+      path: "users/me",
       method: "PATCH",
-      headers: this.headers_,
       body: JSON.stringify({
         name: name,
         about: about,
       }),
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(
-          `При редактировании профиля возникла ошибка. Код ошибки: ${res.status}`
-        );
-      })
-      .catch((error) => alert(error));
+      errorMessage: "При редактировании профиля произошла ошибка",
+    });
   }
 
   // changeAvatar(link) {
@@ -145,7 +97,7 @@ export class Api {
   //       return res.json();
   //     }
   //     return Promise.reject(
-  //       `При редактировании профиля возникла ошибка. Код ошибки: ${res.status}`
+  //       `При редактировании профиля произошла ошибка. Код ошибки: ${res.status}`
   //     );
   //   });
   // }
