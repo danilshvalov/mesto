@@ -2,7 +2,7 @@
   background-image: url(../../../images/add-button.svg);
   background-color: transparent;
   background-repeat: no-repeat;
-  background-size: 40px 40px;
+  background-size: contain;
   background-position: center;
 
   transform: rotate(45deg);

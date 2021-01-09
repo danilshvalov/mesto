@@ -1,0 +1,18 @@
+.popup_message {
+  background-color: transparent;
+  cursor: default;
+
+  min-width: 300px;
+  min-height: 60px;
+
+  width: 25vw;  
+  height: 10vh;
+
+  left: auto;
+  top: auto;
+  right: 1vw;
+  bottom: 1vh;
+
+  margin: 0;
+  padding: 0;
+}
