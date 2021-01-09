@@ -1,3 +1,7 @@
+import { keyCodes } from "../utils/constants.js";
+
+const { enterKeyCode } = keyCodes;
+
 export class FormValidator {
   constructor(
     {
@@ -7,8 +11,7 @@ export class FormValidator {
       inputErrorClass,
       errorClass,
     },
-    formElement,
-    enterKeyCode
+    formElement
   ) {
     this._form = formElement;
     this._inputs = Array.from(this._form.querySelectorAll(inputSelector));
@@ -16,7 +19,6 @@ export class FormValidator {
     this._inactiveButtonClass = inactiveButtonClass;
     this._inputErrorClass = inputErrorClass;
     this._errorClass = errorClass;
-    this._enterKeyCode = enterKeyCode;
   }
   _checkValidation() {
     return !this._inputs.some((input) => !input.validity.valid);
@@ -62,15 +64,15 @@ export class FormValidator {
     });
     // при попытке отправить форму с неправильными данными тоже показывается предупреждение
     this._form.addEventListener("keydown", (evt) => {
-      if (evt.key === this._enterKeyCode) {
+      if (evt.key === enterKeyCode) {
         this._inputs.forEach((input) => this._checkInputValidity(input));
       }
     });
   }
 }
 
-export function enableValidation(selectorsData, formElement, enterKeyCode) {
-  const result = new FormValidator(selectorsData, formElement, enterKeyCode);
+export function enableValidation(selectorsData, formElement) {
+  const result = new FormValidator(selectorsData, formElement);
   result.enableValidation();
   return result;
 }

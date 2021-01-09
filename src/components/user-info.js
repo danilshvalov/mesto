@@ -11,45 +11,34 @@ export class UserInfo {
       job: this._about.textContent.trim(),
     };
   }
-  // геттер без сеттера для запрета изменения
   get id() {
     return this._id;
   }
+  setName(name) {
+    this._name.textContent = name;
+    return this;
+  }
+  setId(id) {
+    this._id = id;
+    return this;
+  }
+  setAbout(about) {
+    this._about.textContent = about;
+    return this;
+  }
   setUserInfo(name, about) {
-    if (name) {
-      this._name.textContent = name;
-    }
-    if (about) {
-      this._about.textContent = about;
-    }
+    this.setName(name);
+    this.setAbout(about);
     return this;
   }
   setAvatarImage(avatarImage) {
-    if (avatarImage) {
-      this._avatarImage.src = avatarImage;
-      this._avatarImage.alt = this._name;
-    }
+    this._avatarImage.src = avatarImage;
+    this._avatarImage.alt = this._name;
     return this;
   }
 }
 
 export class UserInfoBuilder {
-  setId(id) {
-    this._id = id;
-    return this;
-  }
-  setName(name) {
-    this._name = name;
-    return this;
-  }
-  setAbout(about) {
-    this._about = about;
-    return this;
-  }
-  setAvatarImage(image) {
-    this._avatarImage = image;
-    return this;
-  }
   setNameSelector(selector) {
     this._nameSelector = selector;
     return this;
@@ -63,15 +52,10 @@ export class UserInfoBuilder {
     return this;
   }
   build() {
-    const userInfo = new UserInfo(
+    return new UserInfo(
       this._nameSelector,
       this._aboutSelector,
-      this._avatarImageSelector,
-      this._id
+      this._avatarImageSelector
     );
-    userInfo
-      .setAvatarImage(this._avatarImage)
-      .setUserInfo(this._name, this._about);
-    return userInfo;
   }
 }

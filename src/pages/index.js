@@ -1,10 +1,10 @@
-import { PopupWithForm } from "../components/popup-with-form.js";
+import { PopupWithFormBuilder } from "../components/popup-with-form.js";
 import { PopupWithImage } from "../components/popup-with-image.js";
 import { CardBuilder } from "../components/Card.js";
 import { UserInfoBuilder } from "../components/user-info.js";
 import { Section } from "../components/Section.js";
 import { enableValidation } from "../components/FormValidator.js";
-import { initialCards, selectors, keyCodes } from "../utils/constants.js";
+import { selectors } from "../utils/constants.js";
 import { Api } from "../components/Api.js";
 
 import "./index.css";
@@ -24,7 +24,6 @@ const {
   userInfoSelectors: { nameSelector, aboutSelector, avatarImageSelector },
 } = selectors;
 
-const { enterKeyCode, escapeKeyCode } = keyCodes;
 // ---------------------------------------------------------------
 
 // Api
@@ -40,21 +39,16 @@ const api = new Api({
 
 // UserInfo
 // ---------------------------------------------------------------
-const userInfoBuilder = new UserInfoBuilder()
+const userInfo = new UserInfoBuilder()
   .setNameSelector(nameSelector)
   .setAboutSelector(aboutSelector)
-  .setAvatarImageSelector(avatarImageSelector);
+  .setAvatarImageSelector(avatarImageSelector)
+  .build();
 
 api.getProfileData().then(({ name, about, avatar, _id }) => {
-  return userInfoBuilder
-    .setName(name)
-    .setAbout(about)
-    .setAvatarImage(avatar)
-    .setId(_id)
-    .build();
+  userInfo.setName(name).setAbout(about).setAvatarImage(avatar).setId(_id);
 });
 
-const userInfo = userInfoBuilder.build();
 // ---------------------------------------------------------------
 
 // TODO DEV
@@ -65,24 +59,26 @@ editAvatarButton.addEventListener("click", () => console.log("hi"));
 
 // EditPopup
 // ---------------------------------------------------------------
-const editPopup = new PopupWithForm(
-  editPopupSelector,
-  (evt) => {
+const editPopup = new PopupWithFormBuilder()
+  .setPopupSelector(editPopupSelector)
+  .setSubmitHandler((evt) => {
     evt.preventDefault();
+    editPopup.renderLoading(true);
     const { nameInput: name, jobInput: about } = editPopup.getInputValues();
     api
       .editProfile({ name, about })
-      .then(({ name, about }) => userInfo.setUserInfo(name, about));
-    editPopup.close();
-  },
-  escapeKeyCode
-);
-editPopup.setEventListeners();
+      .then(({ name, about }) => userInfo.setName(name).setAbout(about))
+      .finally(() => {
+        editPopup.renderLoading(false);
+        editPopup.close();
+      });
+  })
+  .setSubmitButtonText("Сохранить")
+  .build();
 
 const editFormValidator = enableValidation(
   formSelectors,
-  editPopup.formElement,
-  enterKeyCode
+  editPopup.formElement
 );
 
 const editButton = document.querySelector(editProfileButtonSelector);
@@ -96,21 +92,21 @@ editButton.addEventListener("click", () => {
 
 // AddCard Popup
 // ---------------------------------------------------------------
-const addElementHandler = (evt) => {
-  evt.preventDefault();
-  const { titleInput: name, linkInput: link } = addPopup.getInputValues();
-  api
-    .addCard({ name, link })
-    .then((data) => elementsSection.addItem(createCard(data)));
-  addPopup.close();
-};
 
-const addPopup = new PopupWithForm(
-  addPopupSelector,
-  addElementHandler,
-  escapeKeyCode
-);
-addPopup.setEventListeners();
+const addPopup = new PopupWithFormBuilder()
+  .setPopupSelector(addPopupSelector)
+  .setSubmitHandler((evt) => {
+    evt.preventDefault();
+    const { titleInput: name, linkInput: link } = addPopup.getInputValues();
+    api
+      .addCard({ name, link })
+      .then((data) => elementsSection.addItem(createCard(data)));
+    addPopup.close();
+  })
+  .setSubmitButtonText("Добавить")
+  .build();
+
+const addFormValidator = enableValidation(formSelectors, addPopup.formElement);
 
 const addButton = document.querySelector(addElementButtonSelector);
 addButton.addEventListener("click", () => {
@@ -118,11 +114,6 @@ addButton.addEventListener("click", () => {
   addPopup.open();
 });
 
-const addFormValidator = enableValidation(
-  formSelectors,
-  addPopup.formElement,
-  enterKeyCode
-);
 // ---------------------------------------------------------------
 
 // imagePopup
@@ -177,10 +168,10 @@ const elementsSection = new Section(
 elementsSection.renderItems();
 
 api.getInitialCards().then((data) =>
-  data.forEach((item) => {
-    const card = createCard(item);
+  data.forEach((cardData) => {
+    const card = createCard(cardData);
 
-    if (item.likes.some((user) => userInfo.id == user.id)) {
+    if (cardData.likes.some((responseUser) => userInfo.id == responseUser.id)) {
       card.setLike();
     }
     elementsSection.addItem(card.getElement());

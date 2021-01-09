@@ -41,7 +41,7 @@ export class Api {
   }
 
   deleteCard(id) {
-    return fetch(new URL(`cards/${id}`, this.baseUrl_), {
+    return fetch(new URL(`cardfs/${id}`, this.baseUrl_), {
       method: "DELETE",
       headers: this.headers_,
     })
@@ -53,7 +53,14 @@ export class Api {
           `При удалении карточки возникла ошибка. Код ошибки: ${res.status}`
         );
       })
-      .catch((error) => alert(error));
+      .catch((error) => {
+        // Если ошибка fetch = выводим сообщение о проблемах сети
+        if (error instanceof TypeError) {
+          alert("Потеряно соединение с сервером, повторите попытку позднее");
+        } else {
+          alert(error);
+        }
+      });
   }
 
   setLike(id) {

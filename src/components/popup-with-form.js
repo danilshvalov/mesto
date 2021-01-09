@@ -1,13 +1,15 @@
 import { Popup } from "./Popup.js";
 
 export class PopupWithForm extends Popup {
-  constructor(popupSelector, submitHandler, escapeKeyCode) {
-    super(popupSelector, escapeKeyCode);
+  constructor(popupSelector, submitHandler, submitButtonText) {
+    super(popupSelector);
     this._form = this._popup.querySelector(".form");
     this._inputs = Array.from(
       this.formElement.querySelectorAll(".field__input")
     );
     this._submitButton = this.formElement.querySelector(".button_type_submit");
+    this._submitButtonText = submitButtonText;
+    this._submitButton.textContent = submitButtonText;
     this._submitHandler = submitHandler;
   }
   getInputValues() {
@@ -29,9 +31,39 @@ export class PopupWithForm extends Popup {
   setEventListeners() {
     super.setEventListeners();
     this._form.addEventListener("submit", this._submitHandler);
+    return this;
+  }
+  renderLoading(isLoading) {
+    if (isLoading) {
+      this._submitButton.textContent = "Сохранение...";
+    } else {
+      this._submitButton.textContent = this._submitButtonText;
+    }
   }
   // Добавляем геттер без сеттера, чтобы не было возможности изменить элемент формы
   get formElement() {
     return this._form;
+  }
+}
+
+export class PopupWithFormBuilder {
+  setPopupSelector(selector) {
+    this._popupSelector = selector;
+    return this;
+  }
+  setSubmitHandler(handler) {
+    this._submitHandler = handler;
+    return this;
+  }
+  setSubmitButtonText(text) {
+    this._submitButtonText = text;
+    return this;
+  }
+  build() {
+    return new PopupWithForm(
+      this._popupSelector,
+      this._submitHandler,
+      this._submitButtonText
+    ).setEventListeners();
   }
 }
