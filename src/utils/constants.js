@@ -40,6 +40,7 @@ export const selectors = {
     addPopupSelector: ".popup_add-element",
     imagePopupSelector: ".popup_full-size-image",
     messagePopupSelector: ".popup_message",
+    confirmPopupSelector: ".popup_confirm",
   },
   popupSelectors: {
     closeButtonSelector: ".popup__close-button",

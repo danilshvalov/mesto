@@ -19,6 +19,7 @@ const {
     addPopupSelector,
     imagePopupSelector,
     messagePopupSelector,
+    confirmPopupSelector,
   },
   pageButtons: {
     editProfileButtonSelector,
@@ -36,14 +37,21 @@ const {
 // ---------------------------------------------------------------
 const messagePopup = new PopupWithMessage(messagePopupSelector);
 
-const errorHandler = (error) => {
-  if (error instanceof TypeError) {
-    messagePopup.open(
-      "Потеряно соединение с сервером, повторите попытку позднее"
-    );
-  } else {
-    messagePopup.open(error);
-  }
+const errorHandler = (promise, successCallback, failureCallback) => {
+  return promise
+    .then((data) => successCallback(data))
+    .catch((error) => {
+      if (error instanceof TypeError) {
+        messagePopup.open(
+          "Потеряно соединение с сервером, повторите попытку позднее"
+        );
+      } else {
+        messagePopup.open(error);
+      }
+      if (failureCallback) {
+        failureCallback();
+      }
+    });
 };
 // ---------------------------------------------------------------
 
@@ -67,7 +75,7 @@ const userInfo = new UserInfoBuilder()
   .setAvatarImageSelector(avatarImageSelector)
   .build();
 
-api.getProfileData().then(({ name, about, avatar, _id }) => {
+errorHandler(api.getProfileData(), ({ name, about, avatar, _id }) => {
   userInfo.setName(name).setAbout(about).setAvatarImage(avatar).setId(_id);
 });
 
@@ -79,7 +87,7 @@ const editAvatarButton = document.querySelector(editAvatarButtonSelector);
 
 editAvatarButton.addEventListener("click", () => console.log("hi"));
 
-// EditPopup
+// Edit Popup
 // ---------------------------------------------------------------
 const editPopup = new PopupWithFormBuilder()
   .setPopupSelector(editPopupSelector)
@@ -87,14 +95,12 @@ const editPopup = new PopupWithFormBuilder()
     evt.preventDefault();
     editPopup.renderLoading(true);
     const { nameInput: name, jobInput: about } = editPopup.getInputValues();
-    api
-      .editProfile({ name, about })
-      .then(({ name, about }) => userInfo.setName(name).setAbout(about))
-      .catch((error) => errorHandler(error))
-      .finally(() => {
-        editPopup.renderLoading(false);
-        editPopup.close();
-      });
+    errorHandler(api.editProfile({ name, about }), ({ name, about }) =>
+      userInfo.setName(name).setAbout(about)
+    ).finally(() => {
+      editPopup.close();
+      editPopup.renderLoading(false);
+    });
   })
   .setSubmitButtonText("Сохранить")
   .build();
@@ -120,11 +126,14 @@ const addPopup = new PopupWithFormBuilder()
   .setPopupSelector(addPopupSelector)
   .setSubmitHandler((evt) => {
     evt.preventDefault();
+    addPopup.renderLoading(true);
     const { titleInput: name, linkInput: link } = addPopup.getInputValues();
-    api
-      .addCard({ name, link })
-      .then((data) => elementsSection.addItem(createCard(data)));
-    addPopup.close();
+    errorHandler(api.addCard({ name, link }), (data) =>
+      elementsSection.prependItem(createCard(data).getElement())
+    ).finally(() => {
+      addPopup.renderLoading(false);
+      addPopup.close();
+    });
   })
   .setSubmitButtonText("Добавить")
   .build();
@@ -139,52 +148,79 @@ addButton.addEventListener("click", () => {
 
 // ---------------------------------------------------------------
 
-// ImagePopup
+// Image Popup
 // ---------------------------------------------------------------
 const imagePopup = new PopupWithImage(imagePopupSelector);
 imagePopup.setEventListeners();
 // ---------------------------------------------------------------
 
+// Confirm Popup
+// ---------------------------------------------------------------
+const confirmPopup = new PopupWithFormBuilder()
+  .setPopupSelector(confirmPopupSelector)
+  .setSubmitButtonText("Да")
+  .setSubmitHandler((evt) => {
+    evt.preventDefault();
+    confirmPopup.renderLoading(true);
+    errorHandler(api.deleteCard(confirmPopup._cardElement._id), () =>
+      confirmPopup._cardElement._element.remove()
+    ).finally(() => {
+      confirmPopup.close();
+      confirmPopup.renderLoading(false);
+    });
+  })
+  .build();
+// ---------------------------------------------------------------
+
 // Cards
 // ---------------------------------------------------------------
-const openCardCallback = (title, link) => {
-  imagePopup.open({ title, link });
-};
 
-function deleteCardCallback() {
-  api
-    .deleteCard(this._id)
-    .then(() => this._element.remove())
-    .catch((error) => errorHandler(error));
-}
-
-function toggleLikeCallback() {
-  if (this._isLiked) {
-    api
-      .removeLike(this._id)
-      .then((data) => {
-        this.removeLike();
-        this.likeCount = data.likes.length;
-      })
-      .catch((error) => errorHandler(error));
-  } else {
-    api
-      .setLike(this._id)
-      .then((data) => {
-        this.setLike();
-        this.likeCount = data.likes.length;
-      })
-      .catch((error) => errorHandler(error));
-  }
-}
+/* 
+  Сначала изменяем кол-вол лайков и значок лайка, чтобы пользователь
+  не видел задержки интерфейса из-за запроса на сервер. 
+  
+  После получения ответа в зависимости от исхода либо обновляем количество
+  лайков по данным сервера, либо отменяем операцию и выводим сообщение об ошибке
+*/
 
 const createCard = (item) => {
   return new CardBuilder()
     .setTemplateSelector(templateSelector)
     .setData(item)
-    .setLikeHandler(toggleLikeCallback)
-    .setDeleteHandler(deleteCardCallback)
-    .setClickHandler(openCardCallback)
+    .setLikeHandler(function () {
+      if (this._isLiked) {
+        this.removeLike();
+        --this.likeCount;
+        errorHandler(
+          api.removeLike(this._id),
+          (data) => {
+            this.likeCount = data.likes.length;
+          },
+          () => {
+            this.setLike();
+            ++this.likeCount;
+          }
+        );
+      } else {
+        this.setLike();
+        ++this.likeCount;
+        errorHandler(
+          api.setLike(this._id),
+          (data) => {
+            this.likeCount = data.likes.length;
+          },
+          () => {
+            this.removeLike();
+            --this.likeCount;
+          }
+        );
+      }
+    })
+    .setDeleteHandler(function () {
+      confirmPopup._cardElement = this;
+      confirmPopup.open();
+    })
+    .setClickHandler((title, link) => imagePopup.open({ title, link }))
     .build()
     .configureCard();
 };
@@ -192,27 +228,24 @@ const createCard = (item) => {
 const elementsSection = new Section(
   {
     renderer: (cardData) => {
-      elementsSection.addItem(createCard(cardData).getElement());
+      elementsSection.prependItem(createCard(cardData).getElement());
     },
   },
   elementsSelector
 );
 elementsSection.renderItems();
 
-api
-  .getInitialCards()
-  .then((data) =>
-    data.forEach((cardData) => {
-      const card = createCard(cardData);
-      if (
-        cardData.likes.some((responseUser) => userInfo._id === responseUser._id)
-      ) {
-        card.setLike();
-      }
-      elementsSection.addItem(card.getElement());
-    })
-  )
-  .catch((error) => errorHandler(error));
+errorHandler(api.getInitialCards(), (data) =>
+  data.forEach((cardData) => {
+    const card = createCard(cardData);
+    if (
+      cardData.likes.some((responseUser) => userInfo._id === responseUser._id)
+    ) {
+      card.setLike();
+    }
+    elementsSection.addItem(card.getElement());
+  })
+);
 
 // ---------------------------------------------------------------
 
