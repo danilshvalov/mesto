@@ -19,7 +19,7 @@ export class PopupWithMessage extends Popup {
     this._timerId = setTimeout(() => this._closeCallback(), this._durationTime);
     if (!this._popup.classList.contains(openClass)) {
       super.open();
-    }
+    } 
   }
   _closeCallback() {
     if (this._popup.classList.contains(openClass)) {
