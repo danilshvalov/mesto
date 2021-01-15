@@ -7,7 +7,7 @@ const {
 } = selectors;
 
 export class PopupWithMessage extends Popup {
-  constructor(popupSelector, time = 5000) {
+  constructor(popupSelector, time = 7000) {
     super(popupSelector);
     super.setEventListeners();
     this._textElement = this._popup.querySelector(textElementSelector);
