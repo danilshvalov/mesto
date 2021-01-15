@@ -135,11 +135,13 @@
     <div class="popup__container">
       <form class="popup__change-avatar-form form">
         <h2 class="form__title">Обновить аватар</h2>
-        <div class="field form__change-avatar-fieldset">
-          <input class="field__input" id="avatar-input" name="avatarInput" type="url" value=""
-            placeholder="Ссылка на картинку" required />
-          <span class="field__error-message" id="avatar-input-error"></span>
-        </div>
+        <fieldset class="fieldset form__change-avatar-fieldset">
+          <div class="field fieldset__field">
+            <input class="field__input" id="avatar-input" name="avatarInput" type="url" value=""
+              placeholder="Ссылка на картинку" required />
+            <span class="field__error-message" id="avatar-input-error"></span>
+          </div>
+        </fieldset>
         <button class="form__submit-button button button_type_submit" type="submit">
           Да
         </button>
