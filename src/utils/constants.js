@@ -34,6 +34,7 @@ export const selectors = {
     likeButtonSelector: ".element__like-button",
     deleteButtonSelector: ".element__delete-button",
     likeActiveClass: "button_like-active",
+    hiddenButtonClass: "button_hidden",
   },
   popupsSelectors: {
     editPopupSelector: ".popup_edit-profile",
@@ -41,6 +42,7 @@ export const selectors = {
     imagePopupSelector: ".popup_full-size-image",
     messagePopupSelector: ".popup_message",
     confirmPopupSelector: ".popup_confirm",
+    changeAvatarPopupSelector: ".popup_change-avatar",
   },
   popupSelectors: {
     closeButtonSelector: ".popup__close-button",

@@ -9,6 +9,7 @@ const {
     likeButtonSelector,
     deleteButtonSelector,
     likeCountSelector,
+    hiddenButtonClass,
   },
 } = selectors;
 
@@ -18,9 +19,10 @@ export class Card {
     data,
     { clickHandler, deleteHandler, likeHandler }
   ) {
-    this._clickHandler = clickHandler;
-    this._deleteHandler = deleteHandler;
-    this._likeHandler = likeHandler;
+    this._clickHandler = clickHandler.bind(this);
+    this._deleteHandler = deleteHandler.bind(this);
+    this._likeHandler = likeHandler.bind(this);
+    this._errorLoadHandler = this._errorLoadHandler.bind(this);
     this._data = data;
     this._isLiked = false;
     this._template = document
@@ -66,13 +68,22 @@ export class Card {
     this._likeButton.classList.remove(likeActiveClass);
     this._isLiked = false;
   }
+  enableDeleteButton() {
+    this._deleteButton.classList.remove(hiddenButtonClass);
+    this._deleteButton.addEventListener("click", this._deleteHandler);
+    return this;
+  }
+  disableDeleteButton() {
+    this._deleteButton.classList.add(hiddenButtonClass);
+    this._deleteButton.removeEventListener("click", this._deleteHandler);
+    return this;
+  }
   _setListeners() {
-    this._deleteButton.addEventListener("click", () => this._deleteHandler());
     this._image.addEventListener("click", () =>
       this._clickHandler(this._title.textContent, this._image.src)
     );
-    this._image.addEventListener("error", () => this._errorLoadHandler());
-    this._likeButton.addEventListener("click", () => this._likeHandler());
+    this._image.addEventListener("error", this._errorLoadHandler);
+    this._likeButton.addEventListener("click", this._likeHandler);
   }
   _errorLoadHandler() {
     this._image.src = notFoundImage;

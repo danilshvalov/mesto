@@ -23,13 +23,15 @@ export class UserInfo {
     this._about.textContent = about;
     return this;
   }
-  setUserInfo(name, about) {
+  setUserInfo({ name, about, avatar, _id }) {
     this.setName(name);
     this.setAbout(about);
+    this.setAvatarImage(avatar);
+    this.setId(_id);
     return this;
   }
-  setAvatarImage(avatarImage) {
-    this._avatarImage.src = avatarImage;
+  setAvatarImage(link) {
+    this._avatarImage.src = link;
     this._avatarImage.alt = this._name;
     return this;
   }

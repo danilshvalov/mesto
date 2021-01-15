@@ -5,8 +5,4 @@
   object-fit: cover;
 }
 
-@media screen and (max-width: 640px) {
-  .profile__avatar {
-    justify-self: center;
-  }
-}
+

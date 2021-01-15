@@ -10,14 +10,12 @@ export class Api {
       method: method,
       headers: this._headers,
       body: body,
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(`${errorMessage}. Код ошибки: ${res.status}`);
-      })
-      // .catch((error) => this._errorHandler(error));
+    }).then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject(`${errorMessage}. Код ошибки: ${res.status}`);
+    });
   }
 
   getInitialCards() {
@@ -82,25 +80,14 @@ export class Api {
     });
   }
 
-  // changeAvatar(link) {
-  //   return fetch(URL(this.baseUrl_, "users/me"), {
-  //     method: "PATCH",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify({
-  //       name: name,
-  //       about: about,
-  //     }),
-  //   }).then((res) => {
-  //     if (res.ok) {
-  //       return res.json();
-  //     }
-  //     return Promise.reject(
-  //       `При редактировании профиля произошла ошибка. Код ошибки: ${res.status}`
-  //     );
-  //   });
-  // }
-
-  // другие методы работы с API
+  changeAvatar(link) {
+    return this.sendRequest({
+      path: "users/me/avatar",
+      method: "PATCH",
+      body: JSON.stringify({
+        avatar: link,
+      }),
+      errorMessage: "При обновлении аватара произошла ошибка",
+    });
+  }
 }

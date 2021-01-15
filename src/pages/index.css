@@ -15,6 +15,7 @@
 @import url(../blocks/button/_like-active/button_type_like-active.css);
 @import url(../blocks/button/_small-size/button__small-size.css);
 @import url(../blocks/button/_inverted-color/button__inverted-color.css);
+@import url(../blocks/button/_hidden/button_hidden.css);
 
 @import url(../blocks/fieldset/fieldset.css);
 @import url(../blocks/field/field.css);
@@ -25,10 +26,10 @@
 
 @import url(../blocks/form/form.css);
 @import url(../blocks/form/__title/form__title.css);
-@import url(../blocks/form/__title/_left/form__title_left.css);
 @import url(../blocks/form/__add-element-fieldset/form__add-element-fieldset.css);
 @import url(../blocks/form/__edit-profile-fieldset/form__edit-profile-fieldset.css);
 @import url(../blocks/form/__submit-button/form__submit-button.css);
+@import url(../blocks/form/__change-avatar-fieldset/form__change-avatar-fieldset.css);
 
 @import url(../blocks/picture/picture.css);
 @import url(../blocks/picture/__description/picture__description.css);
@@ -73,6 +74,7 @@
 @import url(../blocks/popup/_full-size-image/popup_full-size-image.css);
 @import url(../blocks/popup/__confirm-form/popup__confirm-form.css);
 @import url(../blocks/popup/_message/popup_message.css);
+@import url(../blocks/popup/__change-avatar-form/popup__change-avatar-form.css);
 
 @import url(../blocks/message-box/message-box.css);
 @import url(../blocks/message-box/__text/message-box__text.css);

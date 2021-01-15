@@ -20,6 +20,7 @@ const {
     imagePopupSelector,
     messagePopupSelector,
     confirmPopupSelector,
+    changeAvatarPopupSelector,
   },
   pageButtons: {
     editProfileButtonSelector,
@@ -45,8 +46,12 @@ const errorHandler = (promise, successCallback, failureCallback) => {
         messagePopup.open(
           "Потеряно соединение с сервером, повторите попытку позднее"
         );
-      } else {
+      } else if (typeof error === "string") {
         messagePopup.open(error);
+      } else {
+        messagePopup.open(
+          "Непредвиденная ошибка, повторите попытку позднее"
+        );
       }
       if (failureCallback) {
         failureCallback();
@@ -75,17 +80,11 @@ const userInfo = new UserInfoBuilder()
   .setAvatarImageSelector(avatarImageSelector)
   .build();
 
-errorHandler(api.getProfileData(), ({ name, about, avatar, _id }) => {
-  userInfo.setName(name).setAbout(about).setAvatarImage(avatar).setId(_id);
+errorHandler(api.getProfileData(), (data) => {
+  userInfo.setUserInfo(data);
 });
 
 // ---------------------------------------------------------------
-
-// TODO DEV
-
-const editAvatarButton = document.querySelector(editAvatarButtonSelector);
-
-editAvatarButton.addEventListener("click", () => console.log("hi"));
 
 // Edit Popup
 // ---------------------------------------------------------------
@@ -119,6 +118,37 @@ editButton.addEventListener("click", () => {
 });
 // ---------------------------------------------------------------
 
+// ChangeAvatar Popup
+// ---------------------------------------------------------------
+const changeAvatarPopup = new PopupWithFormBuilder()
+  .setPopupSelector(changeAvatarPopupSelector)
+  .setSubmitHandler((evt) => {
+    evt.preventDefault();
+    const { avatarInput: avatar } = changeAvatarPopup.getInputValues();
+    changeAvatarPopup.renderLoading(true);
+    errorHandler(api.changeAvatar(avatar), ({ avatar }) => {
+      userInfo.setAvatarImage(avatar);
+    }).finally(() => {
+      changeAvatarPopup.close();
+      changeAvatarPopup.renderLoading(false);
+    });
+  })
+  .setSubmitButtonText("Сохранить")
+  .build();
+
+const changeAvatarFormValidator = enableValidation(
+  formSelectors,
+  changeAvatarPopup.formElement
+);
+
+const editAvatarButton = document.querySelector(editAvatarButtonSelector);
+
+editAvatarButton.addEventListener("click", () => {
+  changeAvatarFormValidator.clearErrors();
+  changeAvatarPopup.open();
+});
+// ---------------------------------------------------------------
+
 // AddCard Popup
 // ---------------------------------------------------------------
 
@@ -129,7 +159,9 @@ const addPopup = new PopupWithFormBuilder()
     addPopup.renderLoading(true);
     const { titleInput: name, linkInput: link } = addPopup.getInputValues();
     errorHandler(api.addCard({ name, link }), (data) =>
-      elementsSection.prependItem(createCard(data).getElement())
+      elementsSection.prependItem(
+        createCard(data).enableDeleteButton().getElement()
+      )
     ).finally(() => {
       addPopup.renderLoading(false);
       addPopup.close();
@@ -243,15 +275,11 @@ errorHandler(api.getInitialCards(), (data) =>
     ) {
       card.setLike();
     }
+    if (cardData.owner._id == userInfo._id) {
+      card.enableDeleteButton();
+    }
     elementsSection.addItem(card.getElement());
   })
 );
 
 // ---------------------------------------------------------------
-
-/* 
-
-Токен: 68d238d8-54dd-4a8c-9a47-e308386a3ea7
-Идентификатор группы: cohort-19
-
-*/

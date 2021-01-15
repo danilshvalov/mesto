@@ -6,7 +6,12 @@ const {
 } = selectors;
 
 export class PopupWithForm extends Popup {
-  constructor(popupSelector, submitHandler, submitButtonText) {
+  constructor(
+    popupSelector,
+    submitHandler,
+    submitButtonText,
+    loadingText = "Сохранение..."
+  ) {
     super(popupSelector);
     this._form = this._popup.querySelector(formSelector);
     this._inputs = Array.from(this.formElement.querySelectorAll(inputSelector));
@@ -14,6 +19,7 @@ export class PopupWithForm extends Popup {
     this._submitButtonText = submitButtonText;
     this._submitButton.textContent = submitButtonText;
     this._submitHandler = submitHandler;
+    this._loadingText = loadingText;
   }
   getInputValues() {
     const result = {};
@@ -38,7 +44,7 @@ export class PopupWithForm extends Popup {
   }
   renderLoading(isLoading) {
     if (isLoading) {
-      this._submitButton.textContent = "Сохранение...";
+      this._submitButton.textContent = this._loadingText;
     } else {
       this._submitButton.textContent = this._submitButtonText;
     }
@@ -62,11 +68,16 @@ export class PopupWithFormBuilder {
     this._submitButtonText = text;
     return this;
   }
+  setLoadingText(text) {
+    this._loadingText = text;
+    return this;
+  }
   build() {
     return new PopupWithForm(
       this._popupSelector,
       this._submitHandler,
-      this._submitButtonText
+      this._submitButtonText,
+      this._loadingText
     ).setEventListeners();
   }
 }
