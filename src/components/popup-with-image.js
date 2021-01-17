@@ -19,7 +19,6 @@ export class PopupWithImage extends Popup {
   }
   close() {
     super.close();
-    setTimeout(() => this._clear(), this._animationDuration);
   }
   _clear() {
     this.image.src = "";

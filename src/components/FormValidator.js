@@ -70,9 +70,3 @@ export class FormValidator {
     });
   }
 }
-
-export function enableValidation(selectorsData, formElement) {
-  const result = new FormValidator(selectorsData, formElement);
-  result.enableValidation();
-  return result;
-}

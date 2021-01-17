@@ -20,6 +20,7 @@ export class PopupWithForm extends Popup {
     this._submitButton.textContent = submitButtonText;
     this._submitHandler = submitHandler;
     this._loadingText = loadingText;
+    this.setEventListeners();
   }
   getInputValues() {
     const result = {};
@@ -52,32 +53,5 @@ export class PopupWithForm extends Popup {
   // Добавляем геттер без сеттера, чтобы не было возможности изменить элемент формы
   get formElement() {
     return this._form;
-  }
-}
-
-export class PopupWithFormBuilder {
-  setPopupSelector(selector) {
-    this._popupSelector = selector;
-    return this;
-  }
-  setSubmitHandler(handler) {
-    this._submitHandler = handler;
-    return this;
-  }
-  setSubmitButtonText(text) {
-    this._submitButtonText = text;
-    return this;
-  }
-  setLoadingText(text) {
-    this._loadingText = text;
-    return this;
-  }
-  build() {
-    return new PopupWithForm(
-      this._popupSelector,
-      this._submitHandler,
-      this._submitButtonText,
-      this._loadingText
-    ).setEventListeners();
   }
 }

@@ -39,7 +39,6 @@ export class Card {
     this._likeButton = this._element.querySelector(likeButtonSelector);
     this._deleteButton = this._element.querySelector(deleteButtonSelector);
     this._likeCountElement = this._element.querySelector(likeCountSelector);
-    this._id = this._data._id;
     this.setProperties(this._data);
     this._setListeners();
     return this;
@@ -47,33 +46,42 @@ export class Card {
   getElement() {
     return this._element;
   }
-  get likeCount() {
-    return this._likeCountElement.textContent;
-  }
-  set likeCount(count) {
+  changeLikeCount(count) {
     this._likeCountElement.textContent = count;
+    return this;
   }
-  setProperties({ name, link, likes }) {
+  changeLikeButtonState({ likes }, isLiked) {
+    this.changeLikeCount(likes.length);
+    isLiked ? this._setLike() : this._removeLike();
+    this._isLiked = isLiked;
+    return this;
+  }
+  changeDeleteButtonState(isOwner) {
+    isOwner ? this._enableDeleteButton() : this._disableDeleteButton();
+    return this;
+  }
+  setProperties({ name, link, likes, _id }) {
     this._image.src = link;
     this._image.alt = name;
     this._title.textContent = name;
     this._likeCountElement.textContent = likes.length;
+    this._id = _id;
     return this;
   }
-  setLike() {
+  _setLike() {
     this._likeButton.classList.add(likeActiveClass);
     this._isLiked = true;
   }
-  removeLike() {
+  _removeLike() {
     this._likeButton.classList.remove(likeActiveClass);
     this._isLiked = false;
   }
-  enableDeleteButton() {
+  _enableDeleteButton() {
     this._deleteButton.classList.remove(hiddenButtonClass);
     this._deleteButton.addEventListener("click", this._deleteHandler);
     return this;
   }
-  disableDeleteButton() {
+  _disableDeleteButton() {
     this._deleteButton.classList.add(hiddenButtonClass);
     this._deleteButton.removeEventListener("click", this._deleteHandler);
     return this;
@@ -88,35 +96,5 @@ export class Card {
   _errorLoadHandler() {
     this._image.src = notFoundImage;
     this._image.alt = "Not Found";
-  }
-}
-
-export class CardBuilder {
-  setTemplateSelector(selector) {
-    this._templateSelector = selector;
-    return this;
-  }
-  setClickHandler(handler) {
-    this._clickHandler = handler;
-    return this;
-  }
-  setDeleteHandler(handler) {
-    this._deleteHandler = handler;
-    return this;
-  }
-  setLikeHandler(handler) {
-    this._likeHandler = handler;
-    return this;
-  }
-  setData(data) {
-    this._data = data;
-    return this;
-  }
-  build() {
-    return new Card(this._templateSelector, this._data, {
-      clickHandler: this._clickHandler,
-      deleteHandler: this._deleteHandler,
-      likeHandler: this._likeHandler,
-    });
   }
 }

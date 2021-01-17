@@ -1,10 +1,10 @@
-import { PopupWithFormBuilder } from "../components/popup-with-form.js";
+import { PopupWithForm } from "../components/popup-with-form.js";
 import { PopupWithImage } from "../components/popup-with-image.js";
 import { PopupWithMessage } from "../components/popup-with-message.js";
-import { CardBuilder } from "../components/Card.js";
-import { UserInfoBuilder } from "../components/user-info.js";
+import { Card } from "../components/Card.js";
+import { UserInfo } from "../components/user-info.js";
 import { Section } from "../components/Section.js";
-import { enableValidation } from "../components/FormValidator.js";
+import { FormValidator } from "../components/FormValidator.js";
 import { selectors } from "../utils/constants.js";
 import { Api } from "../components/Api.js";
 
@@ -34,6 +34,12 @@ const {
 
 // ---------------------------------------------------------------
 
+function enableValidation(selectorsData, formElement) {
+  const result = new FormValidator(selectorsData, formElement);
+  result.enableValidation();
+  return result;
+}
+
 // MessagePopup
 // ---------------------------------------------------------------
 const messagePopup = new PopupWithMessage(messagePopupSelector);
@@ -49,9 +55,7 @@ const errorHandler = (promise, successCallback, failureCallback) => {
       } else if (typeof error === "string") {
         messagePopup.open(error);
       } else {
-        messagePopup.open(
-          "Непредвиденная ошибка, повторите попытку позднее"
-        );
+        messagePopup.open("Непредвиденная ошибка, повторите попытку позднее");
       }
       if (failureCallback) {
         failureCallback();
@@ -66,7 +70,7 @@ const api = new Api({
   baseUrl: "https://mesto.nomoreparties.co/v1/cohort-19/",
   headers: {
     authorization: "68d238d8-54dd-4a8c-9a47-e308386a3ea7",
-    "Content-Type": "application/json",
+    "Content-Type": "application/json; charset=utf-8",
   },
   errorHandler: errorHandler,
 });
@@ -74,11 +78,7 @@ const api = new Api({
 
 // UserInfo
 // ---------------------------------------------------------------
-const userInfo = new UserInfoBuilder()
-  .setNameSelector(nameSelector)
-  .setAboutSelector(aboutSelector)
-  .setAvatarImageSelector(avatarImageSelector)
-  .build();
+const userInfo = new UserInfo(nameSelector, aboutSelector, avatarImageSelector);
 
 errorHandler(api.getProfileData(), (data) => {
   userInfo.setUserInfo(data);
@@ -88,21 +88,21 @@ errorHandler(api.getProfileData(), (data) => {
 
 // Edit Popup
 // ---------------------------------------------------------------
-const editPopup = new PopupWithFormBuilder()
-  .setPopupSelector(editPopupSelector)
-  .setSubmitHandler((evt) => {
+const editPopup = new PopupWithForm(
+  editPopupSelector,
+  (evt) => {
     evt.preventDefault();
     editPopup.renderLoading(true);
     const { nameInput: name, jobInput: about } = editPopup.getInputValues();
-    errorHandler(api.editProfile({ name, about }), ({ name, about }) =>
-      userInfo.setName(name).setAbout(about)
-    ).finally(() => {
+    errorHandler(api.editProfile({ name, about }), ({ name, about }) => {
+      userInfo.setName(name).setAbout(about);
       editPopup.close();
+    }).finally(() => {
       editPopup.renderLoading(false);
     });
-  })
-  .setSubmitButtonText("Сохранить")
-  .build();
+  },
+  "Сохранить"
+);
 
 const editFormValidator = enableValidation(
   formSelectors,
@@ -120,21 +120,21 @@ editButton.addEventListener("click", () => {
 
 // ChangeAvatar Popup
 // ---------------------------------------------------------------
-const changeAvatarPopup = new PopupWithFormBuilder()
-  .setPopupSelector(changeAvatarPopupSelector)
-  .setSubmitHandler((evt) => {
+const changeAvatarPopup = new PopupWithForm(
+  changeAvatarPopupSelector,
+  (evt) => {
     evt.preventDefault();
     const { avatarInput: avatar } = changeAvatarPopup.getInputValues();
     changeAvatarPopup.renderLoading(true);
     errorHandler(api.changeAvatar(avatar), ({ avatar }) => {
       userInfo.setAvatarImage(avatar);
-    }).finally(() => {
       changeAvatarPopup.close();
+    }).finally(() => {
       changeAvatarPopup.renderLoading(false);
     });
-  })
-  .setSubmitButtonText("Сохранить")
-  .build();
+  },
+  "Сохранить"
+);
 
 const changeAvatarFormValidator = enableValidation(
   formSelectors,
@@ -152,23 +152,23 @@ editAvatarButton.addEventListener("click", () => {
 // AddCard Popup
 // ---------------------------------------------------------------
 
-const addPopup = new PopupWithFormBuilder()
-  .setPopupSelector(addPopupSelector)
-  .setSubmitHandler((evt) => {
+const addPopup = new PopupWithForm(
+  addPopupSelector,
+  (evt) => {
     evt.preventDefault();
     addPopup.renderLoading(true);
     const { titleInput: name, linkInput: link } = addPopup.getInputValues();
-    errorHandler(api.addCard({ name, link }), (data) =>
+    errorHandler(api.addCard({ name, link }), (data) => {
       elementsSection.prependItem(
-        createCard(data).enableDeleteButton().getElement()
-      )
-    ).finally(() => {
-      addPopup.renderLoading(false);
+        createCard(data).changeDeleteButtonState(true).getElement()
+      );
       addPopup.close();
+    }).finally(() => {
+      addPopup.renderLoading(false);
     });
-  })
-  .setSubmitButtonText("Добавить")
-  .build();
+  },
+  "Добавить"
+);
 
 const addFormValidator = enableValidation(formSelectors, addPopup.formElement);
 
@@ -188,20 +188,20 @@ imagePopup.setEventListeners();
 
 // Confirm Popup
 // ---------------------------------------------------------------
-const confirmPopup = new PopupWithFormBuilder()
-  .setPopupSelector(confirmPopupSelector)
-  .setSubmitButtonText("Да")
-  .setSubmitHandler((evt) => {
+const confirmPopup = new PopupWithForm(
+  confirmPopupSelector,
+  (evt) => {
     evt.preventDefault();
     confirmPopup.renderLoading(true);
-    errorHandler(api.deleteCard(confirmPopup._cardElement._id), () =>
-      confirmPopup._cardElement._element.remove()
-    ).finally(() => {
+    errorHandler(api.deleteCard(confirmPopup._cardElement._id), () => {
+      confirmPopup._cardElement._element.remove();
       confirmPopup.close();
+    }).finally(() => {
       confirmPopup.renderLoading(false);
     });
-  })
-  .build();
+  },
+  "Да"
+);
 // ---------------------------------------------------------------
 
 // Cards
@@ -215,46 +215,31 @@ const confirmPopup = new PopupWithFormBuilder()
   лайков по данным сервера, либо отменяем операцию и выводим сообщение об ошибке
 */
 
-const createCard = (item) => {
-  return new CardBuilder()
-    .setTemplateSelector(templateSelector)
-    .setData(item)
-    .setLikeHandler(function () {
+const createCard = (data) => {
+  return new Card(templateSelector, data, {
+    likeHandler: function () {
       if (this._isLiked) {
-        this.removeLike();
-        --this.likeCount;
-        errorHandler(
-          api.removeLike(this._id),
-          (data) => {
-            this.likeCount = data.likes.length;
-          },
-          () => {
-            this.setLike();
-            ++this.likeCount;
-          }
-        );
+        errorHandler(api.removeLike(this._id), (data) => {
+          this.changeLikeButtonState(
+            data,
+            data.likes.some((user) => user._id == userInfo._id)
+          );
+        });
       } else {
-        this.setLike();
-        ++this.likeCount;
-        errorHandler(
-          api.setLike(this._id),
-          (data) => {
-            this.likeCount = data.likes.length;
-          },
-          () => {
-            this.removeLike();
-            --this.likeCount;
-          }
-        );
+        errorHandler(api.setLike(this._id), (data) => {
+          this.changeLikeButtonState(
+            data,
+            data.likes.some((user) => user._id == userInfo._id)
+          );
+        });
       }
-    })
-    .setDeleteHandler(function () {
+    },
+    deleteHandler: function () {
       confirmPopup._cardElement = this;
       confirmPopup.open();
-    })
-    .setClickHandler((title, link) => imagePopup.open({ title, link }))
-    .build()
-    .configureCard();
+    },
+    clickHandler: (title, link) => imagePopup.open({ title, link }),
+  }).configureCard();
 };
 
 const elementsSection = new Section(
@@ -270,14 +255,11 @@ elementsSection.renderItems();
 errorHandler(api.getInitialCards(), (data) =>
   data.forEach((cardData) => {
     const card = createCard(cardData);
-    if (
+    card.changeLikeButtonState(
+      cardData,
       cardData.likes.some((responseUser) => userInfo._id === responseUser._id)
-    ) {
-      card.setLike();
-    }
-    if (cardData.owner._id == userInfo._id) {
-      card.enableDeleteButton();
-    }
+    );
+    card.changeDeleteButtonState(cardData.owner._id == userInfo._id);
     elementsSection.addItem(card.getElement());
   })
 );

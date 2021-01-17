@@ -37,24 +37,3 @@ export class UserInfo {
   }
 }
 
-export class UserInfoBuilder {
-  setNameSelector(selector) {
-    this._nameSelector = selector;
-    return this;
-  }
-  setAboutSelector(selector) {
-    this._aboutSelector = selector;
-    return this;
-  }
-  setAvatarImageSelector(selector) {
-    this._avatarImageSelector = selector;
-    return this;
-  }
-  build() {
-    return new UserInfo(
-      this._nameSelector,
-      this._aboutSelector,
-      this._avatarImageSelector
-    );
-  }
-}
